@@ -1,0 +1,12 @@
+{% extends 'auth/base_auth.html' %}
+{% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
+
+{% block auth_container %}
+    <h1>Login view</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username">
+        <input type="password" name="password" placeholder="Password">
+        <button type="submit">Login</button>
+    </form>
+{% endblock %}

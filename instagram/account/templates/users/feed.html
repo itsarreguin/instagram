@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block title %}{{ request.user.username }} &#8226; {{ block.super }}{% endblock %}
+
+{% block container %}
+    <a href="{% url 'account:logout' %}">Logout</a>
+{% endblock %}
