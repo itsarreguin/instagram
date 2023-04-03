@@ -24,7 +24,10 @@ DJANGO_APPS = [
     'django.contrib.staticfiles',
 ]
 
-PROJECT_APPS = []
+PROJECT_APPS = [
+    'instagram.core.apps.CoreConfig',
+    'instagram.account.apps.AccountConfig',
+]
 
 THIRD_APPS = []
 
@@ -59,6 +62,9 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'instagram.wsgi.application'
+
+# Auth user model definition
+AUTH_USER_MODEL = 'account.User'
 
 
 # Password validation
