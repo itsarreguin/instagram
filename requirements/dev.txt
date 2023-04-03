@@ -1,0 +1,7 @@
+-r ./common.txt
+
+# Django debug information
+django-debug-toolbar==3.8.1
+
+# Extensions for Django
+django-extensions==3.2.1
