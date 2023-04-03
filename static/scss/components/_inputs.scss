@@ -1,0 +1,3 @@
+@import "../mixins/input";
+
+@include inputType("auth", 12px, 12px, 1px, $gray-100, $light, $font-16px, $dark, $input-shadow-normal, 10px, $ig-pink, $pink-shadow)

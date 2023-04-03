@@ -1,0 +1,16 @@
+{
+  "name": "instagram",
+  "version": "1.0.0",
+  "description": "Instagram clone build with Django",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass ./static/scss/instagram.scss ./static/dist/css/instagram.css --style-compressed",
+    "sass-dev": "sass --watch ./static/scss/instagram.scss ./static/dist/css/instagram.css --no-source-map",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Brandon Arreguin (https://www.github.com/itsarreguin/)",
+  "license": "MIT",
+  "dependencies": {
+    "sass": "^1.60.0"
+  }
+}

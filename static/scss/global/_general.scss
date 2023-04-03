@@ -1,0 +1,30 @@
+html, body, nav, footer, div, section, table, thead,
+tbody, input, button, textarea, ul, li, a, span, img,
+pre, code, h1, h2, h3, h4, h5, h6, p, tr, th, td {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: $montserrat;
+}
+
+input, button, textarea, select {
+    outline: 0px;
+    background: transparent;
+    border: none;
+}
+
+button, input[type="submit"] {
+    cursor: pointer;
+}
+
+ul, li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
+
+img {
+    width: 100%;
+    object-fit: contain;
+}

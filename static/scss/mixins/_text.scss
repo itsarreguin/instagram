@@ -1,0 +1,12 @@
+@mixin text($type, $name, $weight, $size, $color, $hover) {
+    .#{$type}-#{$name} {
+        font: {
+            size: $size;
+            weight: $weight;
+        }
+        color: $color;
+        &:hover {
+            color: $hover;
+        }
+    }
+}

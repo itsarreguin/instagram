@@ -70,8 +70,15 @@ class LoginView(generic.View):
 
 class SignUpView(generic.View):
     template_name: str = 'auth/signup.html'
-    form_class: Type[Form | ModelForm]
+    form_class: Type[Form | ModelForm] = None
     view_name: str
+    
+    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        context = {
+            'title': _('Sign Up')
+        }
+        
+        return render(request, self.template_name, context)
 
 
 class LogoutView(LoginRequiredMixin, generic.RedirectView):

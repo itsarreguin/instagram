@@ -1,0 +1,7 @@
+@import "../mixins/buttons";
+
+.btn { cursor: pointer; }
+
+@include button("pink", $pink-100, $light, 1px, $pink-100, $ig-pink, $ig-pink, $pink-shadow);
+
+@include buttonSize("normal", 12px, 25px, 100%, $font-16px, $font-500, 10px, none);

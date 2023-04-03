@@ -1,0 +1,40 @@
+@mixin button(
+    $name, $bg, $color, $bd, $bd-color, $bg-hover, $bd-hover, $shadow
+) {
+    .btn-#{$name} {
+        background-color: $bg;
+        border: $bd solid $bd-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $color;
+        transition: 0.3s ease;
+        & > svg {
+            fill: $color;
+        }
+        &:hover {
+            background-color: $bg-hover;
+            border: $bd solid $bd-hover;
+        }
+        &:focus {
+            background-color: $bg-hover;
+            border: $bd solid $bd-hover;
+            box-shadow: $shadow;
+        }
+    }
+}
+
+@mixin buttonSize(
+    $name, $pd-y, $pd-x, $width, $font-size, $font-weight, $radius, $shadow
+) {
+    .btn-#{$name} {
+        padding: $pd-y $pd-x;
+        font: {
+            size: $font-size;
+            weight: $font-weight;
+        }
+        width: $width;
+        border-radius: $radius;
+        box-shadow: $shadow;
+    }
+}

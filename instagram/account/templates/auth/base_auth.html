@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}{{ block.super }}{% endblock %}
 
+{% block navbar %}{% endblock %}
 {% block container %}
-    <section class="">
-        {% block auth_container %}{% endblock %}
+    <section class="container container-full flex">
+        <div class="container-auth-form flex flex-align-center flex-justify-center">
+            {% block auth_container %}{% endblock %}
+        </div>
+        <div class="container-auth-cover"></div>
     </section>
 {% endblock %}

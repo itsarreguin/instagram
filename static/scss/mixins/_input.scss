@@ -1,0 +1,29 @@
+@mixin inputType(
+    $name,
+    $pd-y,
+    $pd-x,
+    $bd,
+    $bd-color,
+    $bg,
+    $font,
+    $color,
+    $shadow,
+    $radius,
+    $bd-focus,
+    $shadow-focus
+) {
+    .input-#{$name} {
+        width: 100%;
+        padding: $pd-y $pd-x;
+        background-color: $bg;
+        border: $bd solid $bd-color;
+        box-shadow: $shadow;
+        border-radius: $radius;
+        font-size: $font;
+        transition: 0.2s ease;
+        &:focus {
+            border: $bd solid $bd-focus;
+            box-shadow: $shadow-focus;
+        }
+    }
+}

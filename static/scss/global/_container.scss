@@ -1,0 +1,11 @@
+.container {
+    width: 100%;
+
+    &-full {
+        height: 100vh;
+    }
+
+    &-auth-form {
+        width: 75%;
+    }
+}
