@@ -37,6 +37,10 @@ class LoginView(generic.View):
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class()
+        
+        if self.request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('account:feed'))
+        
         context = {
             'title': self.view_title,
             'form': form,
@@ -76,6 +80,10 @@ class SignUpView(generic.View):
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class()
+        
+        if self.request.user.is_authenticated:
+            return HttpResponseRedirect(reverse('account:feed'))
+        
         context = {
             'title': self.view_name,
             'form': form,
