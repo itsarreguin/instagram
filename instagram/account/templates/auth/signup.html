@@ -1,5 +1,5 @@
 {% extends 'auth/base_auth.html' %}
-{% block title %}SignUp &#8226; {{ block.super }}{% endblock %}
+{% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
 {% load static %}
 
 {% block form_title %}<h3>Create an account</h3>{% endblock %}
@@ -19,7 +19,7 @@
 {% block form_body %}
     <form action="{% url 'account:signup' %}" method="post">
         {% csrf_token %}
-        <div class="form-input-group flex flex-justify-between mb-15">
+        <div class="form-input-group grid grid-gap-20 grid-col-2 mb-15">
             <section class="form-group flex flex-column">
                 <label for="first_name" class="mb-8">First name</label>
                 {{ form.first_name }}

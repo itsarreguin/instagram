@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{{ block.super }}{% endblock %}
 
-{% block navbar %}{% endblock %}
+{% block navbar %}{% include 'includes/navbar-auth.html' %}{% endblock %}
 {% block container %}
     <section class="container container-full flex">
         <div class="container-auth-form flex flex-align-center flex-justify-center">

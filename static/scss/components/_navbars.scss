@@ -1,0 +1,21 @@
+.nav {
+    width: 100%;
+    &-bar {
+        &-simple {
+            width: 100%;
+            position: absolute;
+            padding: 30px 2% 0px 2%;
+            z-index: 20;
+        }
+    }
+    &-logo {
+        width: auto;
+        height: auto;
+    }
+    &-wordmark {
+        background-image: url("../../images/logo/instagram.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+}
