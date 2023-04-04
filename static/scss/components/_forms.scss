@@ -1,0 +1,23 @@
+.form {
+    &-head {
+        width: 100%;
+    }
+    &-w {
+        &-385 {
+            width: 385px;
+        }
+        &-480 {
+            width: 480px;
+        }
+    }
+    &-div {
+        width: 100%;
+        margin: 20px 0px;
+        color: $gray-200;
+    }
+    &-line {
+        width: 42%;
+        height: 1px;
+        background-color: $gray-200;
+    }
+}

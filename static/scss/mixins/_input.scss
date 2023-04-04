@@ -20,6 +20,7 @@
         box-shadow: $shadow;
         border-radius: $radius;
         font-size: $font;
+        font-weight: $font-500;
         transition: 0.2s ease;
         &:focus {
             border: $bd solid $bd-focus;

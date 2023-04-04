@@ -5,8 +5,19 @@
 {% block container %}
     <section class="container container-full flex">
         <div class="container-auth-form flex flex-align-center flex-justify-center">
-            {% block auth_container %}{% endblock %}
+            {% url 'account:signup' as signup %}
+            <section class="{% if request.path == signup %}form-w-480{% else %}form-w-385{% endif %}">
+                <div class="form-title" style="margin-bottom: 26px; text-align: center;">
+                    {% block form_title %}{% endblock %}
+                </div>
+                <div class="form-head">
+                    {% block form_head %}{% endblock %}
+                </div>
+                <div class="form-body">
+                    {% block form_body %}{% endblock %}
+                </div>
+            </section>
         </div>
-        <div class="container-auth-cover"></div>
+        <div class="container-auth-img">{% block auth_cover %}{% endblock %}</div>
     </section>
 {% endblock %}

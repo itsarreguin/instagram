@@ -1,5 +1,5 @@
 @mixin button(
-    $name, $bg, $color, $bd, $bd-color, $bg-hover, $bd-hover, $shadow
+    $name, $bg, $color, $bd, $bd-color, $bg-hover, $bd-hover, $shadow, $focus-shadow
 ) {
     .btn-#{$name} {
         background-color: $bg;
@@ -8,6 +8,7 @@
         justify-content: center;
         align-items: center;
         color: $color;
+        box-shadow: $shadow;
         transition: 0.3s ease;
         & > svg {
             fill: $color;
@@ -19,13 +20,13 @@
         &:focus {
             background-color: $bg-hover;
             border: $bd solid $bd-hover;
-            box-shadow: $shadow;
+            box-shadow: $focus-shadow;
         }
     }
 }
 
 @mixin buttonSize(
-    $name, $pd-y, $pd-x, $width, $font-size, $font-weight, $radius, $shadow
+    $name, $pd-y, $pd-x, $width, $font-size, $font-weight, $radius
 ) {
     .btn-#{$name} {
         padding: $pd-y $pd-x;
@@ -35,6 +36,5 @@
         }
         width: $width;
         border-radius: $radius;
-        box-shadow: $shadow;
     }
 }

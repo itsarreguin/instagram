@@ -27,6 +27,7 @@ from django.utils.translation import gettext_lazy as _
 
 # instagram forms
 from instagram.account.forms.auth import LoginForm
+from instagram.account.forms.auth import SignUpForm
 
 
 class LoginView(generic.View):
@@ -50,8 +51,8 @@ class LoginView(generic.View):
         if request.method == 'POST' and form.is_valid():
             user = authenticate(
                 request,
-                username=request.POST['username'],
-                password=request.POST['password']
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password']
             )
             
             if user is not None:
@@ -70,15 +71,21 @@ class LoginView(generic.View):
 
 class SignUpView(generic.View):
     template_name: str = 'auth/signup.html'
-    form_class: Type[Form | ModelForm] = None
-    view_name: str
+    form_class: Type[Form | ModelForm] = SignUpForm
+    view_name: str = _('Sign Up')
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        form = self.form_class()
         context = {
-            'title': _('Sign Up')
+            'title': self.view_name,
+            'form': form,
         }
         
         return render(request, self.template_name, context)
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        form = self.form_class(request.POST)
+        pass
 
 
 class LogoutView(LoginRequiredMixin, generic.RedirectView):
