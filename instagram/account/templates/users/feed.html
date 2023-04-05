@@ -1,6 +1,19 @@
-{% extends 'base.html' %}
-{% block title %}{{ request.user.username }} &#8226; {{ block.super }}{% endblock %}
+{% extends 'users/base.html' %}
+{% block title %}{{ block.super }}{% endblock %}
 
-{% block container %}
-    <a href="{% url 'account:logout' %}">Logout</a>
+{% block sidebar_left %}
+    <div class="sidebar sidebar-container sidebar-container-left">
+        {% include 'includes/sidebar-left.html' %}
+    </div>
+{% endblock %}
+{% block account_content %}
+    <section class="container-account-feed">
+        {% include 'includes/post-card.html' %}
+        {% include 'includes/post-card.html' %}
+    </section>
+{% endblock %}
+{% block sidebar_right %}
+    <div class="sidebar sidebar-container sidebar-container-right">
+        {% include 'includes/sidebar-right.html' %}
+    </div>
 {% endblock %}

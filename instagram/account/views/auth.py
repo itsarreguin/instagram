@@ -25,6 +25,9 @@ from django.forms import ModelForm
 # Django utils
 from django.utils.translation import gettext_lazy as _
 
+# Instagram models
+from instagram.account.models import User
+from instagram.account.models import Profile
 # instagram forms
 from instagram.account.forms.auth import LoginForm
 from instagram.account.forms.auth import SignUpForm
@@ -93,7 +96,25 @@ class SignUpView(generic.View):
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class(request.POST)
-        pass
+        if form.is_valid():
+            user = User.objects.create_user(
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
+            )
+            Profile.objects.create(user=user)
+            login(request, user=user)
+            
+            return HttpResponseRedirect(reverse('account:feed'))
+        
+        context = {
+            'title': self.view_name,
+            'form': form,
+        }
+        
+        return render(request, self.template_name, context)
 
 
 class LogoutView(LoginRequiredMixin, generic.RedirectView):

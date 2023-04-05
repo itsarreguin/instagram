@@ -2,7 +2,7 @@
     $name, $bg, $color, $bd, $bd-color, $bg-hover, $bd-hover, $shadow, $focus-shadow
 ) {
     .btn-#{$name} {
-        background-color: $bg;
+        background: $bg;
         border: $bd solid $bd-color;
         display: flex;
         justify-content: center;

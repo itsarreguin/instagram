@@ -1,0 +1,37 @@
+<nav class="nav nav-bar flex flex-justify-center flex-align-center">
+    <div class="nav-row">
+        <section class="nav-col flex flex-align-center">
+            <a class="nav-logo flex flex-align-center flex-justify-between" style="width: 127px; height: 26px;" href="{% url 'account:feed' %}">
+                <span class="nav-glyph" style="width: 26px; height: 100%;"></span>
+                <span class="nav-wordmark" style="width: 91px; height: 100%;"></span>
+            </a>
+        </section>
+        <section class="nav-col">
+            <div class="nav-sub-col">
+                <form action="" method="post" class="form form-search-nav flex flex-align-center">
+                    <span class="input-search-icon flex flex-align-center flex-justify-center" id="input-search-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </span>
+                    <input type="search" name="" id="" class="input-search" placeholder="Search">
+                </form>
+            </div>
+            <div class="nav-sub-col">
+                <button class="btn btn-normal-radius30 btn-post">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    <span style="margin-left: 4px;">New Post</span>
+                </button>
+                <a class="nav-profile" href="{% url 'account:logout' %}">
+                    {% if request.user.profile.picture %}
+                        <img src="" alt="">
+                    {% else %}
+                        <div class="profile-default flex flex-align-center flex-justify-center">
+                            <span>{{ request.user.first_name|slice:':1' }}{{ request.user.last_name|slice:':1' }}</span>
+                        </div>
+                    {% endif %}
+                </a>
+                <section class="nav-dropdown">
+                </section>
+            </div>
+        </section>
+    </div>
+</nav>

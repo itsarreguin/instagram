@@ -4,5 +4,7 @@
 
 @include button("pink", $pink-100, $light, 1px, $pink-100, $ig-pink, $ig-pink, none, $pink-shadow);
 @include button("auth", $light-gray, $dark, 1px, $gray-100, $gray-50, $gray-100, $input-shadow-normal, $dark-shadow);
+@include button("post", $instagram-bg, $light, none, none, none, none, none, none);
 
 @include buttonSize("normal", 12px, 25px, 100%, $font-16px, $font-500, 10px);
+@include buttonSize("normal-radius30", 10px, 25px, auto, $font-14px, $font-500, 30px);
