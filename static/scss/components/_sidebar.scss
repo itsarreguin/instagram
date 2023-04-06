@@ -2,15 +2,14 @@
     &-container {
         position: fixed;
         top: 70px;
-        width: 350px;
-        background-color: $dark-100;
+        width: 340px;
         height: 100vh;
 
         &-left {
-            left: 0;
+            left: calc(auto + 50px);
         }
         &-right {
-            right: 0;
+            right: calc(50% - 750px);
         }
     }
 
@@ -19,16 +18,15 @@
         width: 100%;
         height: 100%;
         background: $light;
-        padding: 25px 25px;
     }
     &-left {
         left: 0;
-        // padding: 25px 25px 25px 0px;
+        padding: 25px 25px 25px 0px;
         border-right: 1px solid $gray-200;
     }
     &-right {
         right: 0;
-        // padding: 25px 25px 0px 25px;
+        padding: 25px 25px 0px 25px;
         border-left: 1px solid $gray-200;
     }
 
@@ -43,6 +41,9 @@
             overflow: hidden;
             border-radius: 100%;
             font-size: $font-30px;
+        }
+        & a {
+            color: $dark;
         }
     }
 
@@ -59,6 +60,7 @@
         align-items: center;
         padding: 15px 0px;
         color: $gray-400;
+        transition: 0.2s ease;
         font: {
             size: $font-16px;
             weight: $font-500;
