@@ -7,16 +7,12 @@
         <div class="container-account">
             {% block sidebar_left %}
                 <div class="sidebar sidebar-fill left-0"></div>
-                <div class="sidebar sidebar-container sidebar-container-left">
-                    {% include 'includes/sidebar-left.html' %}
-                </div>
+                {% include 'includes/sidebar-left.html' %}
             {% endblock %}
             {% block account_content %}{% endblock %}
             {% block sidebar_right %}
                 <div class="sidebar sidebar-fill right-0"></div>
-                <div class="sidebar sidebar-container sidebar-container-right">
-                    {% include 'includes/sidebar-right.html' %}
-                </div>
+                {% include 'includes/sidebar-right.html' %}
             {% endblock %}
         </div>
     </section>

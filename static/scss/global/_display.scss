@@ -39,9 +39,16 @@
         &-2 {
             grid-template-columns: repeat(2, 1fr);
         }
+        &-3 {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto;
+        }
     }
 
     &-gap {
+        &-14 {
+            gap: 14px;
+        }
         &-20 {
             gap: 20px;
         }

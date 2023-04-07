@@ -2,9 +2,77 @@
 {% block title %}{{ user.get_full_name }} (@{{ user.username }}) &#8226; {{ block.super }} photos and videos{% endblock %}
 
 {% block account_content %}
-    <div style="width: auto;">
-        <h1>@{{ user.username }}</h1>
-        <h5>{{ user.get_full_name }}</h5>
+    <div class="profile-container">
+        <section class="profile-user-card">
+            <div class="flex">
+                <section class="profile-picture">
+                    {% if user.profile.picture %}
+                        <img src="" alt="{{ user.username }}_profile_picture">
+                    {% else %}
+                        <span class="flex flex-align-center flex-justify-center profile-default">
+                            {{ user.first_name|slice:'1' }}{{ user.last_name|slice:':1' }}
+                        </span>
+                    {% endif %}
+                </section>
+                <section class="profile-info">
+                    <h1 class="profile-username mb-15">@{{ user.username }}</h1>
+                    <section class="profile-numbers flex flex-justify-center mb-20">
+                        <span>0 Posts</span>
+                        <span>0 Followers</span>
+                        <span>0 Following</span>
+                    </section>
+                    <h4 style="font-weight: 500;">{{ user.get_full_name }}</h4>
+                    {% if user.profile.biography %}
+                        <p>{{ user.profile.biography }}</p>
+                    {% endif %}
+                </section>
+            </div>
+            <div>
+                {% if user == request.user %}
+                    <a class="btn btn-small btn-profile" href="">Edit profile</a>
+                {% else %}
+                    <form action="" method="post">
+                        <button class="btn btn-small btn-profile">Follow</button>
+                    </form>
+                {% endif %}
+            </div>
+        </section>
+        <section class="profile-options flex flex-justify-center">
+            <div class="profile-link-group flex flex-justify-between">
+                {% url 'account:profile' username=user.username as profile%}
+                <a class="profile-link flex flex-align-center {% if request.path == profile %}profile-link-active{% endif %}" href="">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span style="margin-left: 10px;">Posts</span>
+                </a>
+                <a class="profile-link flex flex-align-center" href="">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                    <span style="margin-left: 10px;">Saved</span>
+                </a>
+                <a class="profile-link flex flex-align-center" href="">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+                    <span style="margin-left: 10px;">Tagged</span>
+                </a>
+            </div>
+        </section>
+        <section class="profile-content">
+            {% if request.path == profile %}
+                <div class="profile-grid grid grid-gap-14 grid-col-3">
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                    <section class="profile-grid-element"></section>
+                </div>
+            {% else %}
+                {% block profile_content %}{% endblock %}
+            {% endif %}
+        </section>
     </div>
 {% endblock %}
 {% block sidebar_right %}{% endblock %}

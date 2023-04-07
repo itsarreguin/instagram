@@ -7,7 +7,7 @@
     }
     &-account {
         position: absolute;
-        width: 1500px;
+        width: 1480px;
         height: auto;
         margin: auto;
         display: flex;
@@ -32,5 +32,71 @@
             height: 100%;
             object-fit: cover;
         }
+    }
+}
+
+.profile {
+    &-container {
+        width: 940px;
+        height: auto;
+        padding-top: 35px;
+        padding-bottom: 40px;
+    }
+    &-user {
+        &-card {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        &name {
+            font-size: 20px;
+            font-weight: $font-600;
+        }
+    }
+    &-picture {
+        width: 180px;
+        height: 180px;
+        border-radius: 100%;
+        margin-right: 30px;
+        overflow: hidden;
+        font-size: $font-48px;
+    }
+    &-numbers {
+        font-size: $font-16px;
+        font-weight: $font-500;
+        & span {
+            margin-right: 15px;
+        }
+    }
+    &-options {
+        width: 100%;
+        height: auto;
+        margin: 40px auto 30px auto;
+    }
+    &-options {
+        width: 100%;
+        height: auto;
+        border-top: 1px solid $gray-200;
+    }
+    &-link {
+        padding: 10px 0px 0px 0px;
+        height: auto;
+        border-top: 2px solid transparent;
+        color: $dark;
+        font-weight: $font-500;
+        & svg {
+            width: 20px;
+        }
+        &-active {
+            border-top: 2px solid $dark;
+        }
+        &-group {
+            width: 300px;
+            height: auto;
+        }
+    }
+    &-grid-element {
+        background-color: $gray-300;
+        height: 304px;
     }
 }
