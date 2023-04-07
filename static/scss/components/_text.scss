@@ -1,5 +1,5 @@
 @import "../mixins/text";
 
-@include text("link", "pink", $font-500, $font-14px, $pink-100, $ig-pink);
+@include text("link", "pink", $font-500, $font-15px, $pink-100, $ig-pink);
 
 @include text("text", "dark", $font-500, $font-15px, $dark, none)

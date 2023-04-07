@@ -2,6 +2,7 @@
 from typing import Any
 from typing import Dict
 from typing import Optional
+from typing import Tuple
 from typing import Type
 
 # Django HTTP package
@@ -10,9 +11,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 # Django views
 from django.views import generic
-from django.contrib.auth.mixins import LoginRequiredMixin
 # Django authentication
 from django.contrib.auth import authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 from django.contrib.auth import logout
 # Django shortcuts and urls
@@ -119,7 +120,7 @@ class SignUpView(generic.View):
 
 class LogoutView(LoginRequiredMixin, generic.RedirectView):
     
-    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
+    def get_redirect_url(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> Optional[str]:
         if self.request.user.is_authenticated:
             logout(self.request)
             return reverse('account:login')

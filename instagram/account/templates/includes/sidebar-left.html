@@ -10,7 +10,7 @@
             {% endif %}
         </section>
         <h3 class="mb-10">{{ request.user.get_full_name }}</h3>
-        <h4><a href="">@{{ request.user.username }}</a></h4>
+        <h4><a href="{% url 'account:profile' username=request.user.username %}">@{{ request.user.username }}</a></h4>
     </div>
     <div class="sidebar-divider"></div>
     <div class="sidebar-links">
@@ -20,6 +20,13 @@
                 <a class="{% if request.path == feed %}sidebar-link-active{% else %}sidebar-link{% endif %}" href="{% url 'account:feed' %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                     <span>Home</span>
+                </a>
+            </li>
+            <li>
+                {% url 'account:profile' username=request.user.username as profile %}
+                <a class="{% if request.path == profile %}sidebar-link-active{% else %}sidebar-link{% endif %}" href="{{ profile }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>@{{ request.user.username }}</span>
                 </a>
             </li>
             <li>

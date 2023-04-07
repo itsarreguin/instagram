@@ -11,11 +11,12 @@
         height: auto;
         margin: auto;
         display: flex;
+        padding-top: 70px;
         justify-content: space-between;
 
         &-feed {
-            padding-top: 105px;
-            width: 100%;
+            padding-top: 30px;
+            width: auto;
             height: auto;
         }
     }
