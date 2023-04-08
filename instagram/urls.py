@@ -29,4 +29,4 @@ urlpatterns: List[path] = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += [path('admin/', admin.site.urls)]
+    urlpatterns += [path('django/admin/', admin.site.urls)]

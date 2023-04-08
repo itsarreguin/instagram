@@ -3,8 +3,8 @@
 
 {% block account_content %}
     <section class="container-account-feed">
-        {% include 'includes/post-card.html' %}
-        {% include 'includes/post-card.html' %}
-        {% include 'includes/post-card.html' %}
+        {% for post in posts %}
+            {% include 'includes/post-card.html' %}
+        {% endfor %}
     </section>
 {% endblock %}

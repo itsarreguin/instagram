@@ -22,3 +22,4 @@
 }
 
 @include inputType("auth", 14px, 12px, 1px, $gray-100, $light, $font-15px, $dark, $input-shadow-normal, 10px, $ig-pink, $pink-shadow);
+@include inputType("comment", 11px, 15px, 1px, $gray-200, $light-gray, $font-15px, $dark, none, 6px, $gray-400, none);

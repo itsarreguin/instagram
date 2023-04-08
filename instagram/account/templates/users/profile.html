@@ -16,14 +16,14 @@
                 </section>
                 <section class="profile-info">
                     <h1 class="profile-username mb-15">@{{ user.username }}</h1>
-                    <section class="profile-numbers flex flex-justify-center mb-20">
+                    <section class="profile-numbers flex mb-20">
                         <span>0 Posts</span>
                         <span>0 Followers</span>
                         <span>0 Following</span>
                     </section>
-                    <h4 style="font-weight: 500;">{{ user.get_full_name }}</h4>
+                    <h4 class="mb-15" style="font-weight: 500;">{{ user.get_full_name }}</h4>
                     {% if user.profile.biography %}
-                        <p>{{ user.profile.biography }}</p>
+                        <p class="profile-user-biography">{{ user.profile.biography }}</p>
                     {% endif %}
                 </section>
             </div>
