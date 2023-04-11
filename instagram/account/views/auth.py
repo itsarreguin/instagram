@@ -32,6 +32,7 @@ from instagram.account.models import Profile
 # instagram forms
 from instagram.account.forms.auth import LoginForm
 from instagram.account.forms.auth import SignUpForm
+from instagram.account.forms.auth import PasswordResetRequestForm
 
 
 class LoginView(generic.View):
@@ -126,3 +127,15 @@ class LogoutView(LoginRequiredMixin, generic.RedirectView):
             return reverse('account:login')
         
         return super(LogoutView, self).get_redirect_url(*args, **kwargs)
+
+
+def password_reset_request(request: HttpRequest) -> HttpResponse:
+    form = PasswordResetRequestForm
+    context = {
+        'form': form
+    }
+    return render(
+        request=request,
+        template_name='auth/password_reset_request.html',
+        context=context
+    )

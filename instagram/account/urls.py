@@ -10,6 +10,7 @@ from instagram.account.views.users import ProfileView
 from instagram.account.views.auth import LoginView
 from instagram.account.views.auth import SignUpView
 from instagram.account.views.auth import LogoutView
+from instagram.account.views.auth import password_reset_request
 
 
 app_name: str = 'account'
@@ -30,6 +31,11 @@ urlpatterns: List[path] = [
         route = 'logout/',
         view = LogoutView.as_view(),
         name = 'logout'
+    ),
+    path(
+        route = 'password/reset/',
+        view = password_reset_request,
+        name='password-reset-request'
     ),
     path(
         route = '',
