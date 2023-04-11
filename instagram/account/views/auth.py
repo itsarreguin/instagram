@@ -106,7 +106,6 @@ class SignUpView(generic.View):
                 email=form.cleaned_data['email'],
                 password=form.cleaned_data['password']
             )
-            Profile.objects.create(user=user)
             login(request, user=user)
             
             return HttpResponseRedirect(reverse('account:feed'))

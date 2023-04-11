@@ -10,3 +10,7 @@ class AccountConfig(AppConfig):
     default_auto_field: str = 'django.db.models.BigAutoField'
     name: str = 'instagram.account'
     vaerbose_name: str = _('Account')
+    
+    def ready(self) -> None:
+        from instagram.account import signals as signals
+        return super().ready()
