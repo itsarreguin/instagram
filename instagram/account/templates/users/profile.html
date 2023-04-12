@@ -29,7 +29,7 @@
             </div>
             <div>
                 {% if user == request.user %}
-                    <a class="btn btn-small btn-profile" href="">Edit profile</a>
+                    <a class="btn btn-small btn-profile" href="{% url 'account:edit-profile' %}">Edit profile</a>
                 {% else %}
                     <form action="" method="post">
                         <button class="btn btn-small btn-profile">Follow</button>

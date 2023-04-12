@@ -4,13 +4,15 @@ from typing import List
 # Django imports
 from django.urls import path
 
-# instagram account views
-from instagram.account.views.users import feed
-from instagram.account.views.users import ProfileView
+# Instagram account auth views
 from instagram.account.views.auth import LoginView
 from instagram.account.views.auth import SignUpView
 from instagram.account.views.auth import LogoutView
 from instagram.account.views.auth import password_reset_request
+# Instagram account user views
+from instagram.account.views.users import feed
+from instagram.account.views.users import ProfileView
+from instagram.account.views.users import EditProfileView
 
 
 app_name: str = 'account'
@@ -46,5 +48,10 @@ urlpatterns: List[path] = [
         route = '<str:username>/',
         view = ProfileView.as_view(),
         name = 'profile'
+    ),
+    path(
+        route = 'settings/profile/',
+        view = EditProfileView.as_view(),
+        name = 'edit-profile'
     ),
 ]

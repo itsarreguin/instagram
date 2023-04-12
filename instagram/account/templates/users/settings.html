@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}{{ block.super }}{% endblock %}
+
+{% block navbar %}{% include 'includes/navbar.html' %}{% endblock %}
+{% block container %}
+    <section class="container flex flex-justify-center">
+        <div class="container-settings">
+            {% block sidebar_settings %}
+                <div class="sidebar sidebar-fill left-0"></div>
+                {% include 'includes/settings-bar.html' %}
+            {% endblock %}
+            <section class="container-settings-content">
+                {% block settings_content %}{% endblock %}
+            </section>
+        </div>
+    </section>
+{% endblock %}

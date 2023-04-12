@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 # Django views
 from django.views.generic import DetailView
+from django.views.generic import TemplateView
 # Django auth and shortcuts
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
@@ -67,3 +68,11 @@ class ProfileView(LoginRequiredMixin, DetailView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
     context_object_name = 'user'
+
+
+class EditProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'users/edit_profile.html'
+    
+    def get(self, request: HttpRequest) -> HttpResponse:
+        context = { 'title': 'Edit profile' }
+        return render(request, self.template_name, context)

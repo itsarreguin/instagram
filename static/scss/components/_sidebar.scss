@@ -5,7 +5,7 @@
         height: auto;
     }
 
-    &-left, &-right {
+    &-left, &-right, &-settings {
         position: fixed;
         width: 340px;
         height: 100vh;
@@ -20,6 +20,9 @@
         right: calc(50% - 740px);
         padding: 25px 25px 0px 25px;
         border-left: 1px solid $gray-200;
+    }
+    &-settings {
+        padding: 25px 25px 0px 25px;
     }
 
     &-user {
