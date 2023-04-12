@@ -1,20 +1,35 @@
+# Python standard library
+from typing import Any
+from typing import Dict
+from typing import Tuple
+from typing import Type
+
 # Django HTTP package
 from django.http import HttpRequest
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 # Django views
+from django.views.generic import View
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
+from django.views.generic import UpdateView
+# Django DB
+from django.db.models import QuerySet
+from django.db.models import Model
 # Django auth and shortcuts
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+# Django forms
+from django.forms import Form
+from django.forms import ModelForm
 # Django utils
 from django.utils.translation import gettext_lazy as _
 
 # Instagram models
 from instagram.account.models import User
+# Instagram forms
+from instagram.account.forms.user import EditProfileForm
 
 
 posts: list[dict[str, str | int]] = [
@@ -53,26 +68,49 @@ posts: list[dict[str, str | int]] = [
 ]
 
 
-@login_required(login_url='account:login')
-def feed(request) -> HttpResponse:
-    context = {
-        'posts': posts
-    }
-    return render(request, 'users/feed.html', context)
+class FeedView(LoginRequiredMixin, TemplateView):
+    template_name = 'users/feed.html'
+    
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['posts'] = posts
+        
+        return context
 
 
 class ProfileView(LoginRequiredMixin, DetailView):
-    model = User
-    queryset = User.objects.all()
-    template_name = 'users/profile.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
-    context_object_name = 'user'
-
-
-class EditProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'users/edit_profile.html'
+    model: Type[Model] = get_user_model()
+    template_name: str = 'users/profile.html'
     
-    def get(self, request: HttpRequest) -> HttpResponse:
-        context = { 'title': 'Edit profile' }
+    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+        if args or kwargs:
+            return self.model.objects.filter(*args, **kwargs).first()
+        
+        return self.model.objects.all()
+    
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.get_queryset(username=kwargs['username'])
+        
+        return context
+    
+    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        return render(request, self.template_name)
+
+
+class EditProfileView(LoginRequiredMixin, UpdateView):
+    
+    template_name: str = 'users/edit_profile.html'
+    view_name: str = 'Edit profile'
+    form_class: Type[Form | ModelForm] = EditProfileForm
+    success_url: str = 'account:edit-profile'
+    
+    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        context = {
+            'title': self.view_name,
+            'form': self.form_class
+        }
         return render(request, self.template_name, context)
+    
+    def put(self, request: HttpRequest, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> HttpResponse:
+        return super().put(*args, **kwargs)

@@ -1,10 +1,25 @@
 <div class="sidebar sidebar-settings">
-    <section class=""></section>
+    <section class="sidebar-user">
+        <div class="flex flex-align-center">
+            <section class="" style="width: 40px; height:40px; border-radius: 100%; overflow: hidden; margin-right: 15px;">
+                {% if request.user.profile.picture %}
+                    <img src="" alt="">
+                {% else %}
+                    <span class="flex flex-align-center flex-justify-center profile-default">{{ request.user.first_name|slice:':1' }}{{ request.user.last_name|slice:':1' }}</span>
+                {% endif %}
+            </section>
+            <section class="flex flex-column">
+                <h4 class="mb-5">{{ request.user.get_full_name }}</h4>
+                <p>Account settings</p>
+            </section>
+        </div>
+    </section>
     <section class="sidebar-divider"></section>
     <section class="sidebar-links">
         <ul class="">
             <li>
-                <a class="sidebar-link" href="">
+                {% url 'account:edit-profile' as edit_profile %}
+                <a class="{% if request.path == edit_profile %}sidebar-link-active{% else %}sidebar-link{% endif %}" href="{% url 'account:feed' %}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
@@ -38,4 +53,5 @@
             </li>
         </ul>
     </section>
+    <section class="" style="margin-top: 27px;"><a class="" href="{% url 'account:feed' %}">Return to home</a></section>
 </div>

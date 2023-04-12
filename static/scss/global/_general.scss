@@ -16,7 +16,12 @@ input, button, textarea, select {
 button, input[type="submit"] {
     cursor: pointer;
 }
-
+textarea {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    min-width: 100%;
+}
 ul, li {
     list-style: none;
 }

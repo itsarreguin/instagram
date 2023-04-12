@@ -34,15 +34,15 @@
         }
     }
     &-settings {
-        width: 1140px;
+        width: 990px;
         height: auto;
         padding-top: 70px;
         display: flex;
         &-content {
             margin: auto;
-            width: 750px;
+            width: 630px;
             margin: 25px auto;
-            padding: 40px 50px;
+            padding: 30px 40px;
             border: 1px solid $gray-200;
             border-radius: 15px;
             background-color: $light;

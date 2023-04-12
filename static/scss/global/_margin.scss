@@ -1,4 +1,22 @@
 .m {
+    &t-5 {
+        margin-top: 5px;
+    }
+    &t-8 {
+        margin-top: 8px;
+    }
+    &t-10 {
+        margin-top: 10px;
+    }
+    &t-15 {
+        margin-top: 15px;
+    }
+    &t-20 {
+        margin-top: 20px;
+    }
+    &t-25 {
+        margin-top: 25px;
+    }
     &b-5 {
         margin-bottom: 5px;
     }
@@ -12,6 +30,9 @@
         margin-bottom: 15px;
     }
     &b-20 {
+        margin-bottom: 20px;
+    }
+    &b-25 {
         margin-bottom: 20px;
     }
 }

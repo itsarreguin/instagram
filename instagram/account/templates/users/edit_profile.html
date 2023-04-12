@@ -1,4 +1,30 @@
 {% extends 'users/settings.html' %}
 {% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
 
-{% block settings_content %}{% endblock %}
+{% block settings_title %}Public profile settings{% endblock %}
+{% block settings_content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.picture }}
+        </div>
+        <div class="divider" style="width: 100%; height: 1px; margin: 25px auto; background: #D1D1D1;"></div>
+        <div class="form-group flex flex-column text-dark mb-25">
+            <label for="link" class="mb-8">Website</label>
+            {{ form.link }}
+            <p class="mt-10 text-gray">
+                Add your own website or another url / link
+            </p>
+        </div>
+        <div class="form-group flex flex-column text-dark mb-25">
+            <label for="biography" class="mb-8">Biography</label>
+            {{ form.biography }}
+            <p class="mt-10 text-gray">
+                Write a biography or presentation so that your followers or more persons knows more of you.
+            </p>
+        </div>
+        <div class="flex flex-justify-end">
+            <button type="submit" class="btn btn-normal btn-purple">Save changes</button>
+        </div>
+    </form>
+{% endblock %}

@@ -10,7 +10,7 @@ from instagram.account.views.auth import SignUpView
 from instagram.account.views.auth import LogoutView
 from instagram.account.views.auth import password_reset_request
 # Instagram account user views
-from instagram.account.views.users import feed
+from instagram.account.views.users import FeedView
 from instagram.account.views.users import ProfileView
 from instagram.account.views.users import EditProfileView
 
@@ -41,7 +41,7 @@ urlpatterns: List[path] = [
     ),
     path(
         route = '',
-        view = feed,
+        view = FeedView.as_view(),
         name = 'feed'
     ),
     path(
