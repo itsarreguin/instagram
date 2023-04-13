@@ -46,3 +46,19 @@ class EditAccountForm(forms.ModelForm):
             'username': forms.TextInput(attrs={ 'class': 'input-settings' }),
             'email': forms.EmailInput(attrs={ 'class': 'input-settings' }),
         }
+
+
+class ChangePasswordForm(forms.Form):
+    
+    old_password = forms.CharField(
+        min_length=8, max_length=256,
+        widget=forms.PasswordInput(attrs={ 'class': 'input-settings' })
+    )
+    new_password = forms.CharField(
+        min_length=8, max_length=256,
+        widget=forms.PasswordInput(attrs={ 'class': 'input-settings' })
+    )
+    new_password_confirm = forms.CharField(
+        min_length=8, max_length=256,
+        widget=forms.PasswordInput(attrs={ 'class': 'input-settings' })
+    )

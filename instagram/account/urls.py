@@ -14,6 +14,7 @@ from instagram.account.views.users import FeedView
 from instagram.account.views.users import ProfileView
 from instagram.account.views.users import EditProfileView
 from instagram.account.views.users import EditAccountView
+from instagram.account.views.users import ChangePasswordView
 
 
 app_name: str = 'account'
@@ -59,5 +60,10 @@ urlpatterns: List[path] = [
         route = 'settings/account/',
         view = EditAccountView.as_view(),
         name = 'edit-account'
-    )
+    ),
+    path(
+        route = 'settings/password/change/',
+        view = ChangePasswordView.as_view(),
+        name = 'change-password'
+    ),
 ]

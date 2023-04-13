@@ -31,9 +31,11 @@ from django.utils.translation import gettext_lazy as _
 
 # Instagram models
 from instagram.account.models import User
+from instagram.account.models import Profile
 # Instagram forms
 from instagram.account.forms.user import EditProfileForm
 from instagram.account.forms.user import EditAccountForm
+from instagram.account.forms.user import ChangePasswordForm
 
 
 posts: list[dict[str, str | int]] = [
@@ -104,23 +106,22 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
 class EditProfileView(LoginRequiredMixin, UpdateView):
     
+    model: Type[Profile] = Profile
+    form_class: Type[Form | ModelForm] = EditProfileForm
     template_name: str = 'users/edit_profile.html'
     view_name: str = 'Edit profile'
-    form_class: Type[Form | ModelForm] = EditProfileForm
-    success_url: str = 'account:edit-profile'
+    
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.view_name
+        
+        return context
     
     def get_object(self, queryset: Optional[QuerySet] = ...) -> Model:
         return self.request.user.profile
     
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        context = {
-            'title': self.view_name,
-            'form': self.form_class
-        }
-        return render(request, self.template_name, context)
-    
-    def put(self, request: HttpRequest, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> HttpResponse:
-        return super().put(*args, **kwargs)
+    def get_success_url(self) -> HttpResponse:
+        return reverse('account:edit-profile')
 
 
 class EditAccountView(LoginRequiredMixin, UpdateView):
@@ -130,7 +131,7 @@ class EditAccountView(LoginRequiredMixin, UpdateView):
     template_name: str = 'users/edit_account.html'
     view_name: str = 'Edit account'
     
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.view_name
         
@@ -141,3 +142,16 @@ class EditAccountView(LoginRequiredMixin, UpdateView):
     
     def get_success_url(self) -> HttpResponse:
         return reverse('account:edit-account')
+
+
+class ChangePasswordView(LoginRequiredMixin, TemplateView):
+    
+    template_name: str = 'users/change_password.html'
+    view_name: str = 'Change password'
+    
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.view_name
+        context['form'] = ChangePasswordForm
+        
+        return context
