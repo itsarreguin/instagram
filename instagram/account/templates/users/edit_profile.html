@@ -3,7 +3,7 @@
 
 {% block settings_title %}Public profile settings{% endblock %}
 {% block settings_content %}
-    <form action="" method="post">
+    <form action="{% url 'account:edit-profile' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             {{ form.picture }}
@@ -22,6 +22,9 @@
             <p class="mt-10 text-gray">
                 Write a biography or presentation so that your followers or more persons knows more of you.
             </p>
+        </div>
+        <div class="flex flex-justify-start">
+            <button type="submit" class="btn btn-normal btn-purple">Save changes</button>
         </div>
     </form>
 {% endblock %}

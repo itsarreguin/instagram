@@ -8,7 +8,7 @@
                     <span class="flex flex-align-center flex-justify-center profile-default">{{ request.user.first_name|slice:':1' }}{{ request.user.last_name|slice:':1' }}</span>
                 {% endif %}
             </section>
-            <section class="flex flex-column">
+            <section class="flex flex-column" style="text-align: left;">
                 <h4 class="mb-5">{{ request.user.get_full_name }}</h4>
                 <p>Account settings</p>
             </section>
