@@ -13,6 +13,7 @@ from instagram.account.views.auth import password_reset_request
 from instagram.account.views.users import FeedView
 from instagram.account.views.users import ProfileView
 from instagram.account.views.users import EditProfileView
+from instagram.account.views.users import EditAccountView
 
 
 app_name: str = 'account'
@@ -54,4 +55,9 @@ urlpatterns: List[path] = [
         view = EditProfileView.as_view(),
         name = 'edit-profile'
     ),
+    path(
+        route = 'settings/account/',
+        view = EditAccountView.as_view(),
+        name = 'edit-account'
+    )
 ]

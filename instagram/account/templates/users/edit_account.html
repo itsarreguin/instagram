@@ -1,0 +1,34 @@
+{% extends 'users/settings.html' %}
+{% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
+
+{% block settings_title %}Account settings{% endblock %}
+{% block settings_content %}
+    <form action="{% url 'account:edit-account' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group grid grid-gap-20 grid-col-2 mb-15">
+            <section class="flex flex-column">
+                <label for="{{ form.first_name.name }}" class="text-dark mb-8">First name</label>
+                {{ form.first_name }}
+            </section>
+            <section class="flex flex-column">
+                <label for="{{ form.last_name.name }}" class="text-dark mb-8">Last name</label>
+                {{ form.last_name }}
+            </section>
+        </div>
+        <div style="width: 100%; height: 1px; margin: 25px auto; background: #D1D1D1;"></div>
+        <div class="form-group flex flex-column mb-25">
+            <label for="{{ form.username.name }}" class="text-dark mb-8">Username</label>
+            {{ form.username }}
+            <p class="mt-10 text-gray">
+                In most cases, you'll be able to change your username back to itsarreguin for another 14 days.
+            </p>
+        </div>
+        <div class="form-group flex flex-column mb-25">
+            <label for="{{ form.email.name }}" class="text-dark mb-8">Email address</label>
+            {{ form.email }}
+        </div>
+        <div class="flex flex-justify-end">
+            <button type="submit" class="btn btn-normal btn-purple">Save changes</button>
+        </div>
+    </form>
+{% endblock %}

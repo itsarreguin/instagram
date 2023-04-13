@@ -24,6 +24,25 @@ class EditProfileForm(forms.ModelForm):
         
         widgets: Dict[str, object] = {
             'picture': forms.FileInput(attrs={}),
-            'link': forms.TextInput(attrs={ 'class': 'input-settings' }),
+            'link': forms.URLInput(attrs={ 'class': 'input-settings' }),
             'biography': forms.Textarea(attrs={ 'class': 'input-settings' })
+        }
+
+
+class EditAccountForm(forms.ModelForm):
+    
+    class Meta:
+        model = get_user_model()
+        fields = [
+            'first_name',
+            'last_name',
+            'username',
+            'email'
+        ]
+        
+        widgets: Dict[str, object] = {
+            'first_name': forms.TextInput(attrs={ 'class': 'input-settings' }),
+            'last_name': forms.TextInput(attrs={ 'class': 'input-settings' }),
+            'username': forms.TextInput(attrs={ 'class': 'input-settings' }),
+            'email': forms.EmailInput(attrs={ 'class': 'input-settings' }),
         }

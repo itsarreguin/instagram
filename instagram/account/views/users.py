@@ -1,6 +1,7 @@
 # Python standard library
 from typing import Any
 from typing import Dict
+from typing import Optional
 from typing import Tuple
 from typing import Type
 
@@ -23,6 +24,8 @@ from django.shortcuts import render
 # Django forms
 from django.forms import Form
 from django.forms import ModelForm
+# Django urls
+from django.urls import reverse
 # Django utils
 from django.utils.translation import gettext_lazy as _
 
@@ -30,6 +33,7 @@ from django.utils.translation import gettext_lazy as _
 from instagram.account.models import User
 # Instagram forms
 from instagram.account.forms.user import EditProfileForm
+from instagram.account.forms.user import EditAccountForm
 
 
 posts: list[dict[str, str | int]] = [
@@ -105,6 +109,9 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
     form_class: Type[Form | ModelForm] = EditProfileForm
     success_url: str = 'account:edit-profile'
     
+    def get_object(self, queryset: Optional[QuerySet] = ...) -> Model:
+        return self.request.user.profile
+    
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         context = {
             'title': self.view_name,
@@ -114,3 +121,23 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
     
     def put(self, request: HttpRequest, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> HttpResponse:
         return super().put(*args, **kwargs)
+
+
+class EditAccountView(LoginRequiredMixin, UpdateView):
+    
+    model: Type[Model] = get_user_model()
+    form_class: Type[Form | ModelForm] = EditAccountForm
+    template_name: str = 'users/edit_account.html'
+    view_name: str = 'Edit account'
+    
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.view_name
+        
+        return context
+    
+    def get_object(self, queryset: Optional[QuerySet] = ...) -> Model:
+        return self.request.user
+    
+    def get_success_url(self) -> HttpResponse:
+        return reverse('account:edit-account')
