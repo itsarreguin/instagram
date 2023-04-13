@@ -3,7 +3,7 @@
         <div class="flex flex-align-center">
             <section class="" style="width: 40px; height:40px; border-radius: 100%; overflow: hidden; margin-right: 15px;">
                 {% if request.user.profile.picture %}
-                    <img src="" alt="">
+                    <img src="{{ request.user.profile.picture.url }}" alt="">
                 {% else %}
                     <span class="flex flex-align-center flex-justify-center profile-default">{{ request.user.first_name|slice:':1' }}{{ request.user.last_name|slice:':1' }}</span>
                 {% endif %}

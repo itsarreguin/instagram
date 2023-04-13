@@ -22,7 +22,7 @@
                 </button>
                 <button class="nav-profile" id="nav-menu-btn">
                     {% if request.user.profile.picture %}
-                        <img src="" alt="">
+                        <img src="{{ request.user.profile.picture.url }}" alt="">
                     {% else %}
                         <div class="profile-default flex flex-align-center flex-justify-center">
                             <span>{{ request.user.first_name|slice:':1' }}{{ request.user.last_name|slice:':1' }}</span>

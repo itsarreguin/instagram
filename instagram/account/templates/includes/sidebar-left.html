@@ -2,7 +2,7 @@
     <div class="sidebar-user flex flex-column flex-align-center flex-justify-center">
         <section class="sidebar-user-picture mb-15">
             {% if request.user.profile.picture %}
-                <img src="" alt="">
+                <img src="{{ request.user.profile.picture.url }}" alt="">
             {% else %}
                 <span class="profile-default flex flex-align-center flex-justify-center">
                     {{ request.user.first_name|slice:':1' }}{{ request.user.last_name|slice:':1' }}

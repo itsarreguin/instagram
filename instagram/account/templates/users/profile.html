@@ -7,7 +7,7 @@
             <div class="flex">
                 <section class="profile-picture">
                     {% if user.profile.picture %}
-                        <img src="" alt="{{ user.username }}_profile_picture">
+                        <img src="{{ user.profile.picture.url }}" alt="{{ user.username }}_profile_picture">
                     {% else %}
                         <span class="flex flex-align-center flex-justify-center profile-default">
                             {{ user.first_name|slice:'1' }}{{ user.last_name|slice:':1' }}
