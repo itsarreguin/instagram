@@ -27,6 +27,7 @@ DJANGO_APPS = [
 PROJECT_APPS = [
     'instagram.core.apps.CoreConfig',
     'instagram.account.apps.AccountConfig',
+    'instagram.posts.apps.PostsConfig',
 ]
 
 THIRD_APPS = []
