@@ -10,16 +10,18 @@ from django.http import HttpRequest
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 # Django views
-from django.views.generic import View
+from django.views import View
 from django.views.generic import DetailView
 from django.views.generic import TemplateView
 from django.views.generic import UpdateView
+from django.contrib.auth.views import PasswordChangeView
 # Django DB
 from django.db.models import QuerySet
 from django.db.models import Model
 # Django auth and shortcuts
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
 # Django forms
 from django.forms import Form
@@ -109,11 +111,11 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
     model: Type[Profile] = Profile
     form_class: Type[Form | ModelForm] = EditProfileForm
     template_name: str = 'users/edit_profile.html'
-    view_name: str = 'Edit profile'
+    template_title: str = _('Edit profile')
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['title'] = self.view_name
+        context['title'] = self.template_title
         
         return context
     
@@ -129,11 +131,11 @@ class EditAccountView(LoginRequiredMixin, UpdateView):
     model: Type[Model] = get_user_model()
     form_class: Type[Form | ModelForm] = EditAccountForm
     template_name: str = 'users/edit_account.html'
-    view_name: str = 'Edit account'
+    template_title: str = _('Edit account')
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['title'] = self.view_name
+        context['title'] = self.template_title
         
         return context
     
@@ -144,14 +146,17 @@ class EditAccountView(LoginRequiredMixin, UpdateView):
         return reverse('account:edit-account')
 
 
-class ChangePasswordView(LoginRequiredMixin, TemplateView):
+class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
     
+    form_class: Type[Form | ModelForm] = ChangePasswordForm
     template_name: str = 'users/change_password.html'
-    view_name: str = 'Change password'
+    template_title: str = _('Change password')
     
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['title'] = self.view_name
-        context['form'] = ChangePasswordForm
-        
+        context['title'] = self.template_title
+
         return context
+    
+    def get_success_url(self) -> HttpResponse:
+        return reverse('account:change-password')

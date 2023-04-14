@@ -5,3 +5,4 @@
 
 @include text("text", "dark", $font-500, $font-15px, $dark, none);
 @include text("text", "gray", $font-500, $font-15px, $gray-400, none);
+@include text("text", "danger", $font-500, $font-15px, $red-100, none);
