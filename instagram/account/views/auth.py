@@ -10,7 +10,9 @@ from django.http import HttpRequest
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 # Django views
-from django.views import generic
+from django.views import View
+from django.views.generic.base import ContextMixin
+from django.views.generic import RedirectView
 # Django authentication
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,7 +20,6 @@ from django.contrib.auth import login
 from django.contrib.auth import logout
 # Django shortcuts and urls
 from django.shortcuts import render
-from django.shortcuts import redirect
 from django.urls import reverse
 # Django forms
 from django.forms import Form
@@ -28,36 +29,38 @@ from django.utils.translation import gettext_lazy as _
 
 # Instagram models
 from instagram.account.models import User
-from instagram.account.models import Profile
 # instagram forms
 from instagram.account.forms.auth import LoginForm
 from instagram.account.forms.auth import SignUpForm
 from instagram.account.forms.auth import PasswordResetRequestForm
 
 
-class LoginView(generic.View):
-    template_name: str = 'auth/login.html'
+class AuthContextMixin(ContextMixin):
+    
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.template_title
+        context['form'] = self.form_class
+        
+        return context
+
+
+class LoginView(AuthContextMixin, View):
+    
     form_class: Type[Form | ModelForm] = LoginForm
-    view_title: str = _('Login')
+    template_name: str = 'auth/login.html'
+    template_title: str = _('Login')
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class()
-        
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(reverse('account:feed'))
         
-        context = {
-            'title': self.view_title,
-            'form': form,
-            'info': _('Hello from login view')
-        }
-        
+        context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class(request.POST)
-        
-        if request.method == 'POST' and form.is_valid():
+        form = self.form_class(request.POST or None)
+        if form.is_valid():
             user = authenticate(
                 request,
                 username=form.cleaned_data['username'],
@@ -70,34 +73,25 @@ class LoginView(generic.View):
             
             return HttpResponseRedirect(reverse('account:login'))
         
-        context = {
-            'title': self.view_title,
-            'form': form
-        }
-        
+        context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
 
-class SignUpView(generic.View):
+class SignUpView(AuthContextMixin, View):
+    
     template_name: str = 'auth/signup.html'
     form_class: Type[Form | ModelForm] = SignUpForm
-    view_name: str = _('Sign Up')
+    template_title: str = _('Sign Up')
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class()
-        
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(reverse('account:feed'))
         
-        context = {
-            'title': self.view_name,
-            'form': form,
-        }
-        
+        context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST or None)
         if form.is_valid():
             user = User.objects.create_user(
                 first_name=form.cleaned_data['first_name'],
@@ -110,15 +104,11 @@ class SignUpView(generic.View):
             
             return HttpResponseRedirect(reverse('account:feed'))
         
-        context = {
-            'title': self.view_name,
-            'form': form,
-        }
-        
+        context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
 
-class LogoutView(LoginRequiredMixin, generic.RedirectView):
+class LogoutView(LoginRequiredMixin, RedirectView):
     
     def get_redirect_url(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> Optional[str]:
         if self.request.user.is_authenticated:
