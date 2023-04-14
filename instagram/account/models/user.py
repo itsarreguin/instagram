@@ -67,3 +67,15 @@ class User(AbstractUser, PermissionsMixin):
 
     def get_short_name(self) -> str:
         return '%s' % self.first_name
+    
+    @property
+    def total_posts(self) -> int:
+        return self.posts.count()
+    
+    @property
+    def total_comments(self) -> int:
+        return self.comments.count()
+    
+    @property
+    def total_likes(self) -> int:
+        return self.likes.count()

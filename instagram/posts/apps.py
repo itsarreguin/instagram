@@ -10,3 +10,7 @@ class PostsConfig(AppConfig):
     default_auto_field: str = 'django.db.models.BigAutoField'
     name: str = 'instagram.posts'
     verbose_name: str = _('Posts')
+    
+    def ready(self) -> None:
+        from instagram.posts import signals as signals
+        return super().ready()

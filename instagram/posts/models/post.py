@@ -15,6 +15,12 @@ class Post(BaseAbstractModel):
         related_name='posts'
     )
     image = models.ImageField(_('image'), blank=False, null=False, upload_to='posts/')
+    thumbnail = models.ImageField(
+        verbose_name=_('thumbnail'),
+        blank=False,
+        null=False,
+        upload_to='posts/thumbnails/'
+    )
     description = models.TextField(_('description'), blank=True, null=True)
     url = models.SlugField(_('url'), unique=True, null=False)
     
@@ -24,3 +30,11 @@ class Post(BaseAbstractModel):
     
     def __str__(self) -> str:
         return 'Post by @%s' % self.author.username
+    
+    @property
+    def total_comments(self) -> int:
+        return self.comments.count()
+    
+    @property
+    def total_likes(self) -> int:
+        return self.likes.count()
