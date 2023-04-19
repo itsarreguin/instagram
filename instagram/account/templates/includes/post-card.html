@@ -15,9 +15,7 @@
             </svg>
         </button>
     </section>
-    <section class="card-image">
-        <img src="{{ post.image }}" alt="">
-    </section>
+    <section class="card-image"><img src="{{ post.image }}" alt=""></section>
     <section class="card-actions flex flex-align-center flex-justify-between">
         <div class="card-actions-main flex">
             <button class="flex flex-align-center">
@@ -47,7 +45,7 @@
                         <img src="{{ request.user.profile.picture.url }}" alt="{{ request.user.username }}_profile_picture">
                     {% else %}
                         <div class="profile-default flex flex-align-center flex-justify-center">
-                            {{ request.user.first_name|slice:':1' }}{{ request.user.last_name|slice:':1' }}
+                            {{ request.user.first_name | slice:':1' }}{{ request.user.last_name | slice:':1' }}
                         </div>
                     {% endif %}
                 </section>

@@ -26,7 +26,14 @@ from django.conf.urls.static import static
 
 urlpatterns: List[path] = [
     
-    path('', include('instagram.account.urls'))   
+    path(
+        route='',
+        view=include('instagram.account.urls', namespace='account')
+    ),
+    path(
+        route='',
+        view=include('instagram.posts.urls', namespace='posts')
+    ),
 ]
 
 if settings.DEBUG:

@@ -4,5 +4,17 @@ from typing import List
 # Django imports
 from django.urls import path
 
+# Instagram views
+from instagram.posts.views import PostCreateView
 
-urlpatterns: List[path] = []
+
+app_name: str = 'posts'
+
+urlpatterns: List[path] = [
+    
+    path(
+        route = 'posts/new/',
+        view = PostCreateView.as_view(),
+        name = 'new'
+    ),
+]

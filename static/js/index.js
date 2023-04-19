@@ -1,5 +1,10 @@
-let navBtn = document.getElementById("nav-menu-btn");
-let navMenu = document.getElementById("nav-menu");
+// User dropdown ment consts
+const navBtn = document.getElementById("nav-menu-btn");
+const navMenu = document.getElementById("nav-menu");
+// Post modal consts
+const openModalBtn = document.getElementById("open-popup");
+const closeModalBtn = document.getElementById("close-popup");
+const popup = document.getElementById("post-modal");
 
 const openNavMenu = (event) => {
     if (!navMenu.classList.contains("nav-dropdown-show")) {
@@ -10,3 +15,18 @@ const openNavMenu = (event) => {
 }
 
 navBtn.addEventListener("click", openNavMenu);
+
+const openModal = (event) => {
+    if (!popup.classList.contains("post-modal-show")) {
+        popup.classList.add("post-modal-show");
+    }
+}
+
+const closeModal = (event) => {
+    if (popup.classList.contains("post-modal-show")) {
+        popup.classList.remove("post-modal-show");
+    }
+}
+
+openModalBtn.addEventListener("click", openModal);
+closeModalBtn.addEventListener("click", closeModal);

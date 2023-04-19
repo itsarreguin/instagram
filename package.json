@@ -11,6 +11,8 @@
   "author": "Brandon Arreguin (https://www.github.com/itsarreguin/)",
   "license": "MIT",
   "dependencies": {
+    "cropperjs": "1.5.13",
+    "htmx.org": "1.9.0",
     "sass": "^1.60.0"
   }
 }

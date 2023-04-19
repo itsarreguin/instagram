@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}{{ block.super }}{% endblock %}
+{% load static %}
 
 {% block navbar %}{% include 'includes/navbar.html' %}{% endblock %}
 {% block container %}
@@ -16,4 +17,9 @@
             {% endblock %}
         </div>
     </section>
+    {% include 'create_post.html' %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/posts.js' %}"></script>
 {% endblock %}

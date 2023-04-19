@@ -1,0 +1,22 @@
+<div id="post-modal" class="post-modal">
+    <section class="post-container">
+        <div class="post-container-head flex flex-align-center flex-justify-center">
+            Create new post
+        </div>
+        <form action="{% url 'posts:new' %}" method="post" class="post-form flex">
+            {% csrf_token %}
+            <section id="image" class="form-group post-form-image flex flex-align-center flex-justify-center">
+                {{ post_form.image }}
+            </section>
+            <section class="form-group post-form-right">
+                {{ post_form.description }}
+                <button type="submit" class="btn btn-normal btn-purple post-button">Publish</button>
+            </section>
+        </form>
+    </section>
+    <span id="close-popup" class="post-modal-close">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24">
+            <path d="M5.293 6.707l5.293 5.293-5.293 5.293c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0l5.293-5.293 5.293 5.293c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414l-5.293-5.293 5.293-5.293c0.391-0.391 0.391-1.024 0-1.414s-1.024-0.391-1.414 0l-5.293 5.293-5.293-5.293c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414z"></path>
+        </svg>
+    </span>
+</div>
