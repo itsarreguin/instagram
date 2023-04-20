@@ -178,9 +178,6 @@
                 height: 100%;
                 display: none;
             }
-            &-display {
-                display: block;
-            }
         }
         &-right {
             width: 340px;
@@ -199,5 +196,12 @@
         position: absolute;
         bottom: 20px;
         right: 20px;
+    }
+    &-clean {
+        position: absolute;
+        top: 12px;
+        left: 15px;
+        fill: $dark;
+        display: none;
     }
 }

@@ -8,12 +8,11 @@ from typing import Type
 # Django HTTP package
 from django.http import HttpRequest
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 # Django views
 from django.views import View
-from django.views.generic import DetailView
-from django.views.generic import TemplateView
+from django.views.generic.base import ContextMixin
 from django.views.generic import UpdateView
+from django.views.generic import TemplateView
 from django.contrib.auth.views import PasswordChangeView
 # Django DB
 from django.db.models import QuerySet
@@ -21,7 +20,6 @@ from django.db.models import Model
 # Django auth and shortcuts
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render
 # Django forms
 from django.forms import Form
@@ -86,7 +84,8 @@ class FeedView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class ProfileView(LoginRequiredMixin, DetailView):
+class ProfileView(LoginRequiredMixin, ContextMixin, View):
+    
     model: Type[Model] = get_user_model()
     template_name: str = 'users/profile.html'
     
@@ -98,12 +97,13 @@ class ProfileView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['user'] = self.get_queryset(username=kwargs['username'])
+        context['user'] = self.get_queryset(username=self.kwargs['username'])
         
         return context
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        return render(request, self.template_name)
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
 
 
 class EditProfileView(LoginRequiredMixin, UpdateView):

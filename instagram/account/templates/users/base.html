@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
-{% block title %}{{ block.super }}{% endblock %}
 {% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cropper.min.css' %}">
+{% endblock %}
 
 {% block navbar %}{% include 'includes/navbar.html' %}{% endblock %}
 {% block container %}
@@ -21,5 +23,6 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="{% static 'js/cropper.min.js' %}"></script>
     <script src="{% static 'js/posts.js' %}"></script>
 {% endblock %}

@@ -1,7 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'users/base.html' %}
 {% block title %}{{ block.super }}{% endblock %}
 
-{% block navbar %}{% include 'includes/navbar.html' %}{% endblock %}
 {% block container %}
     <section class="container flex flex-justify-center">
         <div class="container-settings">
@@ -16,4 +15,6 @@
             </section>
         </div>
     </section>
+
+    {% include 'create_post.html' %}
 {% endblock %}

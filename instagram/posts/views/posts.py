@@ -30,9 +30,8 @@ class PostCreateView(LoginRequiredMixin, FormMixin, View):
     form_class: Type[Form | ModelForm] = PostCreateForm
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST or None)
         if form.is_valid():
-            print(form.cleaned_data['image'])
-            return redirect('account:feed')
+            print(form.cleaned_data)
         
         return redirect('account:feed')
