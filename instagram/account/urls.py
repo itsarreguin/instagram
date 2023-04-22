@@ -8,7 +8,8 @@ from django.urls import path
 from instagram.account.views.auth import LoginView
 from instagram.account.views.auth import SignUpView
 from instagram.account.views.auth import LogoutView
-from instagram.account.views.auth import password_reset_request
+from instagram.account.views.auth import PasswordResetRequestView
+from instagram.account.views.auth import PasswordResetView
 # Instagram account user views
 from instagram.account.views.users import FeedView
 from instagram.account.views.users import ProfileView
@@ -21,11 +22,7 @@ app_name: str = 'account'
 
 urlpatterns: List[path] = [
     
-    path(
-        route = 'login/',
-        view = LoginView.as_view(),
-        name = 'login'
-    ),
+    path('login/', view=LoginView.as_view(), name='login' ),
     path(
         route = 'signup/',
         view = SignUpView.as_view(),
@@ -38,14 +35,15 @@ urlpatterns: List[path] = [
     ),
     path(
         route = 'password/reset/',
-        view = password_reset_request,
-        name='password-reset-request'
+        view = PasswordResetRequestView.as_view(),
+        name = 'password-reset-request'
     ),
     path(
-        route = '',
-        view = FeedView.as_view(),
-        name = 'feed'
+        route = 'password/reset/<uidb64>/<str:token>/',
+        view = PasswordResetView.as_view(),
+        name = 'password-reset'
     ),
+    path('', view=FeedView.as_view(), name='feed'),
     path(
         route = '<str:username>/',
         view = ProfileView.as_view(),

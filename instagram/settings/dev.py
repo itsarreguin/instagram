@@ -31,3 +31,13 @@ MEDIA_URL = 'media/'
 # Celery settings
 CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
+
+
+# Email configuration
+# https://docs.djangoproject.com/en/4.1/topics/email/#email-backends
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER_DEV')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD_DEV')

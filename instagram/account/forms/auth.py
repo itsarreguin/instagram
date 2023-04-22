@@ -1,9 +1,10 @@
-# django imports
+# Django imports
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from django.forms import ValidationError
 
-# Instagram forms
-from instagram.core.forms import mixins
+# Instagram models
+from instagram.account.models import User
 
 
 class LoginForm(forms.Form):
@@ -51,3 +52,17 @@ class PasswordResetRequestForm(forms.Form):
         min_length=4,
         widget=forms.EmailInput(attrs={ 'class': 'input-auth' })
     )
+
+
+class PasswordResetForm(forms.Form):
+    
+    new_password = forms.CharField(
+        max_length=256, min_length=8,
+        label=_('New password'),
+        widget=forms.PasswordInput(attrs={ 'class': 'input-auth' })
+    )
+    password_confirm = forms.CharField(
+        max_length=256, min_length=8,
+        label=_('Confirm new password'),
+        widget=forms.PasswordInput(attrs={ 'class': 'input-auth' })
+    )        

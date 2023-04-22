@@ -74,7 +74,6 @@ class ChangePasswordForm(PasswordChangeForm):
     
     def clean_old_password(self) -> str:
         old_password = self.cleaned_data['old_password']
-
         if not self.user.check_password(old_password):
             raise ValidationError(_('Wrong password'))
         

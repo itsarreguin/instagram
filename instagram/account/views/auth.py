@@ -11,36 +11,43 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 # Django views
 from django.views import View
-from django.views.generic.base import ContextMixin
+from django.views.generic.edit import FormMixin
 from django.views.generic import RedirectView
 # Django authentication
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.contrib.auth.tokens import default_token_generator
 # Django shortcuts and urls
 from django.shortcuts import render
+from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 # Django forms
 from django.forms import Form
 from django.forms import ModelForm
 # Django utils
 from django.utils.translation import gettext_lazy as _
+from django.utils.http import urlsafe_base64_decode
 
+# Instagram core
+from instagram.core.utils import gen_user_token
 # Instagram models
 from instagram.account.models import User
 # instagram forms
 from instagram.account.forms.auth import LoginForm
 from instagram.account.forms.auth import SignUpForm
 from instagram.account.forms.auth import PasswordResetRequestForm
+from instagram.account.forms.auth import PasswordResetForm
 
 
-class AuthContextMixin(ContextMixin):
+class AuthContextMixin(FormMixin):
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.template_title
-        context['form'] = self.form_class
+        context['form'] = self.get_form_class()
         
         return context
 
@@ -54,7 +61,7 @@ class LoginView(AuthContextMixin, View):
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(reverse('account:feed'))
-        
+
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
     
@@ -79,8 +86,8 @@ class LoginView(AuthContextMixin, View):
 
 class SignUpView(AuthContextMixin, View):
     
-    template_name: str = 'auth/signup.html'
     form_class: Type[Form | ModelForm] = SignUpForm
+    template_name: str = 'auth/signup.html'
     template_title: str = _('Sign Up')
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
@@ -118,13 +125,50 @@ class LogoutView(LoginRequiredMixin, RedirectView):
         return super(LogoutView, self).get_redirect_url(*args, **kwargs)
 
 
-def password_reset_request(request: HttpRequest) -> HttpResponse:
-    form = PasswordResetRequestForm
-    context = {
-        'form': form
-    }
-    return render(
-        request=request,
-        template_name='auth/password_reset_request.html',
-        context=context
-    )
+class PasswordResetRequestView(AuthContextMixin, View):
+    
+    form_class: Type[Form | ModelForm] = PasswordResetRequestForm
+    template_name: str = 'auth/forgot_password.html'
+    template_title: str = _('Password Reset')
+    
+    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        form = self.form_class(request.POST or None)
+        if form.is_valid():
+            user = User.objects.get(email__exact=form.cleaned_data['email'])
+            gen_user_token(request, user, 'email/reset_password.html')
+            return redirect('account:password-reset-request')
+        
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
+
+
+class PasswordResetView(AuthContextMixin, View):
+    
+    form_class: Type[Form | ModelForm] = PasswordResetForm
+    template_name: str = 'auth/password_reset.html'
+    template_title: str = _('Password Reset')
+    
+    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        form = self.form_class(request.POST or None)
+        try:
+            uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
+            user = get_object_or_404(User, id=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+
+        check_token = default_token_generator.check_token(user, kwargs['token'])
+        if form.is_valid() and user is not None and check_token:
+            user.set_password(form.cleaned_data['new_password'])
+            user.save()
+            return redirect('account:login')
+        
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
