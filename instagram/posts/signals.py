@@ -11,7 +11,7 @@ from django.utils.crypto import get_random_string
 # Instagram models
 from instagram.posts.models import Post
 # Instagram utils
-from instagram.core.utils import RAND_CHARS
+from instagram.core.utils.text import RAND_CHARS
 
 
 @receiver(post_save, sender=Post)

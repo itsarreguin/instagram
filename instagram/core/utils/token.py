@@ -1,5 +1,3 @@
-""" Utils from the core """
-
 # Django imports
 from django.http import HttpRequest
 from django.contrib.sites.shortcuts import get_current_site
@@ -10,17 +8,6 @@ from django.contrib.auth.tokens import default_token_generator
 
 # instagram models
 from instagram.account.models import User
-
-
-UPPER_CHARS = 'ABCDEFGHIJKLMNOPKRSTUVWXYZ'
-
-LOWER_CHARS = 'abcdefghijklmnopkrstuvwxyz'
-
-NUMBER_CHARS = '123456789'
-
-SPECIAL_CHARS = '-_'
-
-RAND_CHARS = UPPER_CHARS + LOWER_CHARS + NUMBER_CHARS + SPECIAL_CHARS
 
 
 def gen_user_token(request: HttpRequest, user: User, template: str):

@@ -32,7 +32,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.http import urlsafe_base64_decode
 
 # Instagram core
-from instagram.core.utils import gen_user_token
+from instagram.core.utils.token import gen_user_token
 # Instagram models
 from instagram.account.models import User
 # instagram forms
