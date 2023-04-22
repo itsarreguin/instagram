@@ -13,12 +13,13 @@ from django.http import HttpResponseRedirect
 from django.views import View
 from django.views.generic.edit import FormMixin
 from django.views.generic import RedirectView
-# Django authentication
+# Django contrib
 from django.contrib.auth import authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
 # Django shortcuts and urls
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -31,8 +32,6 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django.utils.http import urlsafe_base64_decode
 
-# Instagram core
-from instagram.core.utils.token import gen_user_token
 # Instagram models
 from instagram.account.models import User
 # instagram forms
@@ -40,6 +39,8 @@ from instagram.account.forms.auth import LoginForm
 from instagram.account.forms.auth import SignUpForm
 from instagram.account.forms.auth import PasswordResetRequestForm
 from instagram.account.forms.auth import PasswordResetForm
+# Instagram tasks
+from instagram.account.tasks import send_password_reset_email
 
 
 class AuthContextMixin(FormMixin):
@@ -73,7 +74,6 @@ class LoginView(AuthContextMixin, View):
                 username=form.cleaned_data['username'],
                 password=form.cleaned_data['password']
             )
-            
             if user is not None:
                 login(request, user=user)
                 return HttpResponseRedirect(reverse('account:feed'))
@@ -138,8 +138,9 @@ class PasswordResetRequestView(AuthContextMixin, View):
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class(request.POST or None)
         if form.is_valid():
-            user = User.objects.get(email__exact=form.cleaned_data['email'])
-            gen_user_token(request, user, 'email/reset_password.html')
+            send_password_reset_email.apply_async(kwargs={
+                'email_address': form.cleaned_data['email'], 'path': request.get_host()
+            })
             return redirect('account:password-reset-request')
         
         context = self.get_context_data(**kwargs)
