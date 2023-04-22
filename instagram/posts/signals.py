@@ -10,6 +10,7 @@ from django.utils.crypto import get_random_string
 
 # Instagram models
 from instagram.posts.models import Post
+from instagram.posts.models import Comment
 # Instagram utils
 from instagram.core.utils.text import RAND_CHARS
 
@@ -25,4 +26,11 @@ def save_post_url(sender: Model, instance: Post, **kwargs: Dict[str, Any]) -> No
     """
     if not instance.url:
         instance.url = get_random_string(length=64, allowed_chars=RAND_CHARS)
+        instance.save()
+
+
+def comment_url(instance: Comment, **kwargs: Dict[str, Any]) -> None:
+    """ Save a url for Comment model """
+    if not instance.url:
+        instance.url = get_random_string(length=32, allowed_chars=RAND_CHARS)
         instance.save()

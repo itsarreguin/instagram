@@ -5,7 +5,6 @@ from django.utils.translation import gettext_lazy as _
 
 # Instagram models
 from instagram.core.models import BaseAbstractModel
-from instagram.account.models import User
 from instagram.posts.models import Post
 
 
@@ -18,6 +17,7 @@ class Comment(BaseAbstractModel):
     )
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     body = models.TextField(_('body'), blank=True, null=False)
+    url = models.CharField(_('url'), max_length=255, unique=True)
     
     class Meta:
         verbose_name: str = _('Comment')
