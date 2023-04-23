@@ -8,15 +8,15 @@
             </button>
             <span>Create new post</span>
         </div>
-        <form action="{% url 'posts:new' %}" method="post" class="post-form flex">
+        <form action="{% url 'posts:new' %}" method="post" id="create-post-form" class="post-form flex" enctype="multipart/form-data">
             {% csrf_token %}
             <section class="form-group post-form-image flex flex-align-center flex-justify-center">
                 {{ post_form.image }}
-                <div id="image" class="post-form-image-container"></div>
+                <div id="image-container" class="post-form-image-container"></div>
             </section>
             <section class="form-group post-form-right">
                 {{ post_form.description }}
-                <button type="submit" class="btn btn-normal btn-purple post-button">Publish</button>
+                <button type="submit" id="publish" class="btn btn-normal btn-purple post-button">Publish</button>
             </section>
         </form>
     </section>

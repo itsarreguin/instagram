@@ -1,13 +1,16 @@
 <div class="card card-post">
     <section class="card-header flex flex-align-center flex-justify-between">
-        <a class="card-user flex flex-align-center" href="{% url 'account:profile' username=post.username %}">
+        <a class="card-user flex flex-align-center" href="{% url 'account:profile' username=post.author %}">
             <span class="card-user-picture">
-                <img src="{{ post.picture }}" alt="">
+                {% if post.author.profile.picture %}
+                    <img src="{{ post.author.profile.picture.url }}" alt="{{ post.author.username }}-profile-pic">
+                {% else %}
+                    <span class="profile-default flex flex-justify-center flex-align-center">
+                        {{ post.author.first_name|slice:':1' }}{{ post.author.last_name|slice:':1' }}
+                    </span>
+                {% endif %}
             </span>
-            {% comment %} <section class="card-user-picture">
-                <span class="profile-default flex flex-justify-center flex-align-center">{{ post.first_name|slice:':1' }}{{ post.last_name|slice:':1' }}</span>
-            </section> {% endcomment %}
-            <span class="card-user-username" style="margin-left: 10px;">{{ post.username }}</span>
+            <span class="card-user-username" style="margin-left: 10px;">{{ post.author }}</span>
         </a>
         <button class="card-options">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -15,7 +18,7 @@
             </svg>
         </button>
     </section>
-    <section class="card-image"><img src="{{ post.image }}" alt=""></section>
+    <section class="card-image"><img src="{{ post.image.url }}" alt="{{ post.author.username }}-post-image"></section>
     <section class="card-actions flex flex-align-center flex-justify-between">
         <div class="card-actions-main flex">
             <button class="flex flex-align-center">
@@ -37,6 +40,7 @@
             </svg>                
         </button>
     </section>
+    
     <section class="card-comment">
         <form action="">
             <div class="form-group flex">

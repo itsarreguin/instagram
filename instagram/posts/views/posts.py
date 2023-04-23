@@ -1,4 +1,5 @@
 # Python standard library
+import json
 from typing import Any
 from typing import Dict
 from typing import Type
@@ -30,8 +31,14 @@ class PostCreateView(LoginRequiredMixin, FormMixin, View):
     form_class: Type[Form | ModelForm] = PostCreateForm
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class(request.POST or None)
+        form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
-            print(form.cleaned_data)
+            Post.objects.create(
+                author=request.user,
+                image=form.cleaned_data['image'],
+                thumbnail=form.cleaned_data['image'],
+                description=form.cleaned_data['description']
+            )
+            return redirect('account:feed')
         
         return redirect('account:feed')

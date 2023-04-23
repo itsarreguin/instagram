@@ -32,6 +32,7 @@ from django.utils.translation import gettext_lazy as _
 # Instagram models
 from instagram.account.models import User
 from instagram.account.models import Profile
+from instagram.posts.models import Post
 # Instagram forms
 from instagram.account.forms.user import EditProfileForm
 from instagram.account.forms.user import EditAccountForm
@@ -75,11 +76,12 @@ posts: list[dict[str, str | int]] = [
 
 
 class FeedView(LoginRequiredMixin, TemplateView):
+    
     template_name = 'users/feed.html'
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['posts'] = posts
+        context['posts'] = Post.objects.all().order_by('created')
         
         return context
 
