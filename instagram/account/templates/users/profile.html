@@ -64,19 +64,17 @@
         </section>
         <section class="profile-content">
             {% if request.path == profile %}
-                <div class="profile-grid grid grid-gap-14 grid-col-3">
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                    <section class="profile-grid-element"></section>
-                </div>
+                {% if posts %}
+                    <div class="profile-grid grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center">
+                        {% for post in posts %}
+                            <section class="profile-grid-element">
+                                <img src="{{ post.thumbnail.url }}" alt="post-thumbnail">
+                            </section>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h2>No posts yet</h2>
+                {% endif %}
             {% else %}
                 {% block profile_content %}{% endblock %}
             {% endif %}
