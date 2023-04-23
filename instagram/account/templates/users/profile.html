@@ -67,9 +67,9 @@
                 {% if posts %}
                     <div class="profile-grid grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center">
                         {% for post in posts %}
-                            <section class="profile-grid-element">
+                            <a class="profile-grid-element" href="">
                                 <img src="{{ post.thumbnail.url }}" alt="post-thumbnail">
-                            </section>
+                            </a>
                         {% endfor %}
                     </div>
                 {% else %}
