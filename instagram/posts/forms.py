@@ -12,3 +12,7 @@ class PostCreateForm(forms.Form):
             attrs={ 'id': 'description', 'placeholder': 'Write a description here' }
         )
     )
+
+
+class EmptyForm(forms.Form):
+    pass

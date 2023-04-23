@@ -36,6 +36,7 @@ from instagram.posts.models import Post
 from instagram.account.forms.user import EditProfileForm
 from instagram.account.forms.user import EditAccountForm
 from instagram.account.forms.user import ChangePasswordForm
+from instagram.posts.forms import EmptyForm
 
 
 class FeedView(LoginRequiredMixin, TemplateView):
@@ -45,6 +46,7 @@ class FeedView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.all().order_by('created')
+        context['empty_form'] = EmptyForm
         
         return context
 
