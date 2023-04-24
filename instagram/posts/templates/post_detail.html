@@ -1,0 +1,6 @@
+{% extends 'users/base.html' %}
+{% block title %}{{ post.author.username }} post &#8226; {{ block.super }}{% endblock %}
+
+{% block account_content %}
+    {% include 'includes/post-card.html' %}
+{% endblock %}

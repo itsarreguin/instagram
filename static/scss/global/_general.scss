@@ -41,6 +41,24 @@ img {
     color: $light;
 }
 
-.show {
+.overlay-image:hover .overlay {
     display: flex;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: 0.3s ease;
+    background-color: #000000C8;
+    display: none;
+    color: $light;
+    &-icons {
+        width: 35%;
+    }
+    & svg {
+        fill: $light;
+    }
 }
