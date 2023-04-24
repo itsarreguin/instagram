@@ -1,4 +1,5 @@
 {% load static %}
+{% load unicorn %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +10,10 @@
     <link rel="shortcut icon" href="{% static 'images/icons/instagram-icon-white.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'dist/css/instagram.css' %}">
     {% block styles %}{% endblock %}
+    {% unicorn_scripts %}
 </head>
 <body>
+    {% csrf_token %}
     {% block navbar %}{% endblock %}
     <section class="">
         {% block container %}{% endblock %}

@@ -68,27 +68,3 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
-
-
-class LikeView(LoginRequiredMixin, View):
-    
-    form_class: Type[Form | ModelForm] = EmptyForm
-    
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
-        if args or kwargs:
-            return Like.objects.filter(*args, **kwargs).first()
-        return Like.objects.all()
-    
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class(request.POST or None)
-        post = Post.objects.filter(**{ 'url': kwargs['url'] }).first()
-        like = self.get_queryset(user=request.user, post=post)
-        
-        if like is not None:
-            like.delete()
-            return redirect('account:feed')
-        if form.is_valid():
-            Like.objects.create(user=request.user, post=post)
-            return redirect('account:feed')
-        
-        return redirect('account:feed')

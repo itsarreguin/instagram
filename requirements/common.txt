@@ -10,6 +10,9 @@ celery==5.2.7
 # Django Framework
 django==4.1.7
 
+# Django apps
+django-unicorn==0.50.0
+
 # Flower for Celery monitoring tasks
 flower==1.2.0
 
