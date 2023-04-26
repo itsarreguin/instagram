@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from django.views import View
 from django.views.generic.base import ContextMixin
 from django.views.generic import UpdateView
+from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.contrib.auth.views import PasswordChangeView
 # Django DB
@@ -32,6 +33,7 @@ from django.utils.translation import gettext_lazy as _
 # Instagram models
 from instagram.account.models import Profile
 from instagram.posts.models import Post
+from instagram.posts.models import Collection
 # Instagram forms
 from instagram.account.forms.user import EditProfileForm
 from instagram.account.forms.user import EditAccountForm
@@ -42,7 +44,7 @@ from instagram.posts.forms import CommentForm
 
 class FeedView(LoginRequiredMixin, TemplateView):
     
-    template_name = 'users/feed.html'
+    template_name: str = 'users/feed.html'
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -87,6 +89,21 @@ class ExploreView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.all().order_by('-created')
+        
+        return context
+
+
+class CollectionsView(LoginRequiredMixin, ListView):
+    
+    model: Type[Model] = Collection
+    template_name: str = 'users/bookmarks.html'
+    
+    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+        return self.model.objects.filter(*args, **kwargs).all()
+    
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['collections'] = self.get_queryset(user=self.request.user)
         
         return context
 

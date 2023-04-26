@@ -1,0 +1,16 @@
+{% extends 'users/profile.html' %}
+{% block title %}{{ block.super }}{% endblock %}
+
+{% block profile_content %}
+    <div class="flex flex-justify-end mb-20">
+        <button class="flex link-purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span style="margin-left: 5px;">New collection</span>
+        </button>
+    </div>
+    <div class="profile-grid grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center">
+        {% for collection in collections %}
+            <a class="profile-grid-element overlay-image" href=""></a>
+        {% endfor %}
+    </div>
+{% endblock %}

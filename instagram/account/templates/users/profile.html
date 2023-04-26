@@ -17,7 +17,7 @@
                 <section class="profile-info">
                     <h1 class="profile-username mb-15">@{{ user.username }}</h1>
                     <section class="profile-numbers flex mb-20">
-                        <span>0 Posts</span>
+                        <span>{{ user.total_posts }} Post{{ user.total_posts | pluralize }}</span>
                         <span>0 Followers</span>
                         <span>0 Following</span>
                     </section>
@@ -36,7 +36,7 @@
                 </section>
             </div>
             <div>
-                {% if user == request.user %}
+                {% if user == request.user and request.user.is_authenticated %}
                     <a class="btn btn-small btn-profile" href="{% url 'account:edit-profile' %}">Edit profile</a>
                 {% else %}
                     <form action="" method="post">
@@ -48,14 +48,17 @@
         <section class="profile-options flex flex-justify-center">
             <div class="profile-link-group flex flex-justify-between">
                 {% url 'account:profile' username=user.username as profile%}
-                <a class="profile-link flex flex-align-center {% if request.path == profile %}profile-link-active{% endif %}" href="">
+                <a class="profile-link flex flex-align-center {% if request.path == profile %}profile-link-active{% endif %}" href="{{ profile }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                     <span style="margin-left: 10px;">Posts</span>
                 </a>
-                <a class="profile-link flex flex-align-center" href="">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-                    <span style="margin-left: 10px;">Saved</span>
-                </a>
+                {% if request.user == user %}
+                    {% url 'account:bookmarks' username=user.username as bookmarks %}
+                    <a class="profile-link flex flex-align-center {% if request.path == bookmarks %}profile-link-active{% endif %}" href="{{ bookmarks }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                        <span style="margin-left: 10px;">Saved</span>
+                    </a>
+                {% endif %}
                 <a class="profile-link flex flex-align-center" href="">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
                     <span style="margin-left: 10px;">Tagged</span>

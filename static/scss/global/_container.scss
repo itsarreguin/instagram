@@ -110,6 +110,7 @@
         padding: 10px 0px 0px 0px;
         height: auto;
         border-top: 2px solid transparent;
+        margin: auto 15px;
         color: $dark;
         font-weight: $font-500;
         & svg {
@@ -119,7 +120,7 @@
             border-top: 2px solid $dark;
         }
         &-group {
-            width: 300px;
+            width: auto;
             height: auto;
         }
     }
