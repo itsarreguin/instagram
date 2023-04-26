@@ -80,6 +80,17 @@ class ProfileView(LoginRequiredMixin, ContextMixin, View):
         return render(request, self.template_name, context)
 
 
+class ExploreView(LoginRequiredMixin, TemplateView):
+    
+    template_name: str = 'users/explore.html'
+    
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.all().order_by('-created')
+        
+        return context
+
+
 class EditProfileView(LoginRequiredMixin, UpdateView):
     
     model: Type[Profile] = Profile

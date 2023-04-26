@@ -16,12 +16,13 @@ from instagram.account.views.users import ProfileView
 from instagram.account.views.users import EditProfileView
 from instagram.account.views.users import EditAccountView
 from instagram.account.views.users import ChangePasswordView
+from instagram.account.views.users import ExploreView
 
 
 app_name: str = 'account'
 
 urlpatterns: List[path] = [
-    
+
     path('login/', view=LoginView.as_view(), name='login' ),
     path(
         route = 'signup/',
@@ -45,9 +46,14 @@ urlpatterns: List[path] = [
     ),
     path('', view=FeedView.as_view(), name='feed'),
     path(
-        route = '<str:username>/',
+        route = '@<str:username>/',
         view = ProfileView.as_view(),
         name = 'profile'
+    ),
+    path(
+        route = 'explore/',
+        view = ExploreView.as_view(),
+        name='explore'
     ),
     path(
         route = 'settings/profile/',
