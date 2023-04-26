@@ -7,7 +7,7 @@ from typing import Type
 # Django HTTP package
 from django.http import HttpRequest
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 # Django views
 from django.views import View
 from django.views.generic.base import ContextMixin
@@ -31,6 +31,7 @@ from instagram.posts.models import Comment
 # Instagram forms
 from instagram.posts.forms import PostCreateForm
 from instagram.posts.forms import EmptyForm
+from instagram.posts.forms import CommentForm
 
 
 class PostCreateView(LoginRequiredMixin, FormMixin, View):
@@ -61,10 +62,35 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['post'] = self.get_queryset(url=self.kwargs['url']).first()
-        context['comments'] = Comment.objects.all()
+        context['comments'] = (
+            Comment.objects
+            .filter(post__url=self.kwargs['url'])
+            .order_by('-created')
+            .all()
+        )
+        context['comment_form'] = CommentForm
         
         return context
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
+
+
+class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
+    
+    form_class: Type[Form | ModelForm] = CommentForm
+    template_name: str = 'includes/comment.html'
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        form = self.form_class(request.POST)
+        post = Post.objects.filter(url=kwargs['url']).first()
+        if form.is_valid():
+            comment = Comment.objects.create(
+                author=self.request.user,
+                post=post,
+                body=form.cleaned_data['body']
+            )
+        
+        context = { 'comment': comment }
         return render(request, self.template_name, context)

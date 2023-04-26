@@ -14,5 +14,17 @@ class PostCreateForm(forms.Form):
     )
 
 
+class CommentForm(forms.Form):
+    
+    body = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'id': 'body',
+                'class': 'input-comment', 'placeholder': 'Add a comment ...'
+            }
+        )
+    )
+
+
 class EmptyForm(forms.Form):
     pass

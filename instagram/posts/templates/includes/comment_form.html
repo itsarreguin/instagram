@@ -1,0 +1,14 @@
+<form hx-post="{% url 'posts:comment' url=post.url %}" hx-target="#comments" hx-swap="afterend">
+    <div class="form-group flex">
+        <section class="card-user-form" style="margin-right: 15px;">
+            {% if request.user.profile.picture %}
+                <img src="{{ request.user.profile.picture.url }}" alt="{{ request.user.username }}_profile_picture">
+            {% else %}
+                <div class="profile-default flex flex-align-center flex-justify-center">
+                    {{ request.user.first_name | slice:':1' }}{{ request.user.last_name | slice:':1' }}
+                </div>
+            {% endif %}
+        </section>
+        {{ comment_form.body }}
+    </div>
+</form>

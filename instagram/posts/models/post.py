@@ -22,7 +22,7 @@ class Post(BaseAbstractModel):
         upload_to='posts/thumbnails/'
     )
     description = models.TextField(_('description'), blank=True, null=True)
-    url = models.SlugField(_('url'), unique=True, null=False)
+    url = models.SlugField(_('url'), max_length=180, unique=True, null=False)
     
     class Meta:
         verbose_name: str = _('Post')

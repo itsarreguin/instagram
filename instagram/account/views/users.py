@@ -37,6 +37,7 @@ from instagram.account.forms.user import EditProfileForm
 from instagram.account.forms.user import EditAccountForm
 from instagram.account.forms.user import ChangePasswordForm
 from instagram.posts.forms import EmptyForm
+from instagram.posts.forms import CommentForm
 
 
 class FeedView(LoginRequiredMixin, TemplateView):
@@ -45,8 +46,9 @@ class FeedView(LoginRequiredMixin, TemplateView):
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.all().order_by('created')
+        context['posts'] = Post.objects.order_by('-created').all()
         context['empty_form'] = EmptyForm
+        context['comment_form'] = CommentForm
         
         return context
 
@@ -65,8 +67,12 @@ class ProfileView(LoginRequiredMixin, ContextMixin, View):
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['user'] = self.get_queryset(username=self.kwargs['username'])
-        context['posts'] = Post.objects.filter(author__username=self.kwargs['username']).all()
-        
+        context['posts'] = (
+            Post.objects
+            .filter(author__username=self.kwargs['username'])
+            .order_by('-created')
+            .all()
+        )
         return context
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
