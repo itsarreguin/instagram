@@ -1,8 +1,8 @@
 <section class="sidebar sidebar-left">
     <div class="sidebar-user flex flex-column flex-align-center flex-justify-center">
-        <section class="sidebar-user-picture mb-15">
+        <section class="sidebar-user-picture mb-15" style="overflow: hidden;">
             {% if request.user.profile.picture %}
-                <img src="{{ request.user.profile.picture.url }}" alt="">
+                <img src="{{ request.user.profile.picture.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;">
             {% else %}
                 <span class="profile-default flex flex-align-center flex-justify-center">
                     {{ request.user.first_name|slice:':1' }}{{ request.user.last_name|slice:':1' }}
