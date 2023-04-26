@@ -1,0 +1,9 @@
+<span class="card-user-picture">
+    {% if post.author.profile.picture %}
+        <img src="{{ post.author.profile.picture.url }}" alt="{{ post.author.username }}-profile-pic">
+    {% else %}
+        <span class="profile-default flex flex-justify-center flex-align-center">
+            {{ post.author.first_name|slice:':1' }}{{ post.author.last_name|slice:':1' }}
+        </span>
+    {% endif %}
+</span>

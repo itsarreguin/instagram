@@ -45,10 +45,31 @@
         margin: 10px auto 20px auto;
         font-size: $font-15px;
         &-main {
-            & > button, a {
+            & > button, & > a {
+                color: $dark;
                 font-weight: $font-500;
                 margin-right: 20px;
             }
+        }
+    }
+    &-comment {
+        width: 100%;
+        height: auto;
+        padding: 10px 0px;
+        display: flex;
+        align-items: start;
+        font-size: $font-15px;
+        &-container {
+            width: 90%;
+        }
+        &-author {
+            font-weight: $font-600;
+            color: $dark;
+            margin-right: 5px;
+        }
+        &-body {
+            font-weight: $font-500;
+            color: $dark;
         }
     }
 }

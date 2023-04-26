@@ -7,7 +7,7 @@ from typing import Type
 # Django HTTP package
 from django.http import HttpRequest
 from django.http import HttpResponse
-from django.http import JsonResponse
+from django.http import HttpResponseRedirect
 # Django views
 from django.views import View
 from django.views.generic.base import ContextMixin
@@ -18,6 +18,7 @@ from django.db.models import QuerySet
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.urls import reverse
 # Django forms
 from django.forms import Form
 from django.forms import ModelForm
@@ -91,6 +92,6 @@ class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
                 post=post,
                 body=form.cleaned_data['body']
             )
+            return render(request, self.template_name, { 'comment': comment })
         
-        context = { 'comment': comment }
-        return render(request, self.template_name, context)
+        return HttpResponseRedirect(reverse('account:feed'))
