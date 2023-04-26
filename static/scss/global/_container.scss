@@ -215,4 +215,12 @@
         fill: $dark;
         display: none;
     }
+    &-liked > svg {
+        color: $red-100;
+        fill: $red-100;
+    }
+    &-unliked > svg {
+        color: $dark;
+        fill: none;
+    }
 }

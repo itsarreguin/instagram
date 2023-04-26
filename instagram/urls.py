@@ -34,10 +34,6 @@ urlpatterns: List[path] = [
         route='',
         view=include('instagram.posts.urls', namespace='posts')
     ),
-    path(
-        route='unicorn/',
-        view=include('django_unicorn.urls')
-    ),
 ]
 
 if settings.DEBUG:

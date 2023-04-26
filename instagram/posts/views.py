@@ -78,6 +78,28 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
         return render(request, self.template_name, context)
 
 
+class LikeView(LoginRequiredMixin, FormMixin, View):
+    
+    template_name: str = 'includes/like.html'
+    
+    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+        return Like.objects.filter(*args, **kwargs)
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        post = Post.objects.filter(url=kwargs['url']).first()
+        like = self.get_queryset(user=request.user, post=post).first()
+        if like:
+            like.delete()
+        else:
+            like = Like.objects.create(user=request.user, post=post)
+        
+        context = {
+            'post': post,
+            'like': like
+        }
+        return render(request, self.template_name, context)
+
+
 class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
     
     form_class: Type[Form | ModelForm] = CommentForm

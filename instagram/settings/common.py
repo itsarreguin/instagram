@@ -30,9 +30,7 @@ PROJECT_APPS = [
     'instagram.posts.apps.PostsConfig',
 ]
 
-THIRD_APPS = [
-    'django_unicorn',
-]
+THIRD_APPS = []
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_APPS
 

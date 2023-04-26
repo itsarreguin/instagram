@@ -1,5 +1,4 @@
 {% load static %}
-{% load unicorn %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +10,6 @@
     <link rel="stylesheet" href="{% static 'dist/css/instagram.css' %}">
     <script src="https://unpkg.com/htmx.org@1.9.0" integrity="sha384-aOxz9UdWG0yBiyrTwPeMibmaoq07/d3a96GCbb9x60f3mOt5zwkjdbcHFnKH8qls" crossorigin="anonymous"></script>
     {% block styles %}{% endblock %}
-    {% unicorn_scripts %}
 </head>
 <body>
     {% csrf_token %}
