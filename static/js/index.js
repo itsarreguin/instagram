@@ -17,14 +17,14 @@ const openNavMenu = (event) => {
 navBtn.addEventListener("click", openNavMenu);
 
 const openModal = (event) => {
-    if (!popup.classList.contains("post-modal-show")) {
-        popup.classList.add("post-modal-show");
+    if (!popup.classList.contains("container-modal-show")) {
+        popup.classList.add("container-modal-show");
     }
 }
 
 const closeModal = (event) => {
-    if (popup.classList.contains("post-modal-show")) {
-        popup.classList.remove("post-modal-show");
+    if (popup.classList.contains("container-modal-show")) {
+        popup.classList.remove("container-modal-show");
     }
 }
 

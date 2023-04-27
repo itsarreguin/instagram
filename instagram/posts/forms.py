@@ -1,4 +1,14 @@
+# Python standard library
+from typing import Dict
+from typing import List
+from typing import Type
+
+# Django imports
 from django import forms
+from django.db.models import Model
+
+# Instagram models
+from instagram.posts.models import Collection
 
 
 class PostCreateForm(forms.Form):
@@ -24,6 +34,18 @@ class CommentForm(forms.Form):
             }
         )
     )
+
+
+class NewCollectionForm(forms.ModelForm):
+    
+    class Meta:
+        model: Type[Model] = Collection
+        fields: List[str] = ['name']
+        widgets: Dict[str, object] = {
+            'name': forms.TextInput(
+                attrs={ 'class': 'input-auth', 'placeholder': 'Name for your new collection'}
+            )
+        }
 
 
 class EmptyForm(forms.Form):

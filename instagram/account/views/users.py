@@ -40,6 +40,7 @@ from instagram.account.forms.user import EditAccountForm
 from instagram.account.forms.user import ChangePasswordForm
 from instagram.posts.forms import EmptyForm
 from instagram.posts.forms import CommentForm
+from instagram.posts.forms import NewCollectionForm
 
 
 class FeedView(LoginRequiredMixin, TemplateView):
@@ -104,6 +105,7 @@ class CollectionsView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['collections'] = self.get_queryset(user=self.request.user)
+        context['form'] = NewCollectionForm
         
         return context
 

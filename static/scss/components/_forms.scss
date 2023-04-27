@@ -1,6 +1,5 @@
 .form {
     position: relative;
-    
     &-head {
         width: 100%;
     }
@@ -25,5 +24,13 @@
     &-search-nav {
         width: 400px;
         height: auto;
+    }
+    &-collection {
+        width: 450px;
+        height: auto;
+        background: $light;
+        padding: 30px;
+        border-radius: 15px;
+        border: 1px solid $gray-200;
     }
 }

@@ -2,18 +2,19 @@
 from typing import Any
 from typing import Dict
 
-# Django imports
+# Django dispatch
 from django.dispatch import receiver
+# Django database
 from django.db.models.signals import post_save
-from django.db.models import Model
 
 # Instagram models
 from instagram.account.models import User
 from instagram.account.models import Profile
+from instagram.posts.models import Collection
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender: Model, instance: User, created: User, **kwargs: Dict[str, Any]):
+def create_user_profile(instance: User, created: User, **kwargs: Dict[str, Any]) -> None:
     """ create user profile
     Save a profile after than new user has been created
     """
@@ -26,3 +27,10 @@ def create_user_profile(sender: Model, instance: User, created: User, **kwargs: 
             profile.save()
         except:
             Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def create_default_collection(instance: User, created: User, **kwargs: Dict[str, Any]) -> None:
+    """ Save a default collection after create new user """
+    if created:
+        Collection.objects.create(user=instance, name='default')

@@ -29,10 +29,11 @@ from django.utils.translation import gettext_lazy as _
 from instagram.posts.models import Post
 from instagram.posts.models import Like
 from instagram.posts.models import Comment
+from instagram.posts.models import Collection
 # Instagram forms
 from instagram.posts.forms import PostCreateForm
-from instagram.posts.forms import EmptyForm
 from instagram.posts.forms import CommentForm
+from instagram.posts.forms import NewCollectionForm
 
 
 class PostCreateView(LoginRequiredMixin, FormMixin, View):
@@ -76,6 +77,22 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
+
+
+class NewCollectionView(LoginRequiredMixin, FormMixin, View):
+    
+    form_class: Type[Form | ModelForm] = NewCollectionForm
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        form = self.form_class(request.POST or None)
+        if form.is_valid():
+            Collection.objects.create(
+                user=request.user,
+                name=form.cleaned_data['name']
+            )
+            return redirect('account:bookmarks', username=request.user.username)
+        
+        return HttpResponseRedirect(reverse('account:feed'))
 
 
 class LikeView(LoginRequiredMixin, FormMixin, View):

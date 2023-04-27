@@ -12,8 +12,8 @@ from instagram.posts.models import Post
 
 class Collection(BaseAbstractModel):
     
-    name = models.CharField(_('name'), max_length=200, blank=False, null=False, default='default')
-    slug = models.SlugField(_('slug'), max_length=200, blank=False, null=False, default='default')
+    name = models.CharField(_('name'), max_length=200, blank=False, null=False)
+    slug = models.SlugField(_('slug'), max_length=200, blank=False, null=False)
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,
         related_name='collections'

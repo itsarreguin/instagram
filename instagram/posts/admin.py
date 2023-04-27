@@ -8,6 +8,7 @@ from django.contrib import admin
 from instagram.posts.models import Post
 from instagram.posts.models import Comment
 from instagram.posts.models import Like
+from instagram.posts.models import Collection
 
 
 @admin.register(Post)
@@ -29,3 +30,8 @@ class LikeModelAdmin(admin.ModelAdmin):
     
     list_display: List[str] = ['id', 'user', 'post']
     list_display_links: List[str] = ['user', 'post']
+
+
+@admin.register(Collection)
+class CollectionModelAdmin(admin.ModelAdmin):
+    pass
