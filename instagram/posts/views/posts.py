@@ -79,22 +79,6 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
         return render(request, self.template_name, context)
 
 
-class NewCollectionView(LoginRequiredMixin, FormMixin, View):
-    
-    form_class: Type[Form | ModelForm] = NewCollectionForm
-    
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class(request.POST or None)
-        if form.is_valid():
-            Collection.objects.create(
-                user=request.user,
-                name=form.cleaned_data['name']
-            )
-            return redirect('account:bookmarks', username=request.user.username)
-        
-        return HttpResponseRedirect(reverse('account:feed'))
-
-
 class LikeView(LoginRequiredMixin, FormMixin, View):
     
     template_name: str = 'includes/like.html'

@@ -53,7 +53,7 @@
                     <span style="margin-left: 10px;">Posts</span>
                 </a>
                 {% if request.user == user %}
-                    {% url 'account:bookmarks' username=user.username as bookmarks %}
+                    {% url 'posts:bookmarks' username=user.username as bookmarks %}
                     <a class="profile-link flex flex-align-center {% if request.path == bookmarks %}profile-link-active{% endif %}" href="{{ bookmarks }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                         <span style="margin-left: 10px;">Saved</span>
@@ -88,7 +88,12 @@
                         {% endfor %}
                     </div>
                 {% else %}
-                    <h2>No posts yet</h2>
+                    <div class="flex flex-align-center flex-justify-center" style="height: 25vh;">
+                        <div class="flex flex-column flex-align-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                            <h2 class="mt-15">No posts yet</h2>
+                        </div>
+                    </div>
                 {% endif %}
             {% else %}
                 {% block profile_content %}{% endblock %}

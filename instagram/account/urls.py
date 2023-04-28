@@ -17,7 +17,6 @@ from instagram.account.views.users import EditProfileView
 from instagram.account.views.users import EditAccountView
 from instagram.account.views.users import ChangePasswordView
 from instagram.account.views.users import ExploreView
-from instagram.account.views.users import CollectionsView
 
 
 app_name: str = 'account'
@@ -55,11 +54,6 @@ urlpatterns: List[path] = [
         route = 'explore/',
         view = ExploreView.as_view(),
         name='explore'
-    ),
-    path(
-        route = '@<str:username>/bookmarks/',
-        view = CollectionsView.as_view(),
-        name = 'bookmarks'
     ),
     path(
         route = 'settings/profile/',
