@@ -3,7 +3,7 @@
 
 {% block account_content %}
     <div class="container-account-feed">
-        {% include 'includes/post-card.html' %}
+        {% include 'includes/post_card_detail.html' %}
     </div>
 {% endblock %}
 
@@ -14,7 +14,7 @@
             event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}"
         });
         document.body.addEventListener("htmx:afterRequest", (event) => {
-            document.getElementById("body").value = "";
+            document.getElementById("comment-body").value = "";
         });
     </script>
 {% endblock %}

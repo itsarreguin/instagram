@@ -29,7 +29,7 @@ class CommentForm(forms.Form):
     body = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                'id': 'body',
+                'id': 'comment-body',
                 'class': 'input-comment', 'placeholder': 'Add a comment ...'
             }
         )

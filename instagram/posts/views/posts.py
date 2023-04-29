@@ -14,14 +14,16 @@ from django.views.generic.base import ContextMixin
 from django.views.generic.edit import FormMixin
 # Django DB
 from django.db.models import QuerySet
+from django.db.models import Model
 # Django contrib and shortcuts
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.shortcuts import render
+# Django urls
 from django.urls import reverse
+from django.urls import reverse_lazy
 # Django forms
-from django.forms import Form
-from django.forms import ModelForm
+from django.forms import BaseForm
 # Django utils
 from django.utils.translation import gettext_lazy as _
 
@@ -29,16 +31,14 @@ from django.utils.translation import gettext_lazy as _
 from instagram.posts.models import Post
 from instagram.posts.models import Like
 from instagram.posts.models import Comment
-from instagram.posts.models import Collection
 # Instagram forms
 from instagram.posts.forms import PostCreateForm
 from instagram.posts.forms import CommentForm
-from instagram.posts.forms import NewCollectionForm
 
 
 class PostCreateView(LoginRequiredMixin, FormMixin, View):
     
-    form_class: Type[Form | ModelForm] = PostCreateForm
+    form_class: Type[BaseForm] = PostCreateForm
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class(request.POST, request.FILES)
@@ -101,13 +101,28 @@ class LikeView(LoginRequiredMixin, FormMixin, View):
         return render(request, self.template_name, context)
 
 
+class CommentFeedView(LoginRequiredMixin, ContextMixin, View):
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        form = CommentForm(request.POST or None)
+        post = Post.objects.filter(url=kwargs['url']).first()
+        if form.is_valid():
+            Comment.objects.create(
+                author=self.request.user,
+                post=post,
+                body=form.cleaned_data['body']
+            )
+            
+        return HttpResponse()
+
+
 class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
     
-    form_class: Type[Form | ModelForm] = CommentForm
+    form_class: Type[BaseForm] = CommentForm
     template_name: str = 'includes/comment.html'
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class(request.POST)
+        form = self.form_class(request.POST or None)
         post = Post.objects.filter(url=kwargs['url']).first()
         if form.is_valid():
             comment = Comment.objects.create(
@@ -116,5 +131,5 @@ class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
                 body=form.cleaned_data['body']
             )
             return render(request, self.template_name, { 'comment': comment })
-        
+            
         return HttpResponseRedirect(reverse('account:feed'))

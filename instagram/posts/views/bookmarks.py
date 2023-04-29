@@ -29,6 +29,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Instagram models
 from instagram.account.models import User
+from instagram.posts.models import Post
 from instagram.posts.models import Collection
 # Instagram forms
 from instagram.posts.forms import NewCollectionForm

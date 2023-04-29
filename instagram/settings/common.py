@@ -58,6 +58,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'instagram.posts.context_processors.post_form',
+                'instagram.posts.context_processors.collections',
             ],
         },
     },

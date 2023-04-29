@@ -8,6 +8,7 @@ from django.urls import path
 from instagram.posts.views.posts import PostCreateView
 from instagram.posts.views.posts import PostDetailView
 from instagram.posts.views.posts import LikeView
+from instagram.posts.views.posts import CommentFeedView
 from instagram.posts.views.posts import CommentCreateView
 # Instagram bookmark views
 from instagram.posts.views.bookmarks import NewCollectionView
@@ -19,34 +20,35 @@ app_name: str = 'posts'
 
 urlpatterns: List[path] = [
     path('posts/new/', PostCreateView.as_view(), name='new'),
+    path('p/<str:url>/', PostDetailView.as_view(), name='detail'),
     path(
-        route = 'p/<str:url>/',
-        view = PostDetailView.as_view(),
-        name = 'detail'
+        route='p/<str:url>/like/',
+        view=LikeView.as_view(),
+        name='like'
     ),
     path(
-        route = 'p/<str:url>/like/',
-        view = LikeView.as_view(),
-        name = 'like'
+        route='p/<slug:url>/comments/',
+        view=CommentFeedView.as_view(),
+        name='comment-feed'
     ),
     path(
-        route = 'p/<slug:url>/comments/',
-        view = CommentCreateView.as_view(),
-        name = 'comment'
+        route='p/<slug:url>/comments/',
+        view=CommentCreateView.as_view(),
+        name='comment'
     ),
     path(
-        route = 'collections/new/',
-        view = NewCollectionView.as_view(),
-        name = 'new-collection'
+        route='collections/new/',
+        view=NewCollectionView.as_view(),
+        name='new-collection'
     ),
     path(
-        route = '@<str:username>/bookmarks/',
-        view = CollectionsView.as_view(),
-        name = 'bookmarks'
+        route='@<str:username>/bookmarks/',
+        view=CollectionsView.as_view(),
+        name='bookmarks'
     ),
     path(
-        route = '@<str:username>/bookmarks/<slug:slug>/',
-        view = CollectionDetailView.as_view(),
-        name = 'bookmark'
+        route='@<str:username>/bookmarks/<slug:slug>/',
+        view=CollectionDetailView.as_view(),
+        name='bookmark'
     ),
 ]

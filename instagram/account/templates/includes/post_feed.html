@@ -1,4 +1,7 @@
-<form hx-post="{% url 'posts:comment' url=post.url %}" hx-swap="outerHTML">
+{% extends 'includes/post_card.html' %}
+
+{% block comment_form %}
+<form hx-post="{% url 'posts:comment-feed' url=post.url %}" hx-swap="afterend">
     <div class="form-group flex">
         <section class="card-user-form" style="margin-right: 15px;">
             {% if request.user.profile.picture %}
@@ -12,3 +15,4 @@
         {{ comment_form.body }}
     </div>
 </form>
+{% endblock %}
