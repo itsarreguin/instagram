@@ -14,14 +14,12 @@ from django.views.generic.base import ContextMixin
 from django.views.generic.edit import FormMixin
 # Django DB
 from django.db.models import QuerySet
-from django.db.models import Model
 # Django contrib and shortcuts
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.shortcuts import render
 # Django urls
 from django.urls import reverse
-from django.urls import reverse_lazy
 # Django forms
 from django.forms import BaseForm
 # Django utils
@@ -49,9 +47,9 @@ class PostCreateView(LoginRequiredMixin, FormMixin, View):
                 thumbnail=form.cleaned_data['image'],
                 description=form.cleaned_data['description']
             )
-            return redirect('account:feed')
+            return redirect(request.META['HTTP_REFERER'])
         
-        return redirect('account:feed')
+        return HttpResponseRedirect(reverse('account:feed'))
 
 
 class PostDetailView(LoginRequiredMixin, ContextMixin, View):

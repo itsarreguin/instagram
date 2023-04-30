@@ -14,6 +14,7 @@ from instagram.posts.views.posts import CommentCreateView
 from instagram.posts.views.bookmarks import NewCollectionView
 from instagram.posts.views.bookmarks import CollectionsView
 from instagram.posts.views.bookmarks import CollectionDetailView
+from instagram.posts.views.bookmarks import SaveToCollectionView
 
 
 app_name: str = 'posts'
@@ -51,4 +52,9 @@ urlpatterns: List[path] = [
         view=CollectionDetailView.as_view(),
         name='bookmark'
     ),
+    path(
+        route='<str:username>/collections/<slug:coll_slug>/p/<str:post_url>/save/',
+        view=SaveToCollectionView.as_view(),
+        name='save'
+    )
 ]

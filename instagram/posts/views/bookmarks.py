@@ -70,18 +70,44 @@ class NewCollectionView(LoginRequiredMixin, FormMixin, View):
 class CollectionDetailView(LoginRequiredMixin, ContextMixin, View):
     
     model: Type[Model] = Collection
-    template_name: str = 'bookmark.html'
+    template_name: str = 'collection.html'
     
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
         return self.model.objects.filter(*args, **kwargs).first()
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        user = User.objects.filter(username=self.request.user.username).first()
-        context['bookmark'] = self.get_queryset(user=user, slug=self.kwargs['slug'])
+        user = (
+            User.objects
+            .filter(username=self.request.user.username).first()
+        )
+        context['collection'] = self.get_queryset(user=user, slug=self.kwargs['slug'])
         
         return context
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
+
+
+class SaveToCollectionView(LoginRequiredMixin, View):
+    
+    template_name: str = 'includes/save.html'
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        user = User.objects.filter(username=kwargs['username']).first()
+        post_to_save = Post.objects.filter(url=kwargs['post_url']).first()
+        collection = (
+            Collection.objects
+            .filter(user=user, slug=kwargs['coll_slug']).first()
+        )
+        if not post_to_save in collection.posts.all():
+            collection.posts.add(post_to_save)
+        else:
+            collection.posts.remove(post_to_save)
+        
+        context = {
+            'post': post_to_save,
+            'collection': collection
+        }
         return render(request, self.template_name, context)

@@ -55,6 +55,7 @@ img {
     background-color: #000000C8;
     display: none;
     color: $light;
+    z-index: 10;
     &-icons {
         width: 35%;
     }

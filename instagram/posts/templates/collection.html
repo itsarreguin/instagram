@@ -1,0 +1,24 @@
+{% extends 'users/base.html' %}
+{% block title %}{{ collection.name }} &#8226; {{ block.super }}{% endblock %}
+
+{% block account_content %}
+    <div class="profile-container">
+        <section class="flex flex-align-center flex-justify-between mb-30">
+            <a class="link-purple" href="{% url 'posts:bookmarks' username=request.user.username %}">Return to bookmarks</a>
+        </section>
+        <section>
+            {% if collection.posts.all %}
+                <div class="profile-grid grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center">
+                    {% for post in collection.posts.all %}
+                        {% include 'includes/post_grid_card.html' %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="flex flex-align-center flex-justify-center" style="height: 20vh;">
+                    <h2>No posts saved yet</h2>
+                </div>
+            {% endif %}
+        </section>
+    </div>
+{% endblock %}
+{% block sidebar_right %}{% endblock %}

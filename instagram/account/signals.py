@@ -33,4 +33,4 @@ def create_user_profile(instance: User, created: User, **kwargs: Dict[str, Any])
 def create_default_collection(instance: User, created: User, **kwargs: Dict[str, Any]) -> None:
     """ Save a default collection after create new user """
     if created:
-        Collection.objects.create(user=instance, name='default')
+        Collection.objects.create(user=instance, name='All posts')

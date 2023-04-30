@@ -8,10 +8,15 @@
             <span style="margin-left: 5px;">New collection</span>
         </button>
     </div>
-    <div class="profile-grid grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center">
+    <div class="grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center">
         {% for collection in collections %}
-            <a class="profile-grid-element overlay-image" href="{% url 'posts:bookmark' request.user.username collection.slug %}">
-                <div class="overlay"></div>
+            <a class="container-grid-post overlay-image" href="{% url 'posts:bookmark' request.user.username collection.slug %}">
+                <section class="grid grid-col-2 grid-row-2">
+                    {% for post in collection.posts.all %}
+                        <img src="{{ post.image.url }}" alt="">
+                    {% endfor %}
+                </section>
+                <section class="overlay"></section>
             </a>
         {% endfor %}
     </div>
