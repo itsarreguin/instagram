@@ -8,6 +8,7 @@ from typing import Type
 # Django HTTP package
 from django.http import HttpRequest
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 # Django views
 from django.views import View
 from django.views.generic.base import ContextMixin
@@ -78,6 +79,33 @@ class ProfileView(LoginRequiredMixin, ContextMixin, View):
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
+
+
+class FollowUserView(LoginRequiredMixin, ContextMixin, View):
+    
+    model: Type[Model] = get_user_model()
+    template_name: str = 'includes/profile-data.html'
+    
+    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+        return self.model.objects.filter(*args, **kwargs).first()
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        user = self.get_queryset(**{ 'username': kwargs['username'] })
+        if user is not None:
+            user.followers.add(request.user)
+            context = { 'user': user }
+            return render(request, self.template_name, context)
+        
+        return HttpResponseRedirect(reverse('account:feed'))
+    
+    def delete(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        user = self.get_queryset(**{ 'username': kwargs['username'] })
+        if request.user in user.followers.all():
+            user.followers.remove(request.user)
+            context = { 'user': user }
+            return render(request, self.template_name, context)
+        
+        return HttpResponseRedirect(reverse('account:feed'))
 
 
 class ExploreView(LoginRequiredMixin, TemplateView):

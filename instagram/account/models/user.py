@@ -1,8 +1,11 @@
-# Django imports
+# Django contrib
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import PermissionsMixin
+# Django database
 from django.db import models
+# Django core
 from django.core.validators import RegexValidator
+# Django utils
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
@@ -19,7 +22,6 @@ class User(AbstractUser, PermissionsMixin):
         regex=r'^([\w\d\._]+[^\s\-@\*\[\{(\)\}\]\/\+:,;\\%&$]){2,30}$',
         message='Username can be only contains letters, numbers, . or _'
     )
-
     username = models.CharField(
         verbose_name=_('username'),
         unique=True,
@@ -28,11 +30,9 @@ class User(AbstractUser, PermissionsMixin):
         null=False,
         validators=[username_regex_validator]
     )
-
     email_regex_validator = RegexValidator(
         regex=r'^([a-zA-Z0-9\._-]{3,}[^\s])@\w{2,25}\.\w{2,15}(\.\w{2,15})?$'
     )
-
     email = models.EmailField(
         verbose_name=_('email address'),
         unique=True,
@@ -41,6 +41,7 @@ class User(AbstractUser, PermissionsMixin):
         null=False,
         validators=[email_regex_validator]
     )
+    following = models.ManyToManyField('self', related_name='followers', blank=True, symmetrical=False)
 
     is_active = models.BooleanField(_('is active'), default=True)
     is_superuser = models.BooleanField(_('is superuser'), default=False)

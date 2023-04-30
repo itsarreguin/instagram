@@ -28,7 +28,7 @@ urlpatterns: List[path] = [
         name='like'
     ),
     path(
-        route='p/<slug:url>/comments/',
+        route='p/<slug:url>/comments/feed/',
         view=CommentFeedView.as_view(),
         name='comment-feed'
     ),
