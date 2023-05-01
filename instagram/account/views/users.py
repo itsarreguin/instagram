@@ -31,6 +31,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 # Instagram models
+from instagram.account.models import User
 from instagram.account.models import Profile
 from instagram.posts.models import Post
 # Instagram forms
@@ -47,8 +48,16 @@ class FeedView(LoginRequiredMixin, TemplateView):
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.order_by('-created').all()
-        context['empty_form'] = EmptyForm
+        user = User.objects.get(username=self.request.user.username)
+        following = user.following.all()
+        posts = Post.objects.filter(author__in=following).all()
+        context['posts'] = (
+            Post.objects
+            .filter(author=user)
+            .union(posts)
+            .order_by('-created')
+            .all()
+        )
         context['comment_form'] = CommentForm
         
         return context
