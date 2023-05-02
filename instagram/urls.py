@@ -16,16 +16,17 @@ Including another URLconf
 # Python standard library
 from typing import List
 
-# Django imports
+# Django urls
 from django.urls import path
 from django.urls import include
+# Django contrib
 from django.contrib import admin
+# Django config
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns: List[path] = [
-    
     path(
         route='',
         view=include('instagram.account.urls', namespace='account')
@@ -34,8 +35,14 @@ urlpatterns: List[path] = [
         route='',
         view=include('instagram.posts.urls', namespace='posts')
     ),
+    path(
+        route='',
+        view=include('instagram.notifications.urls', namespace='notifications')
+    ),
 ]
 
 if settings.DEBUG:
     urlpatterns += [path('django/admin/', admin.site.urls)]
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root = settings.MEDIA_ROOT
+    )

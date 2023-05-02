@@ -1,0 +1,19 @@
+{% extends 'users/base.html' %}
+{% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
+
+{% block account_content %}
+    <section class="container-account-feed">
+        <div class="flex flex-justify-start flex-align-center mb-25">
+            <h2>Notifications</h2>
+        </div>
+        {% if Notifications %}
+            {% for notification in notifications %}
+                <div></div>
+            {% endfor %}
+        {% else %}
+            <div class="flex flex-justify-center flex-align-center">
+                <h3>No notifications yet</h3>
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
