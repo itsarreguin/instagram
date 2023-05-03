@@ -1,1 +1,27 @@
-<section class="card-notification"></section>
+<a class="card-notification flex flex-align-center flex-justify-between" href="{{ url }}">
+    <div class="flex">
+        <section class="notification-user">
+            {% if notification.sender.profile.picture %}
+                <img src="{{ notification.sender.profile.picture.url }}" alt="">
+            {% else %}
+                <span class="profile-default flex flex-align-center flex-justify-center">
+                    {{ notification.sender.first_name | slice:':1' }}{{ notification.sender.last_name | slice:':1' }}
+                </span>
+            {% endif %}
+        </section>
+        <section class="" style="margin-left: 15px;">
+            <h4 class="mb-8">{{ notification.sender.get_full_name }}</h4>
+            <span style="font-size: 16px;">
+                <span class="text-dark" style="margin-right: 10px;">{{ message }}</span>
+                <span class="text-gray">{{ notification.created|timesince }} ago</span>
+            </span>
+        </section>
+    </div>
+    <div>
+        <form hx-post="" action="">
+            <button>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C13434" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+        </form>
+    </div>
+</a>

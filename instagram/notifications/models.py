@@ -16,7 +16,7 @@ class NotificationType(models.TextChoices):
 class Notification(models.Model):
     
     receiver = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL, related_name='receiver',
+        to=settings.AUTH_USER_MODEL, related_name='notifications',
         on_delete=models.CASCADE
     )
     sender = models.ForeignKey(
@@ -32,6 +32,7 @@ class Notification(models.Model):
         _('object slug'), max_length=200, blank=True, null=True
     )
     is_read = models.BooleanField(_('is read'), default=False)
+    created = models.DateTimeField(_('created'), auto_now_add=True)
     
     class Meta:
         verbose_name: str = _('Notification')

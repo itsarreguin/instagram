@@ -29,6 +29,8 @@ from django.utils.translation import gettext_lazy as _
 from instagram.posts.models import Post
 from instagram.posts.models import Like
 from instagram.posts.models import Comment
+from instagram.notifications.models import Notification
+from instagram.notifications.models import NotificationType
 # Instagram forms
 from instagram.posts.forms import PostCreateForm
 from instagram.posts.forms import CommentForm
@@ -91,6 +93,14 @@ class LikeView(LoginRequiredMixin, FormMixin, View):
             like.delete()
         else:
             like = Like.objects.create(user=request.user, post=post)
+            if request.user != post.author:
+                Notification.objects.create(
+                    receiver=post.author,
+                    sender=request.user,
+                    category=NotificationType.LIKE,
+                    object_id=post.id,
+                    object_slug=post.url
+                )
         
         context = {
             'post': post,
@@ -110,6 +120,14 @@ class CommentFeedView(LoginRequiredMixin, ContextMixin, View):
                 post=post,
                 body=form.cleaned_data['body']
             )
+            if request.user != post.author:
+                Notification.objects.create(
+                    receiver=post.author,
+                    sender=request.user,
+                    category=NotificationType.COMMENT,
+                    object_id=post.id,
+                    object_slug=post.url
+                )
             
         return HttpResponse()
 
@@ -128,6 +146,13 @@ class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
                 post=post,
                 body=form.cleaned_data['body']
             )
-            return render(request, self.template_name, { 'comment': comment })
-            
-        return HttpResponseRedirect(reverse('account:feed'))
+            if request.user != post.author:
+                Notification.objects.create(
+                    receiver=post.author,
+                    sender=request.user,
+                    category=NotificationType.COMMENT,
+                    object_id=post.id,
+                    object_slug=post.url
+                )
+        
+        return render(request, self.template_name, { 'comment': comment })

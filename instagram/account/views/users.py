@@ -34,11 +34,12 @@ from django.utils.translation import gettext_lazy as _
 from instagram.account.models import User
 from instagram.account.models import Profile
 from instagram.posts.models import Post
+from instagram.notifications.models import Notification
+from instagram.notifications.models import NotificationType
 # Instagram forms
 from instagram.account.forms.user import EditProfileForm
 from instagram.account.forms.user import EditAccountForm
 from instagram.account.forms.user import ChangePasswordForm
-from instagram.posts.forms import EmptyForm
 from instagram.posts.forms import CommentForm
 
 
@@ -90,7 +91,7 @@ class ProfileView(LoginRequiredMixin, ContextMixin, View):
         return render(request, self.template_name, context)
 
 
-class FollowUserView(LoginRequiredMixin, ContextMixin, View):
+class FollowUserView(LoginRequiredMixin, View):
     
     model: Type[Model] = get_user_model()
     template_name: str = 'includes/profile-data.html'
@@ -102,6 +103,14 @@ class FollowUserView(LoginRequiredMixin, ContextMixin, View):
         user = self.get_queryset(**{ 'username': kwargs['username'] })
         if user is not None:
             user.followers.add(request.user)
+            Notification.objects.create(
+                receiver=user,
+                sender=request.user,
+                category=NotificationType.FOLLOWER,
+                object_id=request.user.pk,
+                object_slug=request.user.username
+            )
+            
             context = { 'user': user }
             return render(request, self.template_name, context)
         

@@ -2,16 +2,23 @@
 {% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
 
 {% block account_content %}
-    <section class="container-account-feed">
-        <div class="flex flex-justify-start flex-align-center mb-25">
+    <section class="container-notifications flex flex-column">
+        <div class="flex flex-justify-start flex-align-center mb-30">
             <h2>Notifications</h2>
         </div>
-        {% if Notifications %}
+        {% if notifications %}
             {% for notification in notifications %}
-                <div></div>
+                {% url 'account:feed' as feed %}
+                {% if notification.category == 'follower' %}
+                    {% include 'includes/notification.html' with url=feed message='Started following you' %}
+                {% elif notification.category == 'like' %}
+                    {% include 'includes/notification.html' with url=feed message='Liked your post' %}
+                {% elif notification.category == 'comment' %}
+                    {% include 'includes/notification.html' with url=feed message='Commented your post' %}
+                {% endif %}
             {% endfor %}
         {% else %}
-            <div class="flex flex-justify-center flex-align-center">
+            <div class="flex flex-justify-center flex-align-center" style="height: 50vh;">
                 <h3>No notifications yet</h3>
             </div>
         {% endif %}
