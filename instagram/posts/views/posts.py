@@ -34,6 +34,8 @@ from instagram.notifications.models import NotificationType
 # Instagram forms
 from instagram.posts.forms import PostCreateForm
 from instagram.posts.forms import CommentForm
+# Instagram tasks
+from instagram.notifications.tasks import send_notification
 
 
 class PostCreateView(LoginRequiredMixin, FormMixin, View):
@@ -94,14 +96,14 @@ class LikeView(LoginRequiredMixin, FormMixin, View):
         else:
             like = Like.objects.create(user=request.user, post=post)
             if request.user != post.author:
-                Notification.objects.create(
-                    receiver=post.author,
-                    sender=request.user,
-                    category=NotificationType.LIKE,
-                    object_id=post.id,
-                    object_slug=post.url
-                )
-        
+                send_notification.apply_async(kwargs={
+                    'receiver_username': post.author.username,
+                    'sender_username': request.user.username,
+                    'category': NotificationType.LIKE,
+                    'object_id': post.id,
+                    'object_slug': post.url
+                })
+
         context = {
             'post': post,
             'like': like
@@ -121,13 +123,13 @@ class CommentFeedView(LoginRequiredMixin, ContextMixin, View):
                 body=form.cleaned_data['body']
             )
             if request.user != post.author:
-                Notification.objects.create(
-                    receiver=post.author,
-                    sender=request.user,
-                    category=NotificationType.COMMENT,
-                    object_id=post.id,
-                    object_slug=post.url
-                )
+                send_notification.apply_async(kwargs={
+                    'receiver_username': post.author.username,
+                    'sender_username': request.user.username,
+                    'category': NotificationType.COMMENT,
+                    'object_id': post.id,
+                    'object_slug': post.url
+                })
             
         return HttpResponse()
 
@@ -147,12 +149,12 @@ class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
                 body=form.cleaned_data['body']
             )
             if request.user != post.author:
-                Notification.objects.create(
-                    receiver=post.author,
-                    sender=request.user,
-                    category=NotificationType.COMMENT,
-                    object_id=post.id,
-                    object_slug=post.url
-                )
+                send_notification.apply_async(kwargs={
+                    'receiver_username': post.author.username,
+                    'sender_username': request.user.username,
+                    'category': NotificationType.COMMENT,
+                    'object_id': post.id,
+                    'object_slug': post.url
+                })
         
         return render(request, self.template_name, { 'comment': comment })
