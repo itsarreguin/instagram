@@ -11,6 +11,8 @@ from django.forms import BaseForm
 
 # Instagram models
 from instagram.posts.models import Collection
+from instagram.posts.models import Post
+from instagram.posts.models import Like
 # Instagram forms
 from instagram.posts.forms import PostCreateForm
 
@@ -29,3 +31,15 @@ def collections(request: HttpRequest) -> Dict[str, List[Model]]:
         return { 'collections': collections }
     
     return { 'collections': [] }
+
+
+def post_liked(request: HttpRequest) -> Dict[str, Model | None]:
+    if request.user.is_authenticated:
+        post = (
+            Post.objects
+            .filter(url=request.resolver_match.kwargs.get('url')).first()
+        )
+        liked = Like.objects.filter(user=request.user, post=post).first()
+        return { 'liked': liked }
+    
+    return { 'liked': None }

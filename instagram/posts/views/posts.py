@@ -14,6 +14,7 @@ from django.views.generic.base import ContextMixin
 from django.views.generic.edit import FormMixin
 # Django DB
 from django.db.models import QuerySet
+from django.db.models import Model
 # Django contrib and shortcuts
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -29,7 +30,6 @@ from django.utils.translation import gettext_lazy as _
 from instagram.posts.models import Post
 from instagram.posts.models import Like
 from instagram.posts.models import Comment
-from instagram.notifications.models import Notification
 from instagram.notifications.models import NotificationType
 # Instagram forms
 from instagram.posts.forms import PostCreateForm
@@ -113,6 +113,8 @@ class LikeView(LoginRequiredMixin, FormMixin, View):
 
 class CommentFeedView(LoginRequiredMixin, ContextMixin, View):
     
+    template_name: str = 'includes/comments-counter.html'
+    
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = CommentForm(request.POST or None)
         post = Post.objects.filter(url=kwargs['url']).first()
@@ -130,20 +132,35 @@ class CommentFeedView(LoginRequiredMixin, ContextMixin, View):
                     'object_id': post.id,
                     'object_slug': post.url
                 })
+        
+        return render(request, self.template_name, { 'post': post })
             
-        return HttpResponse()
-
 
 class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
     
     form_class: Type[BaseForm] = CommentForm
-    template_name: str = 'includes/comment.html'
+    template_name: str = 'includes/post_card_detail.html'
+    
+    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+        return Post.objects.filter(*args, **kwargs).first()
+    
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.get_queryset(url=self.kwargs['url'])
+        context['comments'] = (
+            Comment.objects
+            .filter(post__url=self.kwargs['url'])
+            .order_by('-created').all()
+        )
+        context['comment_form'] = self.form_class
+        
+        return context
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class(request.POST or None)
         post = Post.objects.filter(url=kwargs['url']).first()
         if form.is_valid():
-            comment = Comment.objects.create(
+            Comment.objects.create(
                 author=self.request.user,
                 post=post,
                 body=form.cleaned_data['body']
@@ -157,4 +174,5 @@ class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
                     'object_slug': post.url
                 })
         
-        return render(request, self.template_name, { 'comment': comment })
+        context = self.get_context_data(**kwargs)
+        return render(request, self.template_name, context)
