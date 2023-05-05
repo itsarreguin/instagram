@@ -1,4 +1,8 @@
-<a id="notification" class="card-notification flex flex-align-center flex-justify-between" href="{{ url }}">
+<a
+    id="notification"
+    class="card-notification flex flex-align-center flex-justify-between {% if not notification.is_read %}notification-not-read{% endif %}"
+    href="{{ url }}"
+>
     <div class="flex">
         <section class="notification-user">
             {% if notification.sender.profile.picture %}

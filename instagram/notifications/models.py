@@ -31,6 +31,7 @@ class Notification(models.Model):
     object_slug = models.CharField(
         _('object slug'), max_length=200, blank=True, null=True
     )
+    slug = models.SlugField(_('slug'), max_length=255, unique=True)
     is_read = models.BooleanField(_('is read'), default=False)
     created = models.DateTimeField(_('created'), auto_now_add=True)
     

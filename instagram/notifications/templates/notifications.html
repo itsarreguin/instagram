@@ -8,13 +8,15 @@
         </div>
         {% if notifications %}
             {% for notification in notifications %}
-                {% url 'account:feed' as feed %}
                 {% if notification.category == 'follower' %}
-                    {% include 'includes/notification.html' with url=feed message='Started following you' %}
+                    {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as follower %}
+                    {% include 'includes/notification.html' with url=follower message='Started following you' %}
                 {% elif notification.category == 'like' %}
-                    {% include 'includes/notification.html' with url=feed message='Liked your post' %}
+                    {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as like %}
+                    {% include 'includes/notification.html' with url=like message='Liked your post' %}
                 {% elif notification.category == 'comment' %}
-                    {% include 'includes/notification.html' with url=feed message='Commented your post' %}
+                    {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as comment %}
+                    {% include 'includes/notification.html' with url=comment message='Commented your post' %}
                 {% endif %}
             {% endfor %}
         {% else %}

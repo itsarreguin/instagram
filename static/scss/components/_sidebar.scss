@@ -80,7 +80,9 @@
         background: $red-100;
         color: $light;
         font-size: $font-12px;
-        padding: 3px 6px;
+        min-width: 20px;
+        width: auto;
+        height: 20px;
         border-radius: 100%;
     }
 }

@@ -9,3 +9,6 @@ class NotificationsConfig(AppConfig):
     default_auto_field: str = 'django.db.models.BigAutoField'
     name: str = 'instagram.notifications'
     verbose_name: str = _('Notifications')
+    
+    def ready(self) -> None:
+        from instagram.notifications import signals as signals

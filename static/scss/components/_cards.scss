@@ -96,4 +96,7 @@
             object-fit: cover;
         }
     }
+    &-not-read {
+        border: 1px solid $gray-300;
+    }
 }
