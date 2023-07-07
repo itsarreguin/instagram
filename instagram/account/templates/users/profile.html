@@ -2,11 +2,11 @@
 {% block title %}{{ user.get_full_name }} (@{{ user.username }}) &#8226; {{ block.super }} photos and videos{% endblock %}
 
 {% block account_content %}
-    <div class="profile-container">
+    <div class="profile-container" hx-boost="true">
         {% include 'includes/profile-data.html' %}
         <section class="profile-options flex flex-justify-center">
             <div class="profile-link-group flex flex-justify-between">
-                {% url 'account:profile' username=user.username as profile%}
+                {% url 'account:profile' username=user.username as profile %}
                 <a class="profile-link flex flex-align-center {% if request.path == profile %}profile-link-active{% endif %}" href="{{ profile }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                     <span style="margin-left: 10px;">Posts</span>

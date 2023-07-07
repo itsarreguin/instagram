@@ -6,18 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Instagram{% endblock %}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
     <link rel="shortcut icon" href="{% static 'images/icons/instagram-icon-white.png' %}" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'dist/css/instagram.css' %}">
-    <script src="https://unpkg.com/htmx.org@1.9.0" integrity="sha384-aOxz9UdWG0yBiyrTwPeMibmaoq07/d3a96GCbb9x60f3mOt5zwkjdbcHFnKH8qls" crossorigin="anonymous"></script>
     {% block styles %}{% endblock %}
 </head>
 <body>
     {% block navbar %}{% endblock %}
-    <section class="">
+    <main id="main" class="">
         {% block container %}{% endblock %}
-    </section>
+    </main>
 
-    <script src="{% static 'js/index.js' %}"></script>
+    {% if request.user.is_authenticated %}
+        <script src="{% static 'js/index.js' %}"></script>
+    {% endif %}
     {% block scripts %}{% endblock %}
 </body>
 </html>

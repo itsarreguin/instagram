@@ -19,7 +19,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.shortcuts import get_current_site
 # Django shortcuts and urls
 from django.shortcuts import render
 from django.shortcuts import redirect

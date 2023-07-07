@@ -4,7 +4,7 @@
 {% block account_content %}
     <div class="profile-container">
         {% if posts %}
-            <div class="profile-grid grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center">
+            <div class="profile-grid grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center" hx-boost="true">
                 {% for post in posts %}
                     {% include 'includes/post_grid_card.html' %}
                 {% endfor %}

@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 # Django views
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import ListView
 # Django contrib
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Django database
@@ -30,14 +30,20 @@ from instagram.notifications.models import Notification
 from instagram.notifications.models import NotificationType
 
 
-class NotificationsView(LoginRequiredMixin, TemplateView):
+class NotificationsView(LoginRequiredMixin, ListView):
     
     template_name: str = 'notifications.html'
     template_title: str = _('Notifications')
     
+    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+        return Notification.objects.filter(*args, **kwargs)
+    
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.template_title
+        context['notifications'] = (
+            self.get_queryset(receiver=self.request.user).all().order_by('-created')
+        )
         
         return context
 

@@ -3,7 +3,7 @@
 
 {% block container %}
     <section class="container flex flex-justify-center">
-        <div class="container-settings">
+        <div class="container-settings" hx-boost="true">
             {% block sidebar_settings %}
                 <div class="sidebar sidebar-fill left-0"></div>
                 {% include 'includes/settings-bar.html' %}

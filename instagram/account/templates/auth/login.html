@@ -2,7 +2,7 @@
 {% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
 {% load static %}
 
-{% block form_title %}<h3>Log in to your account</h3>{% endblock %}
+{% block form_title %}Log in to your account{% endblock %}
 {% block button_text %}Log in with Facebook{% endblock %}
 {% block form_body %}
     <form action="{% url 'account:login' %}" method="post">
@@ -22,4 +22,6 @@
         <button type="submit" class="btn btn-normal btn-pink" style="width: 100%;">Log in</button>
     </form>
 {% endblock %}
-{% block auth_cover %}<img src="{% static 'images/body/daniyal-khalil.jpg' %}" alt="">{% endblock %}
+{% block auth_cover %}
+    <img src="{% static 'images/body/daniyal-khalil.jpg' %}" alt="">
+{% endblock %}

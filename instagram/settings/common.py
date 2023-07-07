@@ -58,7 +58,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'instagram.notifications.context_processors.notifications',
                 'instagram.notifications.context_processors.readed_notifications',
                 'instagram.posts.context_processors.post_form',
                 'instagram.posts.context_processors.collections',

@@ -14,7 +14,6 @@ from django.views.generic.base import ContextMixin
 from django.views.generic.edit import FormMixin
 # Django DB
 from django.db.models import QuerySet
-from django.db.models import Model
 # Django contrib and shortcuts
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -65,10 +64,10 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['post'] = self.get_queryset(url=self.kwargs['url']).first()
+        context['post'] = self.get_queryset(url=kwargs['url']).first()
         context['comments'] = (
             Comment.objects
-            .filter(post__url=self.kwargs['url'])
+            .filter(post__url=kwargs['url'])
             .order_by('-created')
             .all()
         )

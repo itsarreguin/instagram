@@ -14,7 +14,8 @@
             event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}"
         });
         document.body.addEventListener("htmx:afterRequest", (event) => {
-            document.getElementById("comment-body").value = "";
+            const commentBody = document.getElementById("comment-body");
+            if (commentBody) commentBody.value = "";
         });
     </script>
 {% endblock %}

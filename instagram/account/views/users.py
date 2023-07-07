@@ -4,6 +4,7 @@ from typing import Dict
 from typing import Optional
 from typing import Tuple
 from typing import Type
+from django.db.models.query import QuerySet
 
 # Django HTTP package
 from django.http import HttpRequest
@@ -13,6 +14,7 @@ from django.http import HttpResponseRedirect
 from django.views import View
 from django.views.generic.base import ContextMixin
 from django.views.generic import UpdateView
+from django.views.generic import ListView
 from django.views.generic import TemplateView
 from django.contrib.auth.views import PasswordChangeView
 # Django DB
@@ -44,19 +46,21 @@ from instagram.posts.forms import CommentForm
 from instagram.notifications.tasks import send_notification
 
 
-class FeedView(LoginRequiredMixin, TemplateView):
+class FeedView(LoginRequiredMixin, ListView):
     
     template_name: str = 'users/feed.html'
+    
+    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+        return Post.objects.filter(*args, **kwargs)
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user.username)
-        following = user.following.all()
-        posts = Post.objects.filter(author__in=following).all()
+        followed_users = user.following.all()
+        followed_users_posts = self.get_queryset(author__in=followed_users).all()
         context['posts'] = (
-            Post.objects
-            .filter(author=user)
-            .union(posts)
+            self.get_queryset(author=user)
+            .union(followed_users_posts)
             .order_by('-created')
             .all()
         )
@@ -78,13 +82,14 @@ class ProfileView(LoginRequiredMixin, ContextMixin, View):
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['user'] = self.get_queryset(username=self.kwargs['username'])
+        context['user'] = self.get_queryset(username=kwargs['username'])
         context['posts'] = (
             Post.objects
-            .filter(author__username=self.kwargs['username'])
+            .filter(author__username=kwargs['username'])
             .order_by('-created')
             .all()
         )
+        
         return context
     
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
@@ -111,18 +116,17 @@ class FollowUserView(LoginRequiredMixin, View):
                 'object_id': request.user.pk,
                 'object_slug': request.user.username
             })
-            
-            context = { 'user': user }
-            return render(request, self.template_name, context)
+        
+            return render(request, self.template_name, { 'user': user })
         
         return HttpResponseRedirect(reverse('account:feed'))
     
     def delete(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         user = self.get_queryset(**{ 'username': kwargs['username'] })
+        
         if request.user in user.followers.all():
             user.followers.remove(request.user)
-            context = { 'user': user }
-            return render(request, self.template_name, context)
+            return render(request, self.template_name, { 'user': user })
         
         return HttpResponseRedirect(reverse('account:feed'))
 
@@ -190,5 +194,5 @@ class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
 
         return context
     
-    def get_success_url(self) -> HttpResponse:
+    def get_success_url(self) -> str:
         return reverse('account:change-password')

@@ -3,9 +3,8 @@
 
 {% block account_content %}
     <section class="container-notifications flex flex-column">
-        <div class="flex flex-justify-start flex-align-center mb-30">
-            <h2>Notifications</h2>
-        </div>
+        <div class="flex flex-justify-start flex-align-center mb-30"><h2>Notifications</h2></div>
+        <div>
         {% if notifications %}
             {% for notification in notifications %}
                 {% if notification.category == 'follower' %}
@@ -24,6 +23,7 @@
                 <h3>No notifications yet</h3>
             </div>
         {% endif %}
+        </div>
     </section>
 {% endblock %}
 

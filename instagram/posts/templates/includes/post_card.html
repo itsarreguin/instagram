@@ -1,4 +1,4 @@
-<div id="post-card" class="card card-post" hx-swap-oob="true">
+<div id="post-card" class="card card-post" hx-boost="true">
     <section class="card-header flex flex-align-center flex-justify-between">
         <a class="card-user flex flex-align-center" href="{% url 'account:profile' username=post.author %}">
             {% include 'includes/user-picture.html' %}

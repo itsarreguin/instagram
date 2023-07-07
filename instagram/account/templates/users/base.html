@@ -23,6 +23,8 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'js/cropper.min.js' %}"></script>
+    {% if request.user.is_authenticated %}
     <script src="{% static 'js/posts.js' %}"></script>
+    <script src="{% static 'js/cropper.min.js' %}"></script>
+    {% endif %}
 {% endblock %}

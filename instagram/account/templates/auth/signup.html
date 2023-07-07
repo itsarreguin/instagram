@@ -2,7 +2,7 @@
 {% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
 {% load static %}
 
-{% block form_title %}<h3>Create an account</h3>{% endblock %}
+{% block form_title %}Create an account{% endblock %}
 {% block button_text %}Sign Up with Facebook{% endblock %}
 {% block form_body %}
     <form action="{% url 'account:signup' %}" method="post">
@@ -30,9 +30,13 @@
             {{ form.password }}
         </div>
         <section class="flex flex-align-center flex-justify-end mb-20">
-            <p style="font-size: 15px; font-weight: 500;">You have an account? <a class="link-pink" href="{% url 'account:login' %}">Log in</a></p>
+            <p style="font-size: 15px; font-weight: 500;">
+                You have an account? <a class="link-pink" href="{% url 'account:login' %}">Log in</a>
+            </p>
         </section>
         <button type="submit" class="btn btn-normal btn-pink" style="width: 100%;">Create account</button>
     </form>
 {% endblock %}
-{% block auth_cover %}<img src="{% static 'images/body/karsten-winegeart.jpg' %}" alt="">{% endblock %}
+{% block auth_cover %}
+    <img src="{% static 'images/body/karsten-winegeart.jpg' %}" alt="">
+{% endblock %}

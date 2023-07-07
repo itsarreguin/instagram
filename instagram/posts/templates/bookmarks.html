@@ -8,7 +8,7 @@
             <span style="margin-left: 5px;">New collection</span>
         </button>
     </div>
-    <div class="grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center">
+    <div class="grid grid-gap-14 grid-col-3 flex flex-justify-center flex-align-center" hx-boost="true">
         {% for collection in collections %}
             <a class="container-grid-post overlay-image" href="{% url 'posts:bookmark' request.user.username collection.slug %}">
                 <section class="grid grid-col-2 grid-row-2">
