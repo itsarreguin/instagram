@@ -80,6 +80,17 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
         return render(request, self.template_name, context)
 
 
+class PostDeleteView(LoginRequiredMixin, View):
+    
+    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+        query = Post.objects.filter(**{ 'url': kwargs['url'] }).first()
+        if query is not None and query.author == request.user:
+            query.delete()
+            return HttpResponseRedirect(reverse('account:feed'))
+        
+        return HttpResponseRedirect(reverse('account:feed'))
+
+
 class LikeView(LoginRequiredMixin, FormMixin, View):
     
     template_name: str = 'includes/like.html'
@@ -103,20 +114,20 @@ class LikeView(LoginRequiredMixin, FormMixin, View):
                     'object_slug': post.url
                 })
 
-        context = {
-            'post': post,
-            'like': like
-        }
-        return render(request, self.template_name, context)
+        return render(request, self.template_name, { 'post': post, 'like': like })
 
 
-class CommentFeedView(LoginRequiredMixin, ContextMixin, View):
+class CommentViewBase(LoginRequiredMixin, ContextMixin, View):
     
-    template_name: str = 'includes/comments-counter.html'
+    form_class: Type[BaseForm] = CommentForm
+    
+    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+        return Post.objects.filter(*args, **kwargs)
     
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = CommentForm(request.POST or None)
-        post = Post.objects.filter(url=kwargs['url']).first()
+        form = self.form_class(request.POST or None)
+        post = self.get_queryset(**{ 'url': kwargs['url'] }).first()
+        
         if form.is_valid():
             Comment.objects.create(
                 author=self.request.user,
@@ -132,46 +143,32 @@ class CommentFeedView(LoginRequiredMixin, ContextMixin, View):
                     'object_slug': post.url
                 })
         
-        return render(request, self.template_name, { 'post': post })
-            
+        return render(request, self.template_name, self.get_context_data(**kwargs))
 
-class CommentCreateView(LoginRequiredMixin, ContextMixin, View):
+
+class CommentFeedView(CommentViewBase):
     
-    form_class: Type[BaseForm] = CommentForm
-    template_name: str = 'includes/post_card_detail.html'
-    
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
-        return Post.objects.filter(*args, **kwargs).first()
+    template_name: str = 'includes/comments-counter.html'
     
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['post'] = self.get_queryset(url=self.kwargs['url'])
+        context['post'] = self.get_queryset(url=kwargs['url']).first()
+        
+        return context
+
+
+class CommentCreateView(CommentViewBase):
+    
+    template_name: str = 'includes/post_card_detail.html'
+    
+    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.get_queryset(url=kwargs['url']).first()
         context['comments'] = (
             Comment.objects
-            .filter(post__url=self.kwargs['url'])
+            .filter(post__url=kwargs['url'])
             .order_by('-created').all()
         )
         context['comment_form'] = self.form_class
         
         return context
-    
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        form = self.form_class(request.POST or None)
-        post = Post.objects.filter(url=kwargs['url']).first()
-        if form.is_valid():
-            Comment.objects.create(
-                author=self.request.user,
-                post=post,
-                body=form.cleaned_data['body']
-            )
-            if request.user != post.author:
-                send_notification.apply_async(kwargs={
-                    'receiver_username': post.author.username,
-                    'sender_username': request.user.username,
-                    'category': NotificationType.COMMENT,
-                    'object_id': post.id,
-                    'object_slug': post.url
-                })
-        
-        context = self.get_context_data(**kwargs)
-        return render(request, self.template_name, context)

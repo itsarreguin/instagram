@@ -7,6 +7,7 @@ from django.urls import path
 # Instagram posts views
 from instagram.posts.views.posts import PostCreateView
 from instagram.posts.views.posts import PostDetailView
+from instagram.posts.views.posts import PostDeleteView
 from instagram.posts.views.posts import LikeView
 from instagram.posts.views.posts import CommentFeedView
 from instagram.posts.views.posts import CommentCreateView
@@ -22,6 +23,7 @@ app_name: str = 'posts'
 urlpatterns: List[path] = [
     path('posts/new/', PostCreateView.as_view(), name='new'),
     path('p/<str:url>/', PostDetailView.as_view(), name='detail'),
+    path('p/<str:url>/delete/', PostDeleteView.as_view(), name='delete'),
     path(
         route='p/<str:url>/like/',
         view=LikeView.as_view(),

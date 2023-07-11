@@ -16,6 +16,34 @@
         margin-bottom: 15px;
 
     }
+    &-options {
+        position: absolute;
+        right: 0;
+        width: 250px;
+        height: auto;
+        border: 1px solid $gray-100;
+        padding: 2px;
+        background: $light;
+        box-shadow: $input-shadow-normal;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.2 ease;
+
+        & button, & a {
+            width: 100%;
+            padding: 8px 10px;
+            font: {
+                size: $font-15px;
+                weight: $font-500;
+            }
+            & svg {
+                margin-right: 8px;
+            }
+            &:hover {
+                background-color: $gray-50;
+            }
+        }
+    }
     &-user {
         font-weight: $font-500;
         color: $dark;

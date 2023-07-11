@@ -4,7 +4,6 @@ from typing import Dict
 from typing import Optional
 from typing import Tuple
 from typing import Type
-from django.db.models.query import QuerySet
 
 # Django HTTP package
 from django.http import HttpRequest
