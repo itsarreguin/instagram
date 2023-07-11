@@ -15,6 +15,7 @@ from instagram.account.views.users import FeedView
 from instagram.account.views.users import ProfileView
 from instagram.account.views.users import FollowUserView
 from instagram.account.views.users import ExploreView
+from instagram.account.views.users import AccountVerificationView
 from instagram.account.views.users import EditProfileView
 from instagram.account.views.users import EditAccountView
 from instagram.account.views.users import ChangePasswordView
@@ -23,8 +24,8 @@ from instagram.account.views.users import ChangePasswordView
 app_name: str = 'account'
 
 urlpatterns: List[path] = [
-    path('login/', LoginView.as_view(), name='login' ),
     path('signup/', SignUpView.as_view(), name='signup'),
+    path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path(
         route='password/reset/',
@@ -35,6 +36,11 @@ urlpatterns: List[path] = [
         route='password/reset/<uidb64>/<str:token>/',
         view=PasswordResetView.as_view(),
         name='password-reset'
+    ),
+    path(
+        route='account/verification/<uidb64>/<str:token>/',
+        view=AccountVerificationView.as_view(),
+        name='verification'
     ),
     path('', view=FeedView.as_view(), name='feed'),
     path(

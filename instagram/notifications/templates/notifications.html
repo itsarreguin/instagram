@@ -2,36 +2,36 @@
 {% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
 
 {% block account_content %}
-    <section class="container-notifications flex flex-column">
-        <div class="flex flex-justify-start flex-align-center mb-30"><h2>Notifications</h2></div>
-        <div>
-        {% if notifications %}
-            {% for notification in notifications %}
-                {% if notification.category == 'follower' %}
-                    {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as follower %}
-                    {% include 'includes/notification.html' with url=follower message='Started following you' %}
-                {% elif notification.category == 'like' %}
-                    {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as like %}
-                    {% include 'includes/notification.html' with url=like message='Liked your post' %}
-                {% elif notification.category == 'comment' %}
-                    {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as comment %}
-                    {% include 'includes/notification.html' with url=comment message='Commented your post' %}
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            <div class="flex flex-justify-center flex-align-center" style="height: 50vh;">
-                <h3>No notifications yet</h3>
-            </div>
+  <section class="container-notifications flex flex-column">
+    <div class="flex flex-justify-start flex-align-center mb-30"><h2>Notifications</h2></div>
+    <div>
+    {% if notifications %}
+      {% for notification in notifications %}
+        {% if notification.category == 'follower' %}
+          {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as follower %}
+          {% include 'includes/notification.html' with url=follower message='Started following you' %}
+        {% elif notification.category == 'like' %}
+          {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as like %}
+          {% include 'includes/notification.html' with url=like message='Liked your post' %}
+        {% elif notification.category == 'comment' %}
+          {% url 'notifications:read' noti_slug=notification.slug object_slug=notification.object_slug as comment %}
+          {% include 'includes/notification.html' with url=comment message='Commented your post' %}
         {% endif %}
-        </div>
-    </section>
+      {% endfor %}
+    {% else %}
+      <div class="flex flex-justify-center flex-align-center" style="height: 50vh;">
+        <h3>No notifications yet</h3>
+      </div>
+    {% endif %}
+    </div>
+  </section>
 {% endblock %}
 
 {% block scripts %}
-    {{ block.super }}
-    <script type="text/javascript">
-        document.body.addEventListener("htmx:configRequest", (event) => {
-            event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}"
-        });
-    </script>
+  {{ block.super }}
+  <script type="text/javascript">
+    document.body.addEventListener("htmx:configRequest", (event) => {
+      event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}"
+    });
+  </script>
 {% endblock %}

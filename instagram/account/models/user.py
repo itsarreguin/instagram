@@ -14,10 +14,10 @@ from instagram.account.managers import UserManager
 
 
 class User(AbstractUser, PermissionsMixin):
-    
+
     first_name = models.CharField(_('first name'), max_length=40, blank=False, null=False)
     last_name = models.CharField(_('last name'), max_length=40, blank=True, null=True)
-    
+
     username_regex_validator = RegexValidator(
         regex=r'^([\w\d\._]+[^\s\-@\*\[\{(\)\}\]\/\+:,;\\%&$]){2,30}$',
         message='Username can be only contains letters, numbers, . or _'
@@ -49,17 +49,17 @@ class User(AbstractUser, PermissionsMixin):
     is_verified = models.BooleanField(_('is verified'), default=False)
 
     date_joined = models.DateTimeField(default=timezone.now)
-    
+
     objects = UserManager()
-    
+
     USERNAME_FIELD = 'username'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
-    
+
     class Meta:
         verbose_name: str = _('User')
         verbose_name_plural: str = _('Users')
-    
+
     def __str__(self) -> str:
         return '%s' % self.username
 
@@ -68,15 +68,15 @@ class User(AbstractUser, PermissionsMixin):
 
     def get_short_name(self) -> str:
         return '%s' % self.first_name
-    
+
     @property
     def total_posts(self) -> int:
         return self.posts.count()
-    
+
     @property
     def total_comments(self) -> int:
         return self.comments.count()
-    
+
     @property
     def total_likes(self) -> int:
         return self.likes.count()

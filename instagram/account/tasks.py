@@ -16,15 +16,15 @@ from instagram.core.utils.email import send_email_multi_alternatives
 
 
 @celery.task(max_retries=6)
-def send_password_reset_email(email_address: str, path: str):
+def send_user_email(email_address: str, subject: str, template: str, path: str) -> None:
     try:
         user = get_object_or_404(User, email=email_address)
     except get_user_model().DoesNotExist:
-        user = None
-    
+        return None
+
     send_email_multi_alternatives(
-        subject=_('Password reset'),
-        template_name='email/reset_password.html',
+        subject=_(subject),
+        template_name=template,
         from_email=settings.DEFAULT_FROM_EMAIL,
         receiver=[user.email],
         context={
