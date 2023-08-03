@@ -9,9 +9,9 @@
 
 {% block scripts %}
   {{ block.super }}
-  <script type="text/javascript">
+  <script>
     document.body.addEventListener("htmx:configRequest", (event) => {
-      event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}"
+      event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
     });
     document.body.addEventListener("htmx:afterRequest", (event) => {
       const commentBody = document.getElementById("comment-body");

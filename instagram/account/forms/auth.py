@@ -8,12 +8,12 @@ from instagram.account.models import User
 
 
 class LoginForm(forms.Form):
-    
+
     username = forms.CharField(
         max_length=30, min_length=4,
         widget=forms.TextInput(attrs={ 'class': 'input-auth' })
     )
-    
+
     password = forms.CharField(
         max_length=255, min_length=4,
         widget=forms.PasswordInput(attrs={ 'class': 'input-auth' })
@@ -21,7 +21,7 @@ class LoginForm(forms.Form):
 
 
 class SignUpForm(forms.Form):
-    
+
     first_name = forms.CharField(
         max_length=40, min_length=2,
         widget=forms.TextInput(attrs={ 'class': 'input-auth' })
@@ -45,7 +45,7 @@ class SignUpForm(forms.Form):
 
 
 class PasswordResetRequestForm(forms.Form):
-    
+
     email = forms.EmailField(
         label=_('Email address'),
         max_length=200,
@@ -55,7 +55,7 @@ class PasswordResetRequestForm(forms.Form):
 
 
 class PasswordResetForm(forms.Form):
-    
+
     new_password = forms.CharField(
         max_length=256, min_length=8,
         label=_('New password'),
@@ -65,4 +65,4 @@ class PasswordResetForm(forms.Form):
         max_length=256, min_length=8,
         label=_('Confirm new password'),
         widget=forms.PasswordInput(attrs={ 'class': 'input-auth' })
-    )        
+    )

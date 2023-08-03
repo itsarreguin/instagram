@@ -2,19 +2,19 @@
 {% block title %}{{ block.super }}{% endblock %}
 
 {% block container %}
-    <section class="container flex flex-justify-center">
-        <div class="container-settings" hx-boost="true">
-            {% block sidebar_settings %}
-                <div class="sidebar sidebar-fill left-0"></div>
-                {% include 'includes/settings-bar.html' %}
-            {% endblock %}
-            <section class="container-settings-content">
-                <h3>{% block settings_title %}{% endblock %}</h3>
-                <div class="settings-divider" style="width: 100%; height: 1px; margin: 25px auto; background: #D1D1D1;"></div>
-                {% block settings_content %}{% endblock %}
-            </section>
-        </div>
-    </section>
+  <section class="container flex flex-justify-center">
+    <div class="container-settings" hx-boost="true">
+      {% block sidebar_settings %}
+        <div class="sidebar sidebar-fill left-0"></div>
+        {% include 'includes/settings-bar.html' %}
+      {% endblock %}
+      <section class="container-settings-content">
+        <h3>{% block settings_title %}{% endblock %}</h3>
+        <div class="settings-divider" style="width: 100%; height: 1px; margin: 25px auto; background: #D1D1D1;"></div>
+        {% block settings_content %}{% endblock %}
+      </section>
+    </div>
+  </section>
 
-    {% include 'create_post.html' %}
+  {% include 'create_post.html' %}
 {% endblock %}

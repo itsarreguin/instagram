@@ -1,28 +1,28 @@
 <div id="post-modal" class="container-modal">
-    <section class="post-container" hx-boost="true">
-        <div class="post-container-head flex flex-align-center flex-justify-center">
-            <button type="button" id="image-clear" class="post-clean">
-                <svg width="35" height="16" viewBox="0 0 42 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.93934 10.9393C0.353553 11.5251 0.353553 12.4749 0.93934 13.0607L10.4853 22.6066C11.0711 23.1924 12.0208 23.1924 12.6066 22.6066C13.1924 22.0208 13.1924 21.0711 12.6066 20.4853L4.12132 12L12.6066 3.51472C13.1924 2.92893 13.1924 1.97918 12.6066 1.3934C12.0208 0.807612 11.0711 0.807612 10.4853 1.3934L0.93934 10.9393ZM42 10.5L2 10.5V13.5L42 13.5V10.5Z" fill="black"/>
-                </svg>
-            </button>
-            <span>Create new post</span>
-        </div>
-        <form action="{% url 'posts:new' %}" method="post" id="create-post-form" class="post-form flex" enctype="multipart/form-data">
-            {% csrf_token %}
-            <section class="form-group post-form-image flex flex-align-center flex-justify-center">
-                {{ post_form.image }}
-                <div id="image-container" class="post-form-image-container"></div>
-            </section>
-            <section class="form-group post-form-right">
-                {{ post_form.description }}
-                <button type="submit" id="publish" class="btn btn-normal btn-purple post-button">Publish</button>
-            </section>
-        </form>
-    </section>
-    <span id="close-popup" class="container-modal-close">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24">
-            <path d="M5.293 6.707l5.293 5.293-5.293 5.293c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0l5.293-5.293 5.293 5.293c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414l-5.293-5.293 5.293-5.293c0.391-0.391 0.391-1.024 0-1.414s-1.024-0.391-1.414 0l-5.293 5.293-5.293-5.293c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414z"></path>
+  <section class="post-container" hx-boost="true">
+    <div class="post-container-head flex flex-align-center flex-justify-center">
+      <button type="button" id="image-clear" class="post-clean">
+        <svg width="35" height="16" viewBox="0 0 42 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0.93934 10.9393C0.353553 11.5251 0.353553 12.4749 0.93934 13.0607L10.4853 22.6066C11.0711 23.1924 12.0208 23.1924 12.6066 22.6066C13.1924 22.0208 13.1924 21.0711 12.6066 20.4853L4.12132 12L12.6066 3.51472C13.1924 2.92893 13.1924 1.97918 12.6066 1.3934C12.0208 0.807612 11.0711 0.807612 10.4853 1.3934L0.93934 10.9393ZM42 10.5L2 10.5V13.5L42 13.5V10.5Z" fill="black"/>
         </svg>
-    </span>
+      </button>
+      <span>Create new post</span>
+    </div>
+    <form action="{% url 'posts:new' %}" method="post" id="create-post-form" class="post-form flex" enctype="multipart/form-data">
+      {% csrf_token %}
+      <section class="form-group post-form-image flex flex-align-center flex-justify-center">
+        {{ post_form.image }}
+        <div id="image-container" class="post-form-image-container"></div>
+      </section>
+      <section class="form-group post-form-right">
+        {{ post_form.description }}
+        <button type="submit" id="publish" class="btn btn-normal btn-purple post-button">Publish</button>
+      </section>
+    </form>
+  </section>
+  <span id="close-popup" class="container-modal-close">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24">
+      <path d="M5.293 6.707l5.293 5.293-5.293 5.293c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0l5.293-5.293 5.293 5.293c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414l-5.293-5.293 5.293-5.293c0.391-0.391 0.391-1.024 0-1.414s-1.024-0.391-1.414 0l-5.293 5.293-5.293-5.293c-0.391-0.391-1.024-0.391-1.414 0s-0.391 1.024 0 1.414z"></path>
+    </svg>
+  </span>
 </div>

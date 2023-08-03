@@ -19,7 +19,7 @@ from instagram.account.models import Profile
 
 
 class EditProfileForm(forms.ModelForm):
-    
+
     class Meta:
         model: Type[Model] = Profile
         fields: List[str] = [
@@ -27,7 +27,7 @@ class EditProfileForm(forms.ModelForm):
             'link',
             'biography'
         ]
-        
+
         widgets: Dict[str, object] = {
             'picture': forms.FileInput(attrs={}),
             'link': forms.URLInput(attrs={ 'class': 'input-settings' }),
@@ -36,7 +36,7 @@ class EditProfileForm(forms.ModelForm):
 
 
 class EditAccountForm(forms.ModelForm):
-    
+
     class Meta:
         model = get_user_model()
         fields = [
@@ -45,7 +45,7 @@ class EditAccountForm(forms.ModelForm):
             'username',
             'email'
         ]
-        
+
         widgets: Dict[str, object] = {
             'first_name': forms.TextInput(attrs={ 'class': 'input-settings' }),
             'last_name': forms.TextInput(attrs={ 'class': 'input-settings' }),
@@ -55,7 +55,7 @@ class EditAccountForm(forms.ModelForm):
 
 
 class ChangePasswordForm(PasswordChangeForm):
-    
+
     old_password = forms.CharField(
         label=_('Old password'),
         min_length=8, max_length=256,
@@ -71,14 +71,14 @@ class ChangePasswordForm(PasswordChangeForm):
         min_length=8, max_length=256,
         widget=forms.PasswordInput(attrs={ 'class': 'input-settings' })
     )
-    
+
     def clean_old_password(self) -> str:
         old_password = self.cleaned_data['old_password']
         if not self.user.check_password(old_password):
             raise ValidationError(_('Wrong password'))
-        
+
         return old_password
-    
+
     def clean_new_password2(self) -> str:
         cleaned_data = super(ChangePasswordForm, self).clean()
         new_password = cleaned_data.get('new_password1')
@@ -86,5 +86,5 @@ class ChangePasswordForm(PasswordChangeForm):
 
         if new_password != password_confirm:
             raise ValidationError(_('New password didn\'t match'))
-        
+
         return cleaned_data

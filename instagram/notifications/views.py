@@ -31,27 +31,27 @@ from instagram.notifications.models import NotificationType
 
 
 class NotificationsView(LoginRequiredMixin, ListView):
-    
+
     template_name: str = 'notifications.html'
     template_title: str = _('Notifications')
-    
+
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
         return Notification.objects.filter(*args, **kwargs)
-    
+
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.template_title
         context['notifications'] = (
             self.get_queryset(receiver=self.request.user).all().order_by('-created')
         )
-        
+
         return context
 
 
 class NotificationReadView(LoginRequiredMixin, View):
-    
+
     model: Type[Model] = Notification
-    
+
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         notification = (
             self.model.objects
@@ -60,29 +60,29 @@ class NotificationReadView(LoginRequiredMixin, View):
         )
         notification.is_read = True
         notification.save()
-        
+
         if notification.category == NotificationType.FOLLOWER:
             user = User.objects.get(pk=notification.object_id)
             return redirect('account:profile', username=user.username)
-        
+
         elif (
             notification.category == NotificationType.LIKE or
             notification.category == NotificationType.COMMENT
         ):
             post = Post.objects.get(url=notification.object_slug)
             return redirect('posts:detail', url=post.url)
-        
+
         return HttpResponseRedirect(reverse('notifications:all'))
 
 
 class NotificationDeleteView(LoginRequiredMixin, View):
-    
+
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
         return Notification.objects.filter(*args, **kwargs)
-    
+
     def delete(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         notification = self.get_queryset(pk=kwargs['pk']).first()
-        if notification:
+        if notification is not None:
             notification.delete()
-        
+
         return HttpResponse()

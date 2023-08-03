@@ -38,9 +38,9 @@ from instagram.notifications.tasks import send_notification
 
 
 class PostCreateView(LoginRequiredMixin, FormMixin, View):
-    
+
     form_class: Type[BaseForm] = PostCreateForm
-    
+
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
@@ -51,17 +51,17 @@ class PostCreateView(LoginRequiredMixin, FormMixin, View):
                 description=form.cleaned_data['description']
             )
             return redirect(request.META['HTTP_REFERER'])
-        
+
         return HttpResponseRedirect(reverse('account:feed'))
 
 
 class PostDetailView(LoginRequiredMixin, ContextMixin, View):
-    
+
     template_name: str = 'post_detail.html'
-    
+
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
         return Post.objects.filter(*args, **kwargs)
-    
+
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['post'] = self.get_queryset(url=kwargs['url']).first()
@@ -72,35 +72,36 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
             .all()
         )
         context['comment_form'] = CommentForm
-        
+
         return context
-    
+
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
 
 class PostDeleteView(LoginRequiredMixin, View):
-    
+
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         query = Post.objects.filter(**{ 'url': kwargs['url'] }).first()
         if query is not None and query.author == request.user:
             query.delete()
             return HttpResponseRedirect(reverse('account:feed'))
-        
+
         return HttpResponseRedirect(reverse('account:feed'))
 
 
 class LikeView(LoginRequiredMixin, FormMixin, View):
-    
+
     template_name: str = 'includes/like.html'
-    
+
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
         return Like.objects.filter(*args, **kwargs)
-    
+
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         post = Post.objects.filter(url=kwargs['url']).first()
         like = self.get_queryset(user=request.user, post=post).first()
+
         if like:
             like.delete()
         else:
@@ -117,20 +118,20 @@ class LikeView(LoginRequiredMixin, FormMixin, View):
         return render(request, self.template_name, { 'post': post, 'like': like })
 
 
-class CommentViewBase(LoginRequiredMixin, ContextMixin, View):
-    
+class CommentView(LoginRequiredMixin, ContextMixin, View):
+
     form_class: Type[BaseForm] = CommentForm
-    
+
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
         return Post.objects.filter(*args, **kwargs)
-    
+
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class(request.POST or None)
         post = self.get_queryset(**{ 'url': kwargs['url'] }).first()
-        
+
         if form.is_valid():
             Comment.objects.create(
-                author=self.request.user,
+                author=request.user,
                 post=post,
                 body=form.cleaned_data['body']
             )
@@ -142,33 +143,32 @@ class CommentViewBase(LoginRequiredMixin, ContextMixin, View):
                     'object_id': post.id,
                     'object_slug': post.url
                 })
-        
+
         return render(request, self.template_name, self.get_context_data(**kwargs))
 
 
-class CommentFeedView(CommentViewBase):
-    
+class CommentFeedView(CommentView):
+
     template_name: str = 'includes/comments-counter.html'
-    
+
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['post'] = self.get_queryset(url=kwargs['url']).first()
-        
+        context['comment_form'] = self.form_class
+
         return context
 
 
-class CommentCreateView(CommentViewBase):
-    
+class CommentCreateView(CommentView):
+
     template_name: str = 'includes/post_card_detail.html'
-    
+
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['post'] = self.get_queryset(url=kwargs['url']).first()
         context['comments'] = (
-            Comment.objects
-            .filter(post__url=kwargs['url'])
-            .order_by('-created').all()
+            Comment.objects.filter(post__url=kwargs['url']).order_by('-created').all()
         )
         context['comment_form'] = self.form_class
-        
+
         return context
