@@ -14,6 +14,7 @@ from django.views.generic.base import ContextMixin
 from django.views.generic.edit import FormMixin
 # Django DB
 from django.db.models import QuerySet
+from django.db.models import Prefetch
 # Django contrib and shortcuts
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -64,12 +65,17 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
 
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['post'] = self.get_queryset(url=kwargs['url']).first()
-        context['comments'] = (
-            Comment.objects
-            .filter(post__url=kwargs['url'])
-            .order_by('-created')
-            .all()
+        comments = Prefetch(
+            lookup='comments',
+            queryset=(
+                Comment.objects.filter(post__url=kwargs['url'])
+                .select_related('author', 'author__profile', 'post')
+                .order_by('-created').all()
+            )
+        )
+        context['post'] = (
+            self.get_queryset(url=kwargs['url']).select_related('author', 'author__profile')
+            .prefetch_related(comments, 'likes').first()
         )
         context['comment_form'] = CommentForm
 
@@ -84,6 +90,7 @@ class PostDeleteView(LoginRequiredMixin, View):
 
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         query = Post.objects.filter(**{ 'url': kwargs['url'] }).first()
+
         if query is not None and query.author == request.user:
             query.delete()
             return HttpResponseRedirect(reverse('account:feed'))
@@ -93,19 +100,20 @@ class PostDeleteView(LoginRequiredMixin, View):
 
 class LikeView(LoginRequiredMixin, FormMixin, View):
 
+    model: Type[Like] = Like
     template_name: str = 'includes/like.html'
 
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
-        return Like.objects.filter(*args, **kwargs)
+        return self.model.objects.filter(*args, **kwargs)
 
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        post = Post.objects.filter(url=kwargs['url']).first()
+        post = Post.objects.get(url=kwargs['url'])
         like = self.get_queryset(user=request.user, post=post).first()
 
-        if like:
+        if like is not None:
             like.delete()
         else:
-            like = Like.objects.create(user=request.user, post=post)
+            like = self.model.objects.create(user=request.user, post=post)
             if request.user != post.author:
                 send_notification.apply_async(kwargs={
                     'receiver_username': post.author.username,
@@ -121,16 +129,24 @@ class LikeView(LoginRequiredMixin, FormMixin, View):
 class CommentView(LoginRequiredMixin, ContextMixin, View):
 
     form_class: Type[BaseForm] = CommentForm
+    model: Type[Comment] = Comment
 
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
         return Post.objects.filter(*args, **kwargs)
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['post'] = self.get_queryset(url=kwargs['url']).first()
+        context['comment_form'] = self.form_class
+
+        return context
 
     def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         form = self.form_class(request.POST or None)
         post = self.get_queryset(**{ 'url': kwargs['url'] }).first()
 
         if form.is_valid():
-            Comment.objects.create(
+            self.model.objects.create(
                 author=request.user,
                 post=post,
                 body=form.cleaned_data['body']
@@ -148,27 +164,8 @@ class CommentView(LoginRequiredMixin, ContextMixin, View):
 
 
 class CommentFeedView(CommentView):
-
     template_name: str = 'includes/comments-counter.html'
-
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['post'] = self.get_queryset(url=kwargs['url']).first()
-        context['comment_form'] = self.form_class
-
-        return context
 
 
 class CommentCreateView(CommentView):
-
     template_name: str = 'includes/post_card_detail.html'
-
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['post'] = self.get_queryset(url=kwargs['url']).first()
-        context['comments'] = (
-            Comment.objects.filter(post__url=kwargs['url']).order_by('-created').all()
-        )
-        context['comment_form'] = self.form_class
-
-        return context

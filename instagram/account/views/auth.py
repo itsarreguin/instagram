@@ -18,7 +18,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.tokens import default_token_generator as token_generator
 # Django shortcuts and urls
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -163,9 +163,9 @@ class PasswordResetView(AuthContextMixin, View):
             uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
             user = get_object_or_404(User, id=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return None
+            user = None
 
-        check_token = default_token_generator.check_token(user, kwargs['token'])
+        check_token = token_generator.check_token(user, kwargs['token'])
         if form.is_valid() and user is not None and check_token:
             user.set_password(form.cleaned_data['new_password'])
             user.save()

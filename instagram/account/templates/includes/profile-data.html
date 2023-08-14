@@ -12,7 +12,7 @@
     <section class="profile-info">
       <h1 class="profile-username mb-15">@{{ user.username }}</h1>
       <section class="profile-numbers flex mb-20">
-        <span>{{ user.total_posts }} Post{{ user.total_posts | pluralize }}</span>
+        <span>{{ user.posts.count }} Post{{ user.post_set.count | pluralize }}</span>
         <span>{{ user.followers.count }} Follower{{ user.followers.count | pluralize }}</span>
         <span>{{ user.following.count }} Following</span>
       </section>

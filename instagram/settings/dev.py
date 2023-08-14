@@ -3,7 +3,7 @@
 from instagram.settings.common import *
 
 
-SECRET_KEY = 'django-insecure-&4s1p8-rj903ne#vv(h_hig_#$w+v!l%i2o@)&2xjru=le=#zs'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-&4s1p8-rj903ne#vv(h_hig_#$w+v!l%i2o@)&2xjru=le=#zs')
 
 ALLOWED_HOSTS = []
 

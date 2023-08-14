@@ -19,11 +19,13 @@ from django.contrib.auth.views import PasswordChangeView
 # Django DB
 from django.db.models import QuerySet
 from django.db.models import Model
+from django.db.models import Prefetch
 # Django contrib and shortcuts
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.tokens import default_token_generator as token_generator
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 # Django forms
 from django.forms import Form
 from django.forms import ModelForm
@@ -49,6 +51,7 @@ from instagram.notifications.tasks import send_notification
 
 class FeedView(LoginRequiredMixin, ListView):
 
+    model: Type[Model] = Post
     template_name: str = 'users/feed.html'
 
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
@@ -56,12 +59,11 @@ class FeedView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        user = User.objects.get(username=self.request.user.username)
-        followed_users = user.following.all()
-        followed_users_posts = self.get_queryset(author__in=followed_users).all()
         context['posts'] = (
-            self.get_queryset(author=user)
-            .union(followed_users_posts)
+            self.get_queryset(author__username=self.request.user.username)
+            .union(
+                self.get_queryset(author__in=self.request.user.following.all()).all()
+            )
             .order_by('-created')
             .all()
         )
@@ -76,20 +78,18 @@ class ProfileView(LoginRequiredMixin, ContextMixin, View):
     template_name: str = 'users/profile.html'
 
     def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
-        if args or kwargs:
-            return self.model.objects.filter(*args, **kwargs).first()
+        queryset = (
+            Post.objects.order_by('-created').prefetch_related('likes', 'comments').all()
+        )
+        posts = Prefetch(lookup='posts', queryset=queryset)
 
-        return self.model.objects.all()
+        return self.model.objects.filter(*args, **kwargs).prefetch_related(
+            'profile', 'following', 'followers', posts
+        )
 
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['user'] = self.get_queryset(username=kwargs['username'])
-        context['posts'] = (
-            Post.objects
-            .filter(author__username=kwargs['username'])
-            .order_by('-created')
-            .all()
-        )
+        context['user'] = self.get_queryset(username=kwargs['username']).first()
 
         return context
 
@@ -138,7 +138,10 @@ class ExploreView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['posts'] = Post.objects.all().order_by('-created')
+        context['posts'] = (
+            Post.objects.order_by('-created').select_related('author')
+                .prefetch_related('comments', 'likes').all()
+        )
 
         return context
 
@@ -147,18 +150,18 @@ class AccountVerificationView(View):
 
     def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
         try:
-            uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
-            user = User.objects.get(id__exact=uid)
+            uid = urlsafe_base64_decode(kwargs['uidb64']).decode('utf-8')
+            user = get_object_or_404(User, id=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return None
+            user = None
 
-        check_token = default_token_generator.check_token(user, kwargs['token'])
-        if user is not None and check_token:
+        verification_token = token_generator.check_token(user, kwargs['token'])
+        if user is not None and verification_token:
             user.is_verified = True
             user.save()
             return HttpResponseRedirect(reverse('account:feed'))
 
-        return HttpResponseRedirect(reverse('account:login'))
+        return HttpResponse('Account activation failed')
 
 
 class EditProfileView(LoginRequiredMixin, UpdateView):

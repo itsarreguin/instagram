@@ -80,3 +80,7 @@ class User(AbstractUser, PermissionsMixin):
     @property
     def total_likes(self) -> int:
         return self.likes.count()
+
+    @property
+    def total_followers(self) -> int:
+        return self.followers.count()

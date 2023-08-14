@@ -11,7 +11,7 @@ from instagram.posts.models import Post
 
 
 class Collection(BaseAbstractModel):
-    
+
     name = models.CharField(_('name'), max_length=200, blank=False, null=False)
     slug = models.SlugField(_('slug'), max_length=200, blank=False, null=False)
     user = models.ForeignKey(
@@ -19,10 +19,10 @@ class Collection(BaseAbstractModel):
         related_name='collections'
     )
     posts = models.ManyToManyField(Post, related_name='posts')
-    
+
     class Meta:
         verbose_name: str = _('Collection')
         verbose_name_plural: str = _('Collections')
-    
+
     def __str__(self) -> str:
         return '%s' % self.name

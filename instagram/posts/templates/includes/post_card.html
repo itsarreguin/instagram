@@ -1,6 +1,6 @@
 <div id="post-card" class="card card-post" hx-boost="true">
   <section class="card-header flex flex-align-center flex-justify-between">
-    <a class="card-user flex flex-align-center" href="{% url 'account:profile' username=post.author %}">
+    <a class="card-user flex flex-align-center" href="{% url 'account:profile' username=post.author.username %}">
       {% include 'includes/user-picture.html' %}
       <span class="card-user-username" style="margin-left: 10px;">{{ post.author }}</span>
     </a>
