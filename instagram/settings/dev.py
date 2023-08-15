@@ -24,8 +24,12 @@ INTERNAL_IPS += ['127.0.0.1']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get('DEV_DB_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.environ.get('DEV_DB_NAME', 'instagram-db'),
+        'USER': os.environ.get('DEV_DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DEV_DB_PASSWORD', None),
+        'HOST': os.environ.get('DEV_DB_HOST', '127.0.0.1'),
+        'PORT': int(os.environ.get('DEV_DB_PORT', 5432))
     }
 }
 

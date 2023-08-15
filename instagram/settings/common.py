@@ -29,6 +29,7 @@ PROJECT_APPS = [
     'instagram.account.apps.AccountConfig',
     'instagram.posts.apps.PostsConfig',
     'instagram.notifications.apps.NotificationsConfig',
+    'instagram.messenger.apps.MessengerConfig'
 ]
 
 THIRD_APPS = []

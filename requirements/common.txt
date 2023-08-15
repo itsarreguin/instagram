@@ -5,31 +5,31 @@ amqp==5.1.1
 asgiref==3.7.2
 
 # Celery Distributed Task Queue
-celery==5.2.7
+celery==5.3.1
 
 # Django Framework
-django==4.1.10
+django==4.2.4
 
 # Django social media authentication
 django-allauth==0.54.0
 
 # Flower for Celery monitoring tasks
-flower==1.2.0
+flower==2.0.1
 
 # Python Imaging Library
 pillow==10.0.0
 
 # PostgreSQL adapter
-psycopg==3.1.9
+psycopg==3.1.10
 
 # Environmnet variables
 python-dotenv==1.0.0
 
 # JSON Web Token
-pyjwt==2.6.0
+pyjwt==2.8.0
 
 # Redis Python client
 redis==4.6.0
 
 # Messaing library for Python
-kombu==5.2.4
+kombu==5.3.1
