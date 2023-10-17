@@ -1,16 +1,14 @@
 # Python standard library
-from typing import Any
-from typing import Dict
-from typing import Tuple
-from typing import Type
+import json
+from typing import Any, Dict, Generator, List, Type
 
 # Django HTTP package
 from django.http import HttpRequest
 from django.http import HttpResponse
+from django.http import StreamingHttpResponse
 from django.http import HttpResponseRedirect
 # Django views
-from django.views import View
-from django.views.generic import ListView
+from django.views import generic
 # Django contrib
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Django database
@@ -28,31 +26,34 @@ from instagram.account.models import User
 from instagram.posts.models import Post
 from instagram.notifications.models import Notification
 from instagram.notifications.models import NotificationType
+from instagram.notifications.serializers import notification_serializer
 
 
-class NotificationsView(LoginRequiredMixin, ListView):
+class NotificationsView(LoginRequiredMixin, generic.ListView):
 
     template_name: str = 'notifications.html'
     template_title: str = _('Notifications')
+    model: Type[Model] = Notification
 
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
-        return Notification.objects.filter(*args, **kwargs)
-
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['title'] = self.template_title
-        context['notifications'] = (
-            self.get_queryset(receiver=self.request.user).all().order_by('-created')
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[List[Notification]]:
+        return (
+            self.model.objects.filter(*args, **kwargs)
+            .prefetch_related('sender', 'sender__profile')
+            .order_by('-created').all()
         )
 
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.template_title
+        context['notifications'] = self.get_queryset(receiver=self.request.user)
         return context
 
 
-class NotificationReadView(LoginRequiredMixin, View):
+class NotificationReadView(LoginRequiredMixin, generic.View):
 
     model: Type[Model] = Notification
 
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
         notification = (
             self.model.objects
             .filter(slug=kwargs['noti_slug'], object_slug=kwargs['object_slug'])
@@ -75,14 +76,35 @@ class NotificationReadView(LoginRequiredMixin, View):
         return HttpResponseRedirect(reverse('notifications:all'))
 
 
-class NotificationDeleteView(LoginRequiredMixin, View):
+class NotificationDeleteView(LoginRequiredMixin, generic.View):
 
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[Notification]:
         return Notification.objects.filter(*args, **kwargs)
 
-    def delete(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
-        notification = self.get_queryset(pk=kwargs['pk']).first()
+    def delete(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
+        notification = self.get_queryset(pk=kwargs['pk'])
         if notification is not None:
             notification.delete()
 
         return HttpResponse()
+
+
+class SSENotificationsView(LoginRequiredMixin, generic.View):
+
+    def get_queryset(self, receiver: User) -> QuerySet[Notification]:
+        return (
+            Notification.objects.filter(receiver=receiver)
+            .order_by('-created').all()
+        )
+
+    def notifications_generator(self) -> Type[Generator]:
+        notifications = self.get_queryset(self.request.user)
+        data = [
+            notification_serializer(notification) for notification in notifications
+        ]
+        yield f'data: {json.dumps(data)}\n\n'
+
+    def get(self, request: HttpRequest, **kwargs: Any) -> StreamingHttpResponse:
+        return StreamingHttpResponse(
+            self.notifications_generator(), content_type='text/event-stream'
+        )

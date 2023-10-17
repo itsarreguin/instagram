@@ -1,5 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
+<!DOCTYPE html>{% load static %}
 <html lang="en">
 <head>
   {% block meta_tags %}
@@ -21,7 +20,8 @@
 
   <script src="https://unpkg.com/htmx.org@1.9.2"></script>
   {% if request.user.is_authenticated %}
-  <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/index.js' %}" defer></script>
+    <script src="{% static 'js/notifications.js' %}" defer></script>
   {% endif %}
   {% block scripts %}{% endblock %}
 

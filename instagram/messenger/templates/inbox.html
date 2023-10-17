@@ -1,0 +1,8 @@
+{% extends 'users/base.html' %}
+{% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
+
+{% block sidebar_left %}{% include 'includes/chat_sidebar.html' %}{% endblock %}
+{% block account_content %}
+Messages
+{% endblock %}
+{% block sidebar_right %}{% endblock %}

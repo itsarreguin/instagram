@@ -39,6 +39,10 @@ urlpatterns: List[path] = [
         route='',
         view=include('instagram.notifications.urls', namespace='notifications')
     ),
+    path(
+        route='',
+        view=include('instagram.messenger.urls', namespace='messenger')
+    )
 ]
 
 if settings.DEBUG:

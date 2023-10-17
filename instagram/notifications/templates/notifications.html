@@ -4,7 +4,7 @@
 {% block account_content %}
   <section class="container-notifications flex flex-column">
     <div class="flex flex-justify-start flex-align-center mb-30"><h2>Notifications</h2></div>
-    <div>
+    <div id="notifications">
     {% if notifications %}
       {% for notification in notifications %}
         {% if notification.category == 'follower' %}

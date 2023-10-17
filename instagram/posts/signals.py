@@ -22,7 +22,7 @@ from instagram.core.utils.text import RAND_CHARS
 def save_post_url(instance: Post, **kwargs: Dict[str, Any]) -> None:
     """generate_url
     Signal that generates a random string to be saved as url for a post.
-    
+
     Args:
         sender (Model): The model that sends the signal
         instance (Post model): Instance of the same model that send a signal

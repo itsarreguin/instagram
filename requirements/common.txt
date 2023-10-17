@@ -5,10 +5,10 @@ amqp==5.1.1
 asgiref==3.7.2
 
 # Celery Distributed Task Queue
-celery==5.3.1
+celery==5.3.4
 
 # Django Framework
-django==4.2.4
+django==4.2.6
 
 # Django social media authentication
 django-allauth==0.54.0
@@ -20,7 +20,7 @@ flower==2.0.1
 pillow==10.0.0
 
 # PostgreSQL adapter
-psycopg==3.1.10
+psycopg[binary]==3.1.12
 
 # Environmnet variables
 python-dotenv==1.0.0
@@ -32,4 +32,4 @@ pyjwt==2.8.0
 redis==4.6.0
 
 # Messaing library for Python
-kombu==5.3.1
+kombu==5.3.2
