@@ -3,33 +3,33 @@
 
 {% block navbar %}{% include 'includes/navbar-auth.html' %}{% endblock %}
 {% block container %}
-  <section class="container container-full flex">
-    <div class="container-auth-form flex flex-align-center flex-justify-center">
-      {% url 'account:signup' as signup %}
-      <section class="{% if request.path == signup %}form-w-480{% else %}form-w-385{% endif %}" hx-boost="true">
-        <div class="form-title" style="margin-bottom: 26px; text-align: center;">
-          <h3>{% block form_title %}{% endblock %}</h3>
-        </div>
-        <div class="form-head">
-          {% block form_head %}
-            <section>
-              <a class="btn btn-normal btn-auth" href="">
-                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 1024">
-                  <path d="M1023.919 511.962c0-282.748-229.21-511.962-511.957-511.962s-511.962 229.214-511.962 511.962c0 255.535 187.217 467.332 431.966 505.741v-357.751h-129.988v-147.989h129.988v-112.794c0-128.311 76.433-199.185 193.374-199.185 56.013 0 114.603 10.001 114.603 10.001v125.99h-64.555c-63.599 0-83.435 39.462-83.435 79.949v96.038h141.99l-22.699 147.989h-119.292v357.751c244.753-38.409 431.966-250.206 431.966-505.741z"></path>
-                </svg>                
-                <span style="margin-left: 10px;">{% block button_text %}{% endblock %}</span>
-              </a>
-              <div class="form-div flex flex-align-center flex-justify-between">
-                <span class="form-line"></span> or <span class="form-line"></span>
-              </div>
+    <section class="container container-full flex">
+        <div class="container-auth-form flex flex-align-center flex-justify-center">
+            {% url 'account:signup' as signup %}
+            <section class="{% if request.path == signup %}form-w-480{% else %}form-w-385{% endif %}" hx-boost="true">
+                <div class="form-title" style="margin-bottom: 26px; text-align: center;">
+                    <h3>{% block form_title %}{% endblock %}</h3>
+                </div>
+                <div class="form-head">
+                    {% block form_head %}
+                        <section>
+                            <a class="btn btn-normal btn-auth" href="">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 1024 1024">
+                                    <path d="M1023.919 511.962c0-282.748-229.21-511.962-511.957-511.962s-511.962 229.214-511.962 511.962c0 255.535 187.217 467.332 431.966 505.741v-357.751h-129.988v-147.989h129.988v-112.794c0-128.311 76.433-199.185 193.374-199.185 56.013 0 114.603 10.001 114.603 10.001v125.99h-64.555c-63.599 0-83.435 39.462-83.435 79.949v96.038h141.99l-22.699 147.989h-119.292v357.751c244.753-38.409 431.966-250.206 431.966-505.741z"></path>
+                                </svg>
+                                <span style="margin-left: 10px;">{% block button_text %}{% endblock %}</span>
+                            </a>
+                            <div class="form-div flex flex-align-center flex-justify-between">
+                                <span class="form-line"></span> or <span class="form-line"></span>
+                            </div>
+                        </section>
+                    {% endblock %}
+                </div>
+                <div class="form-body">
+                    {% block form_body %}{% endblock %}
+                </div>
             </section>
-          {% endblock %}
         </div>
-        <div class="form-body">
-          {% block form_body %}{% endblock %}
-        </div>
-      </section>
-    </div>
-    <div class="container-auth-img">{% block auth_cover %}{% endblock %}</div>
-  </section>
+        <div class="container-auth-img">{% block auth_cover %}{% endblock %}</div>
+    </section>
 {% endblock %}

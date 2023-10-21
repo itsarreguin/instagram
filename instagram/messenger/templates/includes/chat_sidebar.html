@@ -1,14 +1,14 @@
 <section class="sidebar sidebar-left" hx-boost="true" style="overflow-y: auto;">
-  <div class="flex flex-align-center flex-justify-between mb-20">
-    <a class="text-dark text-18px font-600" href="{% url 'messenger:home' %}">Messages</a>
-    <button id="collection-btn" class="flex link-purple text-15px font-500">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-      <span style="margin-left: 5px;">New inbox</span>
-    </button>
-  </div>
-  <div class="sidebar-user flex flex-column flex-align-center flex-justify-center">
+    <div class="flex flex-align-center flex-justify-between mb-20">
+        <a class="text-dark text-18px font-600" href="{% url 'messenger:home' %}">Messages</a>
+        <button id="collection-btn" class="flex link-purple text-15px font-500">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span style="margin-left: 5px;">New inbox</span>
+        </button>
+    </div>
+    <div class="sidebar-user flex flex-column flex-align-center flex-justify-center">
     {% for inbox in inboxes %}
-      {% include 'includes/inbox_card.html' %}
+        {% include 'includes/inbox_card.html' %}
     {% endfor %}
-  </div>
+    </div>
 </section>

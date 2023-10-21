@@ -1,53 +1,53 @@
 <div id="post-card" class="card card-post" hx-boost="true">
-  <section class="card-header flex flex-align-center flex-justify-between">
-    <a class="card-user flex flex-align-center" href="{% url 'account:profile' username=post.author.username %}">
-      {% include 'includes/user-picture.html' %}
-      <span class="card-user-username" style="margin-left: 10px;">{{ post.author }}</span>
-    </a>
-    <div x-data="{ showOptions: false }" style="position: relative;">
-      <button @click="showOptions = true" class="card-options-btn">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M14 12c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414zM21 12c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414zM7 12c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414z"></path>
-        </svg>
-      </button>
-      <section class="card-options" x-show="showOptions" @click.outside="showOptions = false">
-      {% if request.user == post.author %}
-        <form action="{% url 'posts:delete' url=post.url %}" method="post">
-          <button class="flex flex-align-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-            <span>Delete</span>
-          </button>
-        </form>
-      {% else %}
-        {% if post.author in request.user.following.all %}
-          <form action="" method="post">
-            <button class="flex flex-align-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-              <span>Unfollow</span>
+    <section class="card-header flex flex-align-center flex-justify-between">
+        <a class="card-user flex flex-align-center" href="{% url 'account:profile' username=post.author.username %}">
+            {% include 'includes/user-picture.html' %}
+            <span class="card-user-username" style="margin-left: 10px;">{{ post.author }}</span>
+        </a>
+        <div x-data="{ showOptions: false }" style="position: relative;">
+            <button @click="showOptions = true" class="card-options-btn">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M14 12c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414zM21 12c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414zM7 12c0-0.552-0.225-1.053-0.586-1.414s-0.862-0.586-1.414-0.586-1.053 0.225-1.414 0.586-0.586 0.862-0.586 1.414 0.225 1.053 0.586 1.414 0.862 0.586 1.414 0.586 1.053-0.225 1.414-0.586 0.586-0.862 0.586-1.414z"></path>
+                </svg>
             </button>
-          </form>
-        {% else %}
-          <form action="">
-            <button class="flex flex-align-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-              <span>Follow</span>
-            </button>
-          </form>
-        {% endif %}
-      {% endif %}
-      </section>
-    </div>
-  </section>
-  <section class="card-image"><img src="{{ post.image.url }}" alt="{{ post.author.username }}-post-image"></section>
-  <section class="card-actions flex flex-align-center flex-justify-between">
-    <div class="card-actions-main flex">
-      {% include 'includes/like.html' %}
-      {% include 'includes/comments-counter.html' %}
-    </div>
-    {% include 'includes/save.html' %}
-  </section>
-  <section class="card-comment-form">
-     {% block comment_form %}{% endblock %}
-  </section>
-  {% block post_comments %}{% endblock %}
+            <section class="card-options" x-show="showOptions" @click.outside="showOptions = false">
+            {% if request.user == post.author %}
+                <form action="{% url 'posts:delete' url=post.url %}" method="post">
+                    <button class="flex flex-align-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        <span>Delete</span>
+                    </button>
+                </form>
+            {% else %}
+                {% if post.author in request.user.following.all %}
+                    <form action="" method="post">
+                        <button class="flex flex-align-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-minus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                            <span>Unfollow</span>
+                        </button>
+                    </form>
+                {% else %}
+                    <form action="">
+                        <button class="flex flex-align-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                            <span>Follow</span>
+                        </button>
+                    </form>
+                {% endif %}
+            {% endif %}
+          </section>
+        </div>
+    </section>
+    <section class="card-image"><img src="{{ post.image.url }}" alt="{{ post.author.username }}-post-image"></section>
+    <section class="card-actions flex flex-align-center flex-justify-between">
+        <div class="card-actions-main flex">
+            {% include 'includes/like.html' %}
+            {% include 'includes/comments-counter.html' %}
+        </div>
+        {% include 'includes/save.html' %}
+    </section>
+    <section class="card-comment-form">
+        {% block comment_form %}{% endblock %}
+    </section>
+    {% block post_comments %}{% endblock %}
 </div>

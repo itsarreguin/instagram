@@ -11,9 +11,14 @@ indent_style = space
 indent_size = 4
 insert_final_newline = false
 
-[*.{js, html, scss, css}]
+[*.{js, scss, css}]
 indent_style = space
 indent_size = 2
+insert_final_newline = false
+
+[*.html]
+indent_style = space
+indent_size = 4
 insert_final_newline = false
 
 [*.txt]

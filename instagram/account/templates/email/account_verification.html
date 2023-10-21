@@ -1,7 +1,7 @@
 <p>Hello @{{ user.username }}</p>
 <p>
-  Click on the next link to verify your new account
-  <a href="{{ path }}{% url 'account:verification' uidb64=uid token=token %}">
-    Verify account
-  </a>
+    Click on the next link to verify your new account
+    <a href="{{ path }}{% url 'account:verification' uidb64=uid token=token %}">
+        Verify account
+    </a>
 </p>

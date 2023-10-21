@@ -1,17 +1,17 @@
 <div class="card-comment">
-  <span class="card-user-picture">
-  {% if comment.author.profile.picture %}
-    <img src="{{ comment.author.profile.picture.url }}" alt="{{ post.author.username }}-profile-pic">
-  {% else %}
-    <span class="profile-default flex flex-justify-center flex-align-center">
-        {{ comment.author.first_name|slice:':1' }}{{ comment.author.last_name|slice:':1' }}
+    <span class="card-user-picture">
+    {% if comment.author.profile.picture %}
+        <img src="{{ comment.author.profile.picture.url }}" alt="{{ post.author.username }}-profile-pic">
+    {% else %}
+        <span class="profile-default flex flex-justify-center flex-align-center">
+            {{ comment.author.first_name|slice:':1' }}{{ comment.author.last_name|slice:':1' }}
+        </span>
+    {% endif %}
     </span>
-  {% endif %}
-  </span>
-  <div class="card-comment-container" style="margin-left: 15px;">
-    <a class="card-comment-author" href="{% url 'account:profile' username=comment.author.username %}">
-      {{ comment.author.username }}:
-    </a>
-    <span class="card-comment-body">{{ comment.body }}</span>
-  </div>
+    <div class="card-comment-container" style="margin-left: 15px;">
+        <a class="card-comment-author" href="{% url 'account:profile' username=comment.author.username %}">
+            {{ comment.author.username }}:
+        </a>
+        <span class="card-comment-body">{{ comment.body }}</span>
+    </div>
 </div>

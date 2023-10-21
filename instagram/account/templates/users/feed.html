@@ -1,22 +1,22 @@
 {% extends 'users/base.html' %}
 
 {% block account_content %}
-  <section class="container-account-feed">
+    <section class="container-account-feed">
     {% for post in posts %}
-      {% include 'includes/post_feed.html' %}
+        {% include 'includes/post_feed.html' %}
     {% endfor %}
-  </section>
+    </section>
 {% endblock %}
 
 {% block scripts %}
-  {{ block.super }}
-  <script>
-    document.body.addEventListener("htmx:configRequest", (event) => {
-      event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
-    });
-    document.body.addEventListener("htmx:afterRequest", (event) => {
-      const commentBody = document.getElementById("comment-body");
-      if (commentBody) commentBody.value = "";
-    });
-  </script>
+    {{ block.super }}
+    <script>
+        document.body.addEventListener("htmx:configRequest", (event) => {
+            event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
+        });
+        document.body.addEventListener("htmx:afterRequest", (event) => {
+            const commentBody = document.getElementById("comment-body");
+            if (commentBody) commentBody.value = "";
+        });
+    </script>
 {% endblock %}

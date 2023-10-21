@@ -1,30 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block styles %}
-  <link rel="stylesheet" href="{% static 'css/cropper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cropper.min.css' %}">
 {% endblock %}
 
 {% block navbar %}{% include 'includes/navbar.html' %}{% endblock %}
 {% block container %}
-  <section class="container flex flex-justify-center">
-    <div class="container-account">
-      {% block sidebar_left %}
-        <div class="sidebar sidebar-fill left-0"></div>
-        {% include 'includes/sidebar-left.html' %}
-      {% endblock %}
-      {% block account_content %}{% endblock %}
-      {% block sidebar_right %}
-        <div class="sidebar sidebar-fill right-0"></div>
-        {% include 'includes/sidebar-right.html' %}
-      {% endblock %}
-    </div>
-  </section>
-  {% include 'create_post.html' %}
+    <section class="container flex flex-justify-center">
+        <div class="container-account">
+            {% block sidebar_left %}
+                <div class="sidebar sidebar-fill left-0"></div>
+                {% include 'includes/sidebar-left.html' %}
+            {% endblock %}
+            {% block account_content %}{% endblock %}
+            {% block sidebar_right %}
+                <div class="sidebar sidebar-fill right-0"></div>
+                {% include 'includes/sidebar-right.html' %}
+            {% endblock %}
+        </div>
+    </section>
+    {% include 'create_post.html' %}
 {% endblock %}
 
 {% block scripts %}
-  {% if request.user.is_authenticated %}
-  <script src="{% static 'js/posts.js' %}"></script>
-  <script src="{% static 'js/cropper.min.js' %}"></script>
-  {% endif %}
+    {% if request.user.is_authenticated %}
+        <script src="{% static 'js/posts.js' %}"></script>
+        <script src="{% static 'js/cropper.min.js' %}"></script>
+    {% endif %}
 {% endblock %}
