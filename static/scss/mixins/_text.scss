@@ -1,13 +1,21 @@
-@mixin text($type, $name, $weight, $size, $color, $hover) {
+@mixin text($type, $name, $color, $hover) {
     .#{$type}-#{$name} {
-        font: {
-            size: $size;
-            weight: $weight;
-        }
         color: $color;
         transition: 0.3s ease;
         &:hover {
             color: $hover;
         }
+    }
+}
+
+@mixin textSize($type, $name, $size) {
+    .#{$type}-#{$name} {
+        font-size: $size;
+    }
+}
+
+@mixin textWeight($type, $name, $weight) {
+    .#{$type}-#{$name} {
+        font-weight: $weight;
     }
 }

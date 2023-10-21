@@ -1,9 +1,25 @@
 @import "../mixins/text";
 
-@include text("link", "pink", $font-500, $font-15px, $pink-100, $ig-pink);
-@include text("link", "purple", $font-500, $font-15px, $ig-purple, $purple-500);
-@include text("link", "red", $font-500, $font-15px, $red-100, $red-200);
+@include text("link", "pink", $pink-100, $ig-pink);
+@include text("link", "purple", $ig-purple, $purple-500);
+@include text("link", "red", $red-100, $red-200);
 
-@include text("text", "dark", $font-500, $font-15px, $dark, none);
-@include text("text", "gray", $font-500, $font-15px, $gray-400, none);
-@include text("text", "danger", $font-500, $font-15px, $red-100, none);
+@include text("text", "dark", $dark, none);
+@include text("text", "gray", $gray-400, none);
+@include text("text", "danger", $red-100, none);
+
+@include textSize("text", "12px", $font-12px);
+@include textSize("text", "14px", $font-14px);
+@include textSize("text", "15px", $font-15px);
+@include textSize("text", "16px", $font-16px);
+@include textSize("text", "18px", $font-18px);
+@include textSize("text", "20px", $font-20px);
+
+@include textWeight("font", "100", $font-100);
+@include textWeight("font", "200", $font-200);
+@include textWeight("font", "300", $font-300);
+@include textWeight("font", "400", $font-400);
+@include textWeight("font", "500", $font-500);
+@include textWeight("font", "600", $font-600);
+@include textWeight("font", "700", $font-700);
+@include textWeight("font", "800", $font-800);

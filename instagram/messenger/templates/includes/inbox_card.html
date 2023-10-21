@@ -1,0 +1,30 @@
+{% for user in inbox.users.all %}
+  {% if user != request.user %}
+    <a
+      class="flex flex-align-center"
+      href="{% url 'messenger:inbox' uuid=inbox.uuid %}"
+      style="width: 100%; border-bottom: 1px solid #C0C0C0; padding: 16px 0px;"
+    >
+      <section class="flex flex-align-center flex-justify-between" style="width: 100%;">
+        <div class="flex flex-align-center">
+          <section class="card-user-picture mr-5">
+            {% if user.profile.picture %}
+              <img src="{{ user.profile.picture.url }}" alt="{{ user.username }}-profile-pic">
+            {% else %}
+              <span class="profile-default flex flex-justify-center flex-align-center">
+                {{ user.first_name|slice:'1' }}{{ user.last_name|slice:'1' }}
+              </span>
+            {% endif %}
+          </section>
+          <section class="">
+            <span class="flex flex-justify-start text-15px font-500 mb-5">
+              {{ user.first_name }} {{ user.last_name }}
+            </span>
+            <p class="text-gray text-14px font-400">There are not messages ...</p>
+          </section>
+        </div>
+        <span id="new-messages-counter" class="sidebar-notifications flex flex-align-center flex-justify-center" style="display: none;">0</span>
+      </section>
+    </a>
+  {% endif %}
+{% endfor %}

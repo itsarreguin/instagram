@@ -1,0 +1,20 @@
+{% extends 'users/base.html' %}
+{% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
+
+{% block styles %}
+    <style>
+        #inbox-container {
+            width: 100%;
+            height: auto;
+            padding-left: 340px;
+        }
+    </style>
+{% endblock %}
+
+{% block sidebar_left %}{% include 'includes/chat_sidebar.html' %}{% endblock %}
+{% block account_content %}
+    <div id="inbox-container" class="relative">
+        {% block inbox_content %}{% endblock %}
+    </div>
+{% endblock %}
+{% block sidebar_right %}{% endblock %}

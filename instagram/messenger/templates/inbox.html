@@ -1,8 +1,9 @@
-{% extends 'users/base.html' %}
-{% block title %}{{ title }} &#8226; {{ block.super }}{% endblock %}
+{% extends 'base_messages.html' %}
 
-{% block sidebar_left %}{% include 'includes/chat_sidebar.html' %}{% endblock %}
-{% block account_content %}
-Messages
+{% block inbox_content %}
+    <div style="padding: 20px;">
+        {% for message in messages %}
+            {{ message.body }}
+        {% endfor %}
+    </div>
 {% endblock %}
-{% block sidebar_right %}{% endblock %}

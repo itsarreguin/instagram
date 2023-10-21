@@ -2,12 +2,12 @@
     &-fill{
         position: relative;
         width: 340px;
-        height: auto;
+        height: 100%;
     }
     &-left, &-right, &-settings {
         position: fixed;
         width: 340px;
-        height: 100vh;
+        height: calc(100% - 70px);
         background: $light;
     }
     &-left {
@@ -80,9 +80,11 @@
         background: $red-100;
         color: $light;
         font-size: $font-12px;
+        font-weight: 500;
         min-width: 20px;
         width: auto;
         height: 20px;
-        border-radius: 100%;
+        padding: 5px;
+        border-radius: 20px;
     }
 }
