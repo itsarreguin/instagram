@@ -1,9 +1,70 @@
 {% extends 'base_messages.html' %}
+{% load static %}
 
 {% block inbox_content %}
-    <div style="padding: 20px;">
+    <div class="" style="position: relative; height: calc(100vh - 70px); padding: 20px; border-right: 1px solid #c0c0c0;">
+        <section id="messages-list" class="" style="background: #FFFFFF;">
         {% for message in messages %}
-            {{ message.body }}
+            {% if message.sender == request.user %}
+                <section class="flex flex-align-start flex-justify-end mb-10">
+                    <div class="text-14px" style="padding: 8px 10px; border-radius: 8px; border-top-right-radius: 0px; background: #3CA1FF; color: #FFFFFF; max-width: 80%;">
+                        {{ message.body }}
+                    </div>
+                    <div class="card-user-picture ml-10">
+                        {% if message.sender.profile.picture %}
+                          <img src="{{ message.sender.profile.picture.url }}" alt="{{ message.sender.username }}-profile-pic">
+                        {% else %}
+                          <span class="profile-default flex flex-justify-center flex-align-center">
+                            {{ message.sender.first_name|slice:'1' }}{{ message.sender.last_name|slice:'1' }}
+                          </span>
+                        {% endif %}
+                    </div>
+                </section>
+            {% else %}
+                <section class="flex flex-align-start flex-justify-start mb-10">
+                    <div class="card-user-picture mr-10">
+                        {% if message.sender.profile.picture %}
+                          <img src="{{ message.sender.profile.picture.url }}" alt="{{ message.sender.username }}-profile-pic">
+                        {% else %}
+                          <span class="profile-default flex flex-justify-center flex-align-center">
+                            {{ message.sender.first_name|slice:'1' }}{{ message.sender.last_name|slice:'1' }}
+                          </span>
+                        {% endif %}
+                    </div>
+                    <div class="text-14px" style="padding: 8px 10px; border-radius: 8px; border-top-left-radius: 0px; background: #808CA4; color: #FFFFFF; max-width: 80%;">
+                        {{ message.body }}
+                    </div>
+                </section>
+            {% endif %}
         {% endfor %}
+        </section>
+
+        <section style="width: 100%; height: auto; position: absolute; left: 0; bottom: 0; border-top: 1px solid #c0c0c0; padding: 20px 20px; background: #FFFFFF;">
+            <form id="message-form" class="flex flex-align-start" style="position: relative; width: 100%;">
+                <textarea name="message" id="message" style="width: 100%;" placeholder="New message"></textarea>
+                <button type="submit" id="send-btn">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M22.963 2.269c0.043-0.151 0.050-0.314 0.015-0.476-0.024-0.113-0.068-0.224-0.131-0.325-0.064-0.102-0.145-0.19-0.238-0.262-0.117-0.090-0.249-0.15-0.386-0.181s-0.282-0.034-0.426-0.004c-0.042 0.009-0.085 0.021-0.126 0.035l-0.021 0.007-19.98 6.993c-0.252 0.088-0.467 0.276-0.584 0.538-0.224 0.505 0.003 1.096 0.508 1.32l8.649 3.844 3.844 8.649c0.108 0.243 0.313 0.443 0.583 0.538 0.521 0.182 1.092-0.092 1.274-0.614l6.993-19.979c0.010-0.027 0.019-0.054 0.027-0.082zM10.779 11.807l-6.068-2.696 13.483-4.72zM19.609 5.806l-4.72 13.483-2.696-6.068z"></path>
+                    </svg>
+                </button>
+            </form>
+        </section>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ inbox.uuid|json_script:'inbox-uuid' }}
+    {{ request.user.username|json_script:'current-user' }}
+    {% for user in inbox.users.all %}
+        {% if user != request.user %}{{ user.username|json_script:'receiver-username' }}{% endif %}
+    {% endfor %}
+
+    <script>
+        const inboxId = JSON.parse(document.getElementById("inbox-uuid").textContent);
+        const currentUser = JSON.parse(document.getElementById("current-user").textContent);
+        const receiverUsername = JSON.parse(
+            document.getElementById("receiver-username").textContent
+        );
+    </script>
+    <script defer src="{% static 'js/messages.js' %}"></script>
 {% endblock %}

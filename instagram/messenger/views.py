@@ -21,6 +21,7 @@ from instagram.messenger.context_processors import inboxes_context
 
 
 inbox_prefetch_fields = ('users', 'users__profile')
+messages_selct_fields = ('sender', 'sender__profile', 'receiver', 'receiver__profile')
 
 
 class MessengerView(LoginRequiredMixin, generic.TemplateView):
@@ -52,7 +53,9 @@ class InboxDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
         inbox = self.get_queryset(uuid=kwargs['uuid'])
-        messages = Message.objects.filter(inbox=inbox).all()
+        messages = (
+            Message.objects.filter(inbox=inbox).select_related(*messages_selct_fields).all()
+        )
 
         template = loader.get_template('inbox.html')
         context = {

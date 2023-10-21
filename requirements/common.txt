@@ -7,8 +7,18 @@ asgiref==3.7.2
 # Celery Distributed Task Queue
 celery==5.3.4
 
+# Channels library to extends Django beyond HTTP
+channels==4.0.0
+# Redis channel layer
+channels-redis==4.1.0
+
+# Django ASGI (HTTP/WebSocket) Server
+daphne==4.0.0
+
 # Django Framework
 django==4.2.6
+# Django REST Framework
+djangorestframework==3.14.0
 
 # Django social media authentication
 django-allauth==0.54.0

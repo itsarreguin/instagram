@@ -1,43 +1,42 @@
 <!DOCTYPE html>{% load static %}
 <html lang="en">
 <head>
-  {% block meta_tags %}
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  {% endblock %}
-  <title>{% block title %}Instagram{% endblock %}</title>
-  <link rel="shortcut icon" href="{% static 'images/icons/instagram-icon-white.png' %}" type="image/x-icon">
-  <link rel="stylesheet" href="{% static 'dist/css/instagram.css' %}">
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.3/dist/cdn.min.js"></script>
-  {% block styles %}{% endblock %}
+    {% block meta_tags %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
+    <title>{% block title %}Instagram{% endblock %}</title>
+    <link rel="shortcut icon" href="{% static 'images/icons/instagram-icon-white.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'dist/css/instagram.css' %}">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.3/dist/cdn.min.js"></script>
+    {% block styles %}{% endblock %}
 </head>
 <body>
-  {% block navbar %}{% endblock %}
-  <main id="main" class="">
-    {% block container %}{% endblock %}
-  </main>
+    {% block navbar %}{% endblock %}
+    <main id="main" class="">
+        {% block container %}{% endblock %}
+    </main>
 
-  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
-  {% if request.user.is_authenticated %}
-    <script src="{% static 'js/index.js' %}" defer></script>
-    {% comment %} <script src="{% static 'js/notifications.js' %}" defer></script> {% endcomment %}
-  {% endif %}
-  {% block scripts %}{% endblock %}
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    {% if request.user.is_authenticated %}
+        <script defer src="{% static 'js/index.js' %}"></script>
+        <script defer src="{% static 'js/notifications.js' %}"></script>
+    {% endif %}
+    {% block scripts %}{% endblock %}
 
-  {% if debug %}
-  <script>
-    if (typeof window.htmx !== "undefined") {
-      htmx.on("htmx:afterSettle", function(detail) {
-        if (
-          typeof window.djdt !== "undefined"
-          && detail.target instanceof HTMLBodyElement
-        ) {
-          djdt.show_toolbar();
-        }
-      });
-    }
-  </script>
-  {% endif %}
+    {% if debug %}
+    <script>
+          if (typeof window.htmx !== "undefined") {
+            htmx.on("htmx:afterSettle", function(detail) {
+                if (
+                    typeof window.djdt !== "undefined" && detail.target instanceof HTMLBodyElement
+                ) {
+                    djdt.show_toolbar();
+                }
+            });
+          }
+    </script>
+    {% endif %}
 </body>
 </html>

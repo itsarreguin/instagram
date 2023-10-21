@@ -16,12 +16,14 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # Application definition
 
 DJANGO_APPS = [
+    'daphne.apps.DaphneConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels.apps.ChannelsConfig',
 ]
 
 PROJECT_APPS = [
@@ -70,6 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'instagram.wsgi.application'
+ASGI_APPLICATION = 'instagram.asgi.application'
 
 # Auth user model definition
 AUTH_USER_MODEL = 'account.User'
@@ -92,6 +95,21 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+# Django Channels config
+# https://channels.readthedocs.io/en/latest/topics/channel_layers.html
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [
+                (os.environ.get('REDIS_HOST'), int(os.environ.get('REDIS_PORT')))
+            ],
+        },
+    },
+}
 
 
 # Internationalization

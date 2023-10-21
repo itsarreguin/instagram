@@ -36,7 +36,7 @@ class Message(BaseAbstractModel):
     class Meta:
         verbose_name: str = _('Message')
         verbose_name_plural: str = _('Messages')
-        ordering: list[str] = ['-created']
+        ordering: list[str] = ['created']
 
     def __str__(self) -> str:
         return 'from %s' % self.sender.username
