@@ -4,10 +4,12 @@ from django.conf import settings
 
 from celery import Celery
 
+from dotenv import load_dotenv; load_dotenv()
+
 
 # Set the default Django settings module for the 'celery' program.
 if not settings.configured:
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'instagram.settings.dev')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', os.environ['PROJECT_SETTINGS'])
 
 
 celery = Celery('instagram')

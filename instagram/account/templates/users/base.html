@@ -24,7 +24,7 @@
 
 {% block scripts %}
     {% if request.user.is_authenticated %}
-        <script src="{% static 'js/posts.js' %}"></script>
-        <script src="{% static 'js/cropper.min.js' %}"></script>
+        <script src="{% static 'js/posts.js' %}" defer></script>
+        <script src="{% static 'js/cropper.min.js' %}" defer></script>
     {% endif %}
 {% endblock %}

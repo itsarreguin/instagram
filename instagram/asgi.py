@@ -1,5 +1,5 @@
 """
-ASGI config for instagram project.
+ASGI config for Instagram project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -13,10 +13,14 @@ from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 
+from dotenv import load_dotenv
+
 from instagram import routing
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'instagram.settings.dev')
+load_dotenv()
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', os.environ['PROJECT_SETTINGS'])
 
 application = ProtocolTypeRouter(
     {

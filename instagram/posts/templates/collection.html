@@ -4,7 +4,9 @@
 {% block account_content %}
     <div class="profile-container">
         <section class="flex flex-align-center flex-justify-between mb-30" hx-boost="true">
-            <a class="link-purple" href="{% url 'posts:bookmarks' username=request.user.username %}">Return to bookmarks</a>
+            <a class="link-purple" href="{% url 'posts:bookmarks' username=request.user.username %}">
+                Return to bookmarks
+            </a>
         </section>
         <section>
         {% if collection.posts.all %}

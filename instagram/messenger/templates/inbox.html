@@ -66,5 +66,6 @@
             document.getElementById("receiver-username").textContent
         );
     </script>
-    <script defer src="{% static 'js/messages.js' %}"></script>
+    <script src="{% static 'js/messages.js' %}" defer></script>
+    {{ block.super }}
 {% endblock %}
