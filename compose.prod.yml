@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  django:
+    extends:
+      file: ./compose/docker-compose.yml
+      service: django
+    build:
+      context: ./
+      dockerfile: ./compose/production/django/Dockerfile
+    command: ./compose/production/django/start.sh
+    volumes:
+      - static_files_volume:/app/staticfiles/
+      - media_files_volume:/app/media/
+
+  database:
+    extends:
+      file: ./compose/docker-compose.yml
+      service: database
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_HOST=${DATABASE_HOST}
+      - POSTGRES_PORT=${DATABASE_PORT}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  celery:
+    extends:
+      file: ./compose/docker-compose.yml
+      service: celery
+    build:
+      context: ./
+      dockerfile: ./compose/production/django/Dockerfile
+    command: ./compose/production/celery/start.sh
+
+  flower:
+    extends:
+      file: ./compose/docker-compose.yml
+      service: flower
+    build:
+      context: ./
+      dockerfile: ./compose/production/django/Dockerfile
+    environment:
+      - FLOWER_USER=${FLOWER_USER}
+      - FLOWER_PASSWORD=${FLOWER_PASSWORD}
+    command: ./compose/production/celery/flower/start.sh
+
+  redis:
+    container_name: instagram-redis
+    image: redis:7.2.2
+
+volumes:
+  postgres_data:
+  static_files_volume:
+  media_files_volume:

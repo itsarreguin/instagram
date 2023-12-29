@@ -2,7 +2,6 @@ root = true
 
 [*]
 charset = utf-8
-end_of_line = crlf
 trim_trailing_whitespace = true
 
 [*.py]
@@ -24,5 +23,11 @@ insert_final_newline = false
 [*.txt]
 insert_final_newline = false
 
-[*.md]
+[*.{md, yml}]
 insert_final_newline = true
+
+[Dockerfile]
+end_of_line = lf
+
+[*.{yml, sh}]
+end_of_line = lf

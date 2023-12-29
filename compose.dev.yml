@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  django:
+    extends:
+      file: ./compose/docker-compose.yml
+      service: django
+    build:
+      context: ./
+      dockerfile: ./compose/development/django/Dockerfile
+    command: ./compose/development/django/start.sh
+    volumes:
+      - local_media_files:/app/media/
+    restart: always
+
+  database:
+    extends:
+      file: ./compose/docker-compose.yml
+      service: database
+    environment:
+      - POSTGRES_DB=${DEV_DB_NAME}
+      - POSTGRES_USER=${DEV_DB_USER}
+      - POSTGRES_PASSWORD=${DEV_DB_PASSWORD}
+      - POSTGRES_HOST=${DEV_DB_HOST}
+      - POSTGRES_PORT=${DEV_DB_PORT}
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data/
+    restart: always
+
+  celery:
+    extends:
+      file: ./compose/docker-compose.yml
+      service: celery
+    build:
+      context: ./
+      dockerfile: ./compose/development/django/Dockerfile
+    command: ./compose/development/celery/start.sh
+    restart: always
+
+  redis:
+    container_name: instagram-redis
+    image: redis:7.2.2
+
+volumes:
+  local_postgres_data:
+  local_media_files:

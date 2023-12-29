@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  django:
+    container_name: instagram-app
+    ports:
+      - 8000:8000
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - PROJECT_SETTINGS=${PROJECT_SETTINGS}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+    depends_on:
+      - database
+      - redis
+
+  celery:
+    container_name: instagram-celery
+    environment:
+      - BROKER_URL=${CELERY_BROKER_URL}
+    depends_on:
+      - redis
+
+  flower:
+    container_name: instagram-flower
+    ports:
+      - 5555:5555
+    depends_on:
+      - redis
+
+  database:
+    image: postgres:15.4
+    container_name: instagram-db
+    ports:
+      - 5432:5432

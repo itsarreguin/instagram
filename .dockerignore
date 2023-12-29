@@ -1,0 +1,11 @@
+.git
+.dockerignore
+.editorconfig
+.gitignore
+db.sqlite3
+/venv
+/env
+.git
+/node_modules
+/media
+.env.example

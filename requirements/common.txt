@@ -16,7 +16,7 @@ channels-redis==4.1.0
 daphne==4.0.0
 
 # Django Framework
-django==4.2.6
+django==4.2.8
 # Django REST Framework
 djangorestframework==3.14.0
 

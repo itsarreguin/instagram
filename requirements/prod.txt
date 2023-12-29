@@ -1,4 +1,7 @@
 -r ./common.txt
 
-# HTTP Server for UNIX
-gunicorn==20.1.0
+# Coroutine-based networking library
+gevent==23.9.1
+
+# Lightweight in-process concurrent programming
+greenlet==3.0.1

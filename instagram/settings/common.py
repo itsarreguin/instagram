@@ -48,8 +48,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-INTERNAL_IPS = []
-
 ROOT_URLCONF = 'instagram.urls'
 
 TEMPLATES = [
@@ -78,6 +76,11 @@ ASGI_APPLICATION = 'instagram.asgi.application'
 AUTH_USER_MODEL = 'account.User'
 
 
+# Redis Settings
+REDIS_HOST = os.environ.get('REDIS_HOST', '127.0.0.1')
+REDIS_PORT = int(os.environ.get('REDIS_PORT', 6379))
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -104,9 +107,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            'hosts': [
-                (os.environ.get('REDIS_HOST'), int(os.environ.get('REDIS_PORT')))
-            ],
+            'hosts': [(REDIS_HOST, REDIS_PORT)],
         },
     },
 }
@@ -125,17 +126,16 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
+# https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
-STATICFILES_DIR = [
-    os.path.join(BASE_DIR, 'static/')
-]
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static/')
 ]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -151,4 +151,6 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 
 
 # Email settings
+# https://docs.djangoproject.com/en/4.2/topics/email/
+
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
