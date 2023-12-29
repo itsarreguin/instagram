@@ -17,6 +17,7 @@ services:
     extends:
       file: ./compose/docker-compose.yml
       service: database
+    image: postgres:15
     environment:
       - POSTGRES_DB=${DEV_DB_NAME}
       - POSTGRES_USER=${DEV_DB_USER}
@@ -25,6 +26,8 @@ services:
       - POSTGRES_PORT=${DEV_DB_PORT}
     volumes:
       - local_postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
     restart: always
 
   celery:
