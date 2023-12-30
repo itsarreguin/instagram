@@ -42,7 +42,7 @@ CELERYD_TASK_SOFT_TIME_LIMIT = 60
 # Django Email Settings
 # https://docs.djangoproject.com/en/4.2/topics/email/
 
-EMAIL_BACKEND = 'django.core.email.backends.smpt.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smpt.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
 EMAIL_PORT = os.environ.get('EMAIL_PORT', '')
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
