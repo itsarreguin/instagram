@@ -10,8 +10,7 @@ services:
       dockerfile: ./compose/production/django/Dockerfile
     command: ./compose/production/django/start.sh
     volumes:
-      - static_files_volume:/app/staticfiles/
-      - media_files_volume:/app/media/
+      - static_files_volume:/app/staticfiles
 
   database:
     extends:
@@ -25,7 +24,7 @@ services:
       - POSTGRES_HOST=${DATABASE_HOST}
       - POSTGRES_PORT=${DATABASE_PORT}
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
 
@@ -50,6 +49,18 @@ services:
       - FLOWER_PASSWORD=${FLOWER_PASSWORD}
     command: ./compose/production/celery/flower/start.sh
 
+  nginx:
+    container_name: instagram-nginx
+    build:
+      context: ./
+      dockerfile: ./nginx/Dockerfile
+    volumes:
+      - static_files_volume:/app/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - django
+
   redis:
     container_name: instagram-redis
     image: redis:7.2.2
@@ -57,4 +68,3 @@ services:
 volumes:
   postgres_data:
   static_files_volume:
-  media_files_volume:

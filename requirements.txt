@@ -1,0 +1,2 @@
+# Run only for development
+-r ./requirements/dev.txt
