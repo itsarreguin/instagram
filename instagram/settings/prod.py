@@ -7,8 +7,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY', None)
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
-DEBUG = False
-
 INTERNAL_IPS = os.environ.get('INTERNAL_IPS').split(',')
 
 

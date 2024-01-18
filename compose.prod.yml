@@ -16,7 +16,6 @@ services:
     extends:
       file: ./compose/docker-compose.yml
       service: database
-    image: postgres:15
     environment:
       - POSTGRES_DB=${DATABASE_NAME}
       - POSTGRES_USER=${DATABASE_USER}

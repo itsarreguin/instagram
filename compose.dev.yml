@@ -10,14 +10,13 @@ services:
       dockerfile: ./compose/development/django/Dockerfile
     command: ./compose/development/django/start.sh
     volumes:
-      - local_media_files:/app/media/
+      - local_media_files:/media/
     restart: always
 
   database:
     extends:
       file: ./compose/docker-compose.yml
       service: database
-    image: postgres:15
     environment:
       - POSTGRES_DB=${DEV_DB_NAME}
       - POSTGRES_USER=${DEV_DB_USER}

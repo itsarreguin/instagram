@@ -1,6 +1,6 @@
 # Instagram common settings module
-
 import os
+
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -11,6 +11,8 @@ PACKAGE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = PACKAGE_DIR.parent
 
 load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+DEBUG = os.environ['DEBUG']
 
 
 # Application definition

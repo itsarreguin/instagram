@@ -3,10 +3,26 @@
         hx-post="{% url 'posts:save' username=request.user.username post_url=post.url coll_slug='all-posts' %}"
         hx-target="this"
         hx-swap="outerHTML"
-        class="card-action-bookmark"
     >
         <button>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
         </button>
     </form>
+{% else %}
+    <div x-data="{ showCollections: false }" style="position: relative;">
+        <button id="" @click="showCollections = true" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+        </button>
+        <section class="card-options" x-show="showCollections" @click.outside="showCollections = false" style="bottom: 32px;">
+        {% for collection in collections %}
+            <form
+                hx-post="{% url 'posts:save' username=request.user.username post_url=post.url coll_slug=collection.slug %}"
+                hx-target="#collection-btn"
+                hx-swap="none"
+            >
+                <button id="collection-btn" class="flex flex-justify-start">{{ collection.name }}</button>
+            </form>
+        {% endfor %}
+        </section>
+    </div>
 {% endif %}

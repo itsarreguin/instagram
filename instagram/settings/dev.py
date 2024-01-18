@@ -1,4 +1,5 @@
 # Instagram development settings module
+import socket
 
 from instagram.settings.common import *
 
@@ -7,16 +8,18 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-&4s1p8-rj903ne#vv(h_h
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
-DEBUG = True
 
 INSTALLED_APPS += [
     'django_extensions',
     'debug_toolbar',
 ]
 
+
 MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
 
-INTERNAL_IPS = ['127.0.0.1']
+hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+
+INTERNAL_IPS = [ip[: ip.rfind('.')] + '.1' for ip in ips] + ['127.0.0.1', '10.0.2.2']
 
 
 # Database Settings
