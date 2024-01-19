@@ -1,8 +1,5 @@
 # Python standard library
-from typing import Any
-from typing import Dict
-from typing import Tuple
-from typing import Type
+from typing import Any, Dict, Type
 
 # Django HTTP package
 from django.http import HttpRequest
@@ -42,7 +39,7 @@ class PostCreateView(LoginRequiredMixin, FormMixin, View):
 
     form_class: Type[BaseForm] = PostCreateForm
 
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             Post.objects.create(
@@ -60,7 +57,7 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
 
     template_name: str = 'post_detail.html'
 
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[Post]:
         return Post.objects.filter(*args, **kwargs)
 
     def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
@@ -81,14 +78,14 @@ class PostDetailView(LoginRequiredMixin, ContextMixin, View):
 
         return context
 
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
 
 class PostDeleteView(LoginRequiredMixin, View):
 
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         query = Post.objects.filter(**{ 'url': kwargs['url'] }).first()
 
         if query is not None and query.author == request.user:
@@ -103,10 +100,10 @@ class LikeView(LoginRequiredMixin, FormMixin, View):
     model: Type[Like] = Like
     template_name: str = 'includes/like.html'
 
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[Like]:
         return self.model.objects.filter(*args, **kwargs)
 
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         post = Post.objects.get(url=kwargs['url'])
         like = self.get_queryset(user=request.user, post=post).first()
 
@@ -131,7 +128,7 @@ class CommentView(LoginRequiredMixin, ContextMixin, View):
     form_class: Type[BaseForm] = CommentForm
     model: Type[Comment] = Comment
 
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[Post]:
         return Post.objects.filter(*args, **kwargs)
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -141,7 +138,7 @@ class CommentView(LoginRequiredMixin, ContextMixin, View):
 
         return context
 
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         form = self.form_class(request.POST or None)
         post = self.get_queryset(**{ 'url': kwargs['url'] }).first()
 

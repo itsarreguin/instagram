@@ -1,5 +1,6 @@
 # Python standard library
 import json
+
 from typing import Any, Dict, Generator, List, Type
 
 # Django HTTP package
@@ -53,7 +54,7 @@ class NotificationReadView(LoginRequiredMixin, generic.View):
 
     model: Type[Model] = Notification
 
-    def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         notification = (
             self.model.objects
             .filter(slug=kwargs['noti_slug'], object_slug=kwargs['object_slug'])
@@ -81,7 +82,7 @@ class NotificationDeleteView(LoginRequiredMixin, generic.View):
     def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[Notification]:
         return Notification.objects.filter(*args, **kwargs)
 
-    def delete(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
+    def delete(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         notification = self.get_queryset(pk=kwargs['pk'])
         if notification is not None:
             notification.delete()
@@ -91,7 +92,7 @@ class NotificationDeleteView(LoginRequiredMixin, generic.View):
 
 class SSENotificationsView(LoginRequiredMixin, generic.View):
 
-    def get_queryset(self, receiver: User) -> QuerySet[Notification]:
+    def get_queryset(self, receiver: User) -> QuerySet[List[Notification]]:
         return (
             Notification.objects.filter(receiver=receiver)
             .order_by('-created').all()
@@ -104,7 +105,7 @@ class SSENotificationsView(LoginRequiredMixin, generic.View):
         ]
         yield f'data: {json.dumps(data)}\n\n'
 
-    def get(self, request: HttpRequest, **kwargs: Any) -> StreamingHttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> StreamingHttpResponse:
         return StreamingHttpResponse(
             self.notifications_generator(), content_type='text/event-stream'
         )

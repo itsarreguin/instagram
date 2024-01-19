@@ -11,7 +11,7 @@ from instagram.messenger.serializers import MessageSerializer
 
 class MessengerConsumer(WebsocketConsumer):
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         self.model = Inbox
 

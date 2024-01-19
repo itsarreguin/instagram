@@ -1,9 +1,5 @@
 # Python standard library
-from typing import Any
-from typing import Dict
-from typing import Optional
-from typing import Tuple
-from typing import Type
+from typing import Any, Dict, List, Optional, Type
 
 # Django HTTP package
 from django.http import HttpRequest
@@ -54,10 +50,10 @@ class FeedView(LoginRequiredMixin, ListView):
     model: Type[Model] = Post
     template_name: str = 'users/feed.html'
 
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[Post]:
         return Post.objects.filter(*args, **kwargs)
 
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['posts'] = (
             self.get_queryset(author__username=self.request.user.username)
@@ -77,7 +73,7 @@ class ProfileView(LoginRequiredMixin, ContextMixin, View):
     model: Type[Model] = get_user_model()
     template_name: str = 'users/profile.html'
 
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[List[Post]]:
         queryset = (
             Post.objects.order_by('-created').prefetch_related('likes', 'comments').all()
         )
@@ -87,13 +83,13 @@ class ProfileView(LoginRequiredMixin, ContextMixin, View):
             'profile', 'following', 'followers', posts
         )
 
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['user'] = self.get_queryset(username=kwargs['username']).first()
 
         return context
 
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
@@ -103,10 +99,10 @@ class FollowUserView(LoginRequiredMixin, View):
     model: Type[Model] = get_user_model()
     template_name: str = 'includes/profile-data.html'
 
-    def get_queryset(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> QuerySet:
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[User]:
         return self.model.objects.filter(*args, **kwargs).first()
 
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         user = self.get_queryset(**{ 'username': kwargs['username'] })
         if user is not None:
             user.followers.add(request.user)
@@ -122,7 +118,7 @@ class FollowUserView(LoginRequiredMixin, View):
 
         return HttpResponseRedirect(reverse('account:feed'))
 
-    def delete(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def delete(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         user = self.get_queryset(**{ 'username': kwargs['username'] })
 
         if request.user in user.followers.all():
@@ -136,7 +132,7 @@ class ExploreView(LoginRequiredMixin, TemplateView):
 
     template_name: str = 'users/explore.html'
 
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['posts'] = (
             Post.objects.order_by('-created').select_related('author')
@@ -148,7 +144,7 @@ class ExploreView(LoginRequiredMixin, TemplateView):
 
 class AccountVerificationView(View):
 
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         try:
             uid = urlsafe_base64_decode(kwargs['uidb64']).decode('utf-8')
             user = get_object_or_404(User, id=uid)
@@ -171,7 +167,7 @@ class EditProfileView(LoginRequiredMixin, UpdateView):
     template_name: str = 'users/edit_profile.html'
     template_title: str = _('Edit profile')
 
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.template_title
 
@@ -191,7 +187,7 @@ class EditAccountView(LoginRequiredMixin, UpdateView):
     template_name: str = 'users/edit_account.html'
     template_title: str = _('Edit account')
 
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.template_title
 
@@ -210,7 +206,7 @@ class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
     template_name: str = 'users/change_password.html'
     template_title: str = _('Change password')
 
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.template_title
 

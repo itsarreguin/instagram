@@ -1,6 +1,5 @@
 # Python standard library
 from typing import Any
-from typing import Dict
 
 # Django dispatch
 from django.dispatch import receiver
@@ -14,7 +13,7 @@ from instagram.posts.models import Collection
 
 
 @receiver(post_save, sender=User)
-def create_user_profile(instance: User, created: User, **kwargs: Dict[str, Any]) -> None:
+def create_user_profile(instance: User, created: User, **kwargs: Any) -> None:
     """ create user profile
     Save a profile after than new user has been created
     """
@@ -30,7 +29,7 @@ def create_user_profile(instance: User, created: User, **kwargs: Dict[str, Any])
 
 
 @receiver(post_save, sender=User)
-def create_default_collection(instance: User, created: User, **kwargs: Dict[str, Any]) -> None:
+def create_default_collection(instance: User, created: User, **kwargs: Any) -> None:
     """ Save a default collection after create new user """
     if created:
         Collection.objects.create(user=instance, name='All posts')

@@ -48,10 +48,10 @@ class InboxDetailView(LoginRequiredMixin, generic.DetailView):
     template_title: str = _('Messages')
     model: Type[BaseAbstractModel] = Inbox
 
-    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[Any]:
+    def get_queryset(self, *args: Any, **kwargs: Any) -> QuerySet[Inbox]:
         return self.model.objects.filter(*args, **kwargs).first()
 
-    def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         inbox = self.get_queryset(uuid=kwargs['uuid'])
         messages = (
             Message.objects.filter(inbox=inbox).select_related(*messages_selct_fields).all()

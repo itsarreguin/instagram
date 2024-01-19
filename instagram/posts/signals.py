@@ -1,6 +1,5 @@
 # Python standard library
 from typing import Any
-from typing import Dict
 
 # Django dispatch
 from django.dispatch import receiver
@@ -19,7 +18,7 @@ from instagram.core.utils.text import RAND_CHARS
 
 
 @receiver(post_save, sender=Post)
-def save_post_url(instance: Post, **kwargs: Dict[str, Any]) -> None:
+def save_post_url(instance: Post, **kwargs: Any) -> None:
     """generate_url
     Signal that generates a random string to be saved as url for a post.
 
@@ -33,7 +32,7 @@ def save_post_url(instance: Post, **kwargs: Dict[str, Any]) -> None:
 
 
 @receiver(post_save, sender=Comment)
-def comment_url(instance: Comment, **kwargs: Dict[str, Any]) -> None:
+def comment_url(instance: Comment, **kwargs: Any) -> None:
     """ Save a url for Comment model """
     if not instance.url:
         instance.url = get_random_string(length=16, allowed_chars=RAND_CHARS)
@@ -41,7 +40,7 @@ def comment_url(instance: Comment, **kwargs: Dict[str, Any]) -> None:
 
 
 @receiver(post_save, sender=Collection)
-def collection_slug(instance: Collection, **kwargs: Dict[str, Any]) -> None:
+def collection_slug(instance: Collection, **kwargs: Any) -> None:
     """ Save collection name as slug """
     if not instance.slug:
         instance.slug = slugify(instance.name)

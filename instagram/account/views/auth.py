@@ -1,9 +1,5 @@
 # Python standard library
-from typing import Any
-from typing import Dict
-from typing import Optional
-from typing import Tuple
-from typing import Type
+from typing import Any, Dict, Optional, Type
 
 # Django HTTP package
 from django.http import HttpRequest
@@ -44,7 +40,7 @@ from instagram.account.tasks import send_user_email
 
 class AuthContextMixin(FormMixin):
 
-    def get_context_data(self, **kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = self.template_title
         context['form'] = self.get_form_class()
@@ -58,14 +54,14 @@ class LoginView(AuthContextMixin, View):
     template_name: str = 'auth/login.html'
     template_title: str = _('Login')
 
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(reverse('account:feed'))
 
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         form = self.form_class(request.POST or None)
         if form.is_valid():
             user = authenticate(
@@ -88,14 +84,14 @@ class SignUpView(AuthContextMixin, View):
     template_name: str = 'auth/signup.html'
     template_title: str = _('Sign Up')
 
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         if self.request.user.is_authenticated:
             return HttpResponseRedirect(reverse('account:feed'))
 
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         form = self.form_class(request.POST or None)
 
         if form.is_valid():
@@ -115,7 +111,7 @@ class SignUpView(AuthContextMixin, View):
 
 class LogoutView(LoginRequiredMixin, RedirectView):
 
-    def get_redirect_url(self, *args: Tuple[Any], **kwargs: Dict[str, Any]) -> Optional[str]:
+    def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         if self.request.user.is_authenticated:
             logout(self.request)
             return reverse('account:login')
@@ -129,7 +125,7 @@ class PasswordResetRequestView(AuthContextMixin, View):
     template_name: str = 'auth/forgot_password.html'
     template_title: str = _('Password Reset')
 
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
@@ -153,11 +149,11 @@ class PasswordResetView(AuthContextMixin, View):
     template_name: str = 'auth/password_reset.html'
     template_title: str = _('Password Reset')
 
-    def get(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         context = self.get_context_data(**kwargs)
         return render(request, self.template_name, context)
 
-    def post(self, request: HttpRequest, **kwargs: Dict[str, Any]) -> HttpResponse:
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         form = self.form_class(request.POST or None)
         try:
             uid = urlsafe_base64_decode(kwargs['uidb64']).decode()
